@@ -10,13 +10,13 @@ var svg = d3.select("#compress")
             .attr("width",width)
             .attr("height",height);
 
-var data = [];
+var dataIs = [];
 var xScale, heightScale, colorScale;
 
+var dataTypes = ["Age","City","Country","Email Address","First Name","Last Name","ID",
+"Phone Number","Records","Sex","Source","State","Street Address","Suffix","Title","Zip Code"]
 d3.csv("entity.csv", function(error,data){
-    console.log(data);
 
-    data.push(data);
     xScale = d3.scale.linear()
     .domain([0,data.length-1])
     .range([lMargin, width-lMargin])
@@ -28,7 +28,9 @@ d3.csv("entity.csv", function(error,data){
     colorScale = d3.scale.linear()
     .domain([0,data.length-1])
     .range([0, 255])
-
+for(i=0; i<data.length; i++){
+    dataIs.push(data[i]);
+}
 
 svg.selectAll("rect")
     .data(data)
