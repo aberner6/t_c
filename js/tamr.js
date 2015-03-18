@@ -91,7 +91,7 @@ svg.selectAll("rect")
             } 
     })
     .attr("x",0)
-    .attr("y", topMargin)
+    .attr("y", 0)
     .attr("width", wide)
     .attr("height", function(d,i){
         return 20;//heightScale(i);
@@ -132,42 +132,34 @@ svg.selectAll("rect")
               if(val=="Source" && d[val].length>0){
                    source++;
                     sourceTotal = source;
-                    return sourceTotal;
                 }
               if(val=="City" && d[val].length>0){
                     city++;
                     cityTotal = city;
-                    return cityTotal;
                 }
               if(val=="Country" && d[val].length>0){
                     country++;
                     countryTotal = country;
-                    return countryTotal;
                 }
               if(val=="Email Address" && d[val].length>0){
                     email++;
                     emailTotal = email;
-                    return emailTotal;
                 }
               if(val=="First Name" && d[val].length>0){
                    first++;
                     firstTotal = first;
-                    return firstTotal;
                 }
               if(val=="Last Name" && d[val].length>0){
                    last++;
                     lastTotal = last;
-                    return lastTotal;
                 }
               if(val=="ID" && d[val].length>0){
                     id++;
                     idTotal = id;
-                    return idTotal;
                 }
               if(val=="Phone Number" && d[val].length>0){
                     phone++;
                     phoneTotal = phone;
-                    return phoneTotal;
                 }
               if(val=="Records" && d[val].length>0){
                    record++;
@@ -181,7 +173,7 @@ svg.selectAll("rect")
                     state++;
                     stateTotal = state;
                 }
-              if(val=="Street" && d[val].length>0){
+              if(val=="Street Address" && d[val].length>0){
                     st++;
                     stTotal = st;
                 }
@@ -193,16 +185,33 @@ svg.selectAll("rect")
                     tit++;
                     titTotal = tit;
                 }
-              if(val=="Zip" && d[val].length>0){
+              if(val=="Zip Code" && d[val].length>0){
                     zip++;
                     zipTotal = zip;
                 }
-
-
-
-
+                return 0;
         })
+
     })
+.each("end", function(d,i){
+    d3.selectAll(".Source").transition().attr("height", sourceTotal*10)
+    d3.selectAll(".Records").transition().attr("height", recordTotal*10)
+    d3.selectAll(".ID").transition().attr("height", idTotal*10)
+    d3.selectAll(".Title").transition().attr("height", titTotal*10)
+    d3.selectAll(".First.Name").transition().attr("height", firstTotal*10)
+    d3.selectAll(".Last.Name").transition().attr("height", lastTotal*10)
+    d3.selectAll(".Suffix").transition().attr("height", sufTotal*10)
+    d3.selectAll(".Email.Address").transition().attr("height", emailTotal*10)
+    d3.selectAll(".Phone.Number").transition().attr("height", phoneTotal*10)
+    d3.selectAll(".Street.Address").transition().attr("height", stTotal*10)
+    d3.selectAll(".City").transition().attr("height", cityTotal*10)
+    d3.selectAll(".Zip.Code").transition().attr("height", zipTotal*10)
+    d3.selectAll(".State").transition().attr("height", stateTotal*10)
+    d3.selectAll(".Country").transition().attr("height", countryTotal*10)
+    d3.selectAll(".Sex").transition().attr("height", sexTotal*10)
+})
+
+
 })
 
                 // .transition()
