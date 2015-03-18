@@ -20,6 +20,40 @@ var dataTypes = [];
 var s;
 var p;
 var howMany = [];
+var source = 0; 
+var age = 0;
+var city = 0;
+var country = 0; 
+var email = 0; 
+var first = 0;
+var last = 0;
+var id = 0;
+var phone = 0;
+var record = 0;
+var sex = 0;
+var source = 0;
+var state = 0;
+var st = 0;
+var suf = 0;
+var tit = 0;
+var zip = 0;
+var sourceTotal = 0;
+var ageTotal = 0;
+var cityTotal = 0; 
+var countryTotal = 0;
+var emailTotal = 0;
+var firstTotal = 0;
+var lastTotal = 0;
+var idTotal = 0;
+var phoneTota = 0;
+var recordTotal = 0;
+var sexTotal = 0;
+var sourceTotal = 0;
+var stateTotal = 0;
+var stTotal = 0; 
+var sufTotal = 0;
+var titTotal = 0;
+var zipTotal = 0;
 d3.csv("entity.csv", function(error,data){
 
     heightScale = d3.scale.linear()
@@ -41,6 +75,7 @@ for(i=0; i<data.length; i++){
             .domain(dataTypes)
             .rangeBands([0, width], .2)
 
+var j = 0;
 svg.selectAll("rect")
     .data(data)
     .enter()
@@ -85,15 +120,88 @@ svg.selectAll("rect")
                // return xScale(saveOne[i][j]);
             // }
     })
-    .attr("y", function(d,i){
-        var j = 0;
+    .attr("y", function(d,i){                     // howMany.push({total:j,type:d[val]});
             Object.getOwnPropertyNames(d).forEach(function(val, idx, array) {
               console.log(val + ' -> ' + d[val]);
-                if(d[val].length>0){
-                    j++;
-                    howMany[i]={total:j,type:d[val]};
+                // var k=0;
+              // if(d[val].length>0&&dataTypes[i]==val){
+              //   k+=1;
+              //   howMany[i]=({source: val, total: k})
+              // } 
+
+              if(val=="Source" && d[val].length>0){
+                   source++;
+                    sourceTotal = source;
+                    return sourceTotal;
                 }
-            })
+              if(val=="City" && d[val].length>0){
+                    city++;
+                    cityTotal = city;
+                    return cityTotal;
+                }
+              if(val=="Country" && d[val].length>0){
+                    country++;
+                    countryTotal = country;
+                    return countryTotal;
+                }
+              if(val=="Email Address" && d[val].length>0){
+                    email++;
+                    emailTotal = email;
+                    return emailTotal;
+                }
+              if(val=="First Name" && d[val].length>0){
+                   first++;
+                    firstTotal = first;
+                    return firstTotal;
+                }
+              if(val=="Last Name" && d[val].length>0){
+                   last++;
+                    lastTotal = last;
+                    return lastTotal;
+                }
+              if(val=="ID" && d[val].length>0){
+                    id++;
+                    idTotal = id;
+                    return idTotal;
+                }
+              if(val=="Phone Number" && d[val].length>0){
+                    phone++;
+                    phoneTotal = phone;
+                    return phoneTotal;
+                }
+              if(val=="Records" && d[val].length>0){
+                   record++;
+                    recordTotal = record;
+                }
+              if(val=="Sex" && d[val].length>0){
+                    sex++;
+                    sexTotal = sex;
+                }
+              if(val=="State" && d[val].length>0){
+                    state++;
+                    stateTotal = state;
+                }
+              if(val=="Street" && d[val].length>0){
+                    st++;
+                    stTotal = st;
+                }
+              if(val=="Suffix" && d[val].length>0){
+                    suf++;
+                    sufTotal = suf;
+                }
+              if(val=="Title" && d[val].length>0){
+                    tit++;
+                    titTotal = tit;
+                }
+              if(val=="Zip" && d[val].length>0){
+                    zip++;
+                    zipTotal = zip;
+                }
+
+
+
+
+        })
     })
 })
 
