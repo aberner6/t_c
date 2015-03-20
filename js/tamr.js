@@ -18,6 +18,9 @@ var dataTypes = [];
 
 var dataNames =["Age","City","Country","Email Address","First Name","Last Name","ID","Phone Number","Records","Sex","Source","State","Street Address","Suffix","Title","Zip Code"];
 
+var x1;
+var x2;
+
 var s;
 var p;
 var howMany = [];
@@ -103,7 +106,9 @@ svg.selectAll("rect")
                 return p;                
             } 
     })
-    .attr("x", xScale(dataTypes[0]))
+    .attr("x", function(d,i){
+        return xScale(dataTypes[i])
+    })
     .attr("y", topMargin)
     .attr("width", 1)
     .attr("height", function(d,i){
@@ -220,7 +225,7 @@ svg.selectAll("rect")
         })
         return topMargin;
     })
-.each("end", function(d,i){
+.each("end", function(){
     d3.selectAll(".Source").transition().attr("height", sourceTotal*10)
     d3.selectAll(".Records").transition().attr("height", recordTotal*10)
     d3.selectAll(".ID").transition().attr("height", idTotal*10)
@@ -243,25 +248,45 @@ svg.selectAll("line")
     .append("line")
     .attr("class", "line")
     .attr("x1", function(){
-        var x1 = d3.select(".Source").attr("x");
+        x1 = d3.select(".Source").attr("x");
         return x1;
     })
     .attr("y1", function(d,i){
         return heightScale(i);//i*10;
     })
     .attr("x2", function(){
-        var x2 = d3.select(".Sex").attr("x");
+        x2 = d3.select(".Sex").attr("x");
         return wide+x2;
     })
     .attr("y2", function(d,i){
         return heightScale(i);
     })
     .attr("stroke","white")
-    .attr("stroke-width", .2)    
+    .attr("stroke-width", .4)  
+
+if(x2>0){
+svg.selectAll("bigRect")
+    .data(d3.range(1))
+    .enter()
+    .append("rect")
+    .attr("class","bigRect")
+    .attr("x", x1) 
+    .attr("y", topMargin)
+    .attr("width", (x2-x1)+wide)
+    .attr("height",0)
+    .attr("fill", "none")
+    .attr("stroke","orange")
+    .attr("opacity",0)
+    .transition()
+    // .delay(6000)
+    .duration(1000)
+    .attr("opacity",1)
+    .attr("height", heightScale(data.length))  
+}
 })
 
-
 })
+
 
                 // .transition()
                 // .duration(1000)
