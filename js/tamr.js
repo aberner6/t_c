@@ -1,9 +1,9 @@
-var width=1000;
+var width=window.innerWidth;
 var height=800;
 
 var topMargin = 100;
-var lMargin = width/6;
-var wide = 20;
+var lMargin = width/10;
+var wide = 65;
 
 var svg = d3.select("#compress")
             .append("svg")
@@ -15,8 +15,9 @@ var xScale, heightScale, colorScale;
 var saveOne = [];
 
 var dataTypes = [];
-//["Age","City","Country","Email Address","First Name","Last Name","ID",
-//"Phone Number","Records","Sex","Source","State","Street Address","Suffix","Title","Zip Code"]
+
+var dataNames =["Age","City","Country","Email Address","First Name","Last Name","ID","Phone Number","Records","Sex","Source","State","Street Address","Suffix","Title","Zip Code"];
+
 var s;
 var p;
 var howMany = [];
@@ -73,7 +74,19 @@ for(i=0; i<data.length; i++){
     console.log(dataTypes)
         xScale = d3.scale.ordinal()
             .domain(dataTypes)
-            .rangeBands([0, width], .2)
+            .rangeBands([lMargin, width-lMargin], 1)//.2)
+
+svg.selectAll("text")
+    .data(dataTypes)
+    .enter()
+    .append("text")
+    .attr("class", "label")
+    .style("text-anchor", "middle")
+    .attr("x", function(d,i){
+        return xScale(d)+wide/2;
+    })
+    .attr("y",topMargin-10)
+    .text(function(d){ return d });
 
 var j = 0;
 svg.selectAll("rect")
@@ -90,17 +103,32 @@ svg.selectAll("rect")
                 return p;                
             } 
     })
-    .attr("x",0)
-    .attr("y", 0)
-    .attr("width", wide)
+    .attr("x", xScale(dataTypes[0]))
+    .attr("y", topMargin)
+    .attr("width", 1)
     .attr("height", function(d,i){
         return 20;//heightScale(i);
     })
-    .attr("fill","teal")// return "rgb("+colorScale(i)+","+100+","+100+")";
-    .attr("opacity",.2)
+    .attr("fill","#00ABD3")// return "rgb("+colorScale(i)+","+100+","+100+")";
+    .attr("opacity", function(d,i){
+        var j = i;
+        var p;
+            if(j<dataTypes.length){
+                console.log(i)
+                p = saveOne[i][j];
+                console.log(p);
+            }
+            if(d.hasOwnProperty(p)){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
     .transition()
     .delay(2000)
     .duration(2000)
+    .attr("width",wide)
     .attr("x", function(d,i){
         var j = i;
         var p;
@@ -114,7 +142,7 @@ svg.selectAll("rect")
             } 
             else{ 
                 console.log(p); 
-                return -100; 
+                // return -100; 
             }   
             // if(j<dataTypes.length){
                // return xScale(saveOne[i][j]);
@@ -189,9 +217,8 @@ svg.selectAll("rect")
                     zip++;
                     zipTotal = zip;
                 }
-                return 0;
         })
-
+        return topMargin;
     })
 .each("end", function(d,i){
     d3.selectAll(".Source").transition().attr("height", sourceTotal*10)
@@ -208,7 +235,29 @@ svg.selectAll("rect")
     d3.selectAll(".Zip.Code").transition().attr("height", zipTotal*10)
     d3.selectAll(".State").transition().attr("height", stateTotal*10)
     d3.selectAll(".Country").transition().attr("height", countryTotal*10)
-    d3.selectAll(".Sex").transition().attr("height", sexTotal*10)
+    d3.selectAll(".Sex").transition().attr("height", sexTotal*10);
+
+svg.selectAll("line")
+    .data(d3.range(data.length))
+    .enter()
+    .append("line")
+    .attr("class", "line")
+    .attr("x1", function(){
+        var x1 = d3.select(".Source").attr("x");
+        return x1;
+    })
+    .attr("y1", function(d,i){
+        return heightScale(i);//i*10;
+    })
+    .attr("x2", function(){
+        var x2 = d3.select(".Sex").attr("x");
+        return wide+x2;
+    })
+    .attr("y2", function(d,i){
+        return heightScale(i);
+    })
+    .attr("stroke","white")
+    .attr("stroke-width", .2)    
 })
 
 
