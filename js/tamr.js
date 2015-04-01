@@ -1,5 +1,5 @@
 var width=window.innerWidth;
-var height=800;
+var height=window.outerHeight;
 
 var topMargin = 100;
 var lMargin = width/10;
@@ -16,10 +16,13 @@ var saveOne = [];
 
 var dataTypes = [];
 
-var dataNames =["Age","City","Country","Email Address","First Name","Last Name","ID","Phone Number","Records","Sex","Source","State","Street Address","Suffix","Title","Zip Code"];
-
+var dataNames =["Age","City","Country","Email Address","First Name","Last Name","ID","Phone Number","Sex","State","Street Address","Suffix","Title","Zip Code"];
+// "Source",
+// "Records",
 var x1;
 var x2;
+
+var tamR = "#00ABD3";
 
 var s;
 var p;
@@ -58,23 +61,46 @@ var stTotal = 0;
 var sufTotal = 0;
 var titTotal = 0;
 var zipTotal = 0;
+
+var del = 1000;
+
+var topFactor = 1.9;
+
 d3.csv("entity.csv", function(error,data){
 
-    heightScale = d3.scale.linear()
-    .domain([0, data.length])
-    .range([topMargin, height/2])
+
+    // .range([topMargin, height/2])
 
     // colorScale = d3.scale.linear()
     // .domain([0,data.length-1])
     // .range([0, 255])
 for(i=0; i<data.length; i++){
     dataIs.push(data[i]);
-    saveOne.push(Object.getOwnPropertyNames(data[i]));
-    for(j=0; j<saveOne[i].length-1; j++){
-        dataTypes[j]=(saveOne[i][j])
+    if(Object.getOwnPropertyNames(data[i])=="Source"){
+    }else{         
+        saveOne.push(Object.getOwnPropertyNames(data[i]));
+    }
+
+    for(j=0; j<saveOne[i].length; j++){
+        if(saveOne[i][j]=="Source"){
+            saveOne[i].splice(0,1)
+        }
+        if(saveOne[i][j]=="Records"){
+            saveOne[i].splice(0,1)
+        }
+        // else{
+            // for(k=0; k<23; k++){
+                dataTypes[j]=(saveOne[i][j])
+            // }
+        // }
     }
 }
-    console.log(dataTypes)
+            // dataTypes.splice(0,2);
+})
+function next(){
+    heightScale = d3.scale.linear()
+    .domain([0, dataTypes.length])
+    .range([topMargin, topMargin+50])
         xScale = d3.scale.ordinal()
             .domain(dataTypes)
             .rangeBands([lMargin, width-lMargin], 1)//.2)
@@ -93,18 +119,19 @@ svg.selectAll("text")
 
 var j = 0;
 svg.selectAll("rect")
-    .data(data)
+    .data(dataIs)
     .enter()
     .append("rect")
     .attr("class", function(d,i){
-        var j = i;
-        var p;
-            if(j<dataTypes.length){
-                p = saveOne[i][j];
-            }
-            if(d.hasOwnProperty(p)){
-                return p;                
-            } 
+        return dataTypes[i];
+        // var j = i;
+        // var p;
+        //     if(j<dataTypes.length){
+        //         p = saveOne[i][j];
+        //     }
+        //     if(d.hasOwnProperty(p)){
+        //         return p;                
+        //     } 
     })
     .attr("x", function(d,i){
         return xScale(dataTypes[i])
@@ -114,14 +141,12 @@ svg.selectAll("rect")
     .attr("height", function(d,i){
         return 20;//heightScale(i);
     })
-    .attr("fill","#00ABD3")// return "rgb("+colorScale(i)+","+100+","+100+")";
+    .attr("fill",tamR)// return "rgb("+colorScale(i)+","+100+","+100+")";
     .attr("opacity", function(d,i){
         var j = i;
         var p;
             if(j<dataTypes.length){
-                console.log(i)
                 p = saveOne[i][j];
-                console.log(p);
             }
             if(d.hasOwnProperty(p)){
                 return .9;               
@@ -131,22 +156,19 @@ svg.selectAll("rect")
             }   
     })
     .transition()
-    .delay(2000)
+    .delay(del)
     .duration(2000)
     .attr("width",wide)
     .attr("x", function(d,i){
         var j = i;
         var p;
             if(j<dataTypes.length){
-                console.log(i)
                 p = saveOne[i][j];
-                console.log(p);
             }
             if(d.hasOwnProperty(p)){
                 return xScale(p);                
             } 
             else{ 
-                console.log(p); 
                 // return -100; 
             }   
             // if(j<dataTypes.length){
@@ -162,10 +184,10 @@ svg.selectAll("rect")
               //   howMany[i]=({source: val, total: k})
               // } 
 
-              if(val=="Source" && d[val].length>0){
-                   source++;
-                    sourceTotal = source;
-                }
+              // if(val=="Source" && d[val].length>0){
+              //      source++;
+              //       sourceTotal = source;
+              //   }
               if(val=="City" && d[val].length>0){
                     city++;
                     cityTotal = city;
@@ -194,10 +216,10 @@ svg.selectAll("rect")
                     phone++;
                     phoneTotal = phone;
                 }
-              if(val=="Records" && d[val].length>0){
-                   record++;
-                    recordTotal = record;
-                }
+              // if(val=="Records" && d[val].length>0){
+              //      record++;
+              //       recordTotal = record;
+              //   }
               if(val=="Sex" && d[val].length>0){
                     sex++;
                     sexTotal = sex;
@@ -226,69 +248,248 @@ svg.selectAll("rect")
         return topMargin;
     })
 .each("end", function(){
-    d3.selectAll(".Source").transition().attr("height", sourceTotal*10)
-    d3.selectAll(".Records").transition().attr("height", recordTotal*10)
-    d3.selectAll(".ID").transition().attr("height", idTotal*10)
-    d3.selectAll(".Title").transition().attr("height", titTotal*10)
-    d3.selectAll(".First.Name").transition().attr("height", firstTotal*10)
-    d3.selectAll(".Last.Name").transition().attr("height", lastTotal*10)
-    d3.selectAll(".Suffix").transition().attr("height", sufTotal*10)
-    d3.selectAll(".Email.Address").transition().attr("height", emailTotal*10)
-    d3.selectAll(".Phone.Number").transition().attr("height", phoneTotal*10)
-    d3.selectAll(".Street.Address").transition().attr("height", stTotal*10)
-    d3.selectAll(".City").transition().attr("height", cityTotal*10)
-    d3.selectAll(".Zip.Code").transition().attr("height", zipTotal*10)
-    d3.selectAll(".State").transition().attr("height", stateTotal*10)
-    d3.selectAll(".Country").transition().attr("height", countryTotal*10)
-    d3.selectAll(".Sex").transition().attr("height", sexTotal*10);
+    var factor = 2;
+    d3.selectAll(".ID").transition().attr("height", idTotal*factor)
+    d3.selectAll(".Title").transition().attr("height", titTotal*factor)
+    d3.selectAll(".First.Name").transition().attr("height", firstTotal*factor)
+    d3.selectAll(".Last.Name").transition().attr("height", lastTotal*factor)
+    d3.selectAll(".Suffix").transition().attr("height", sufTotal*factor)
+    d3.selectAll(".Email.Address").transition().attr("height", emailTotal*factor)
+    d3.selectAll(".Phone.Number").transition().attr("height", phoneTotal*factor)
+    d3.selectAll(".Street.Address").transition().attr("height", stTotal*factor)
+    d3.selectAll(".City").transition().attr("height", cityTotal*factor)
+    d3.selectAll(".Zip.Code").transition().attr("height", zipTotal*factor)
+    d3.selectAll(".State").transition().attr("height", stateTotal*factor)
+    d3.selectAll(".Country").transition().attr("height", countryTotal*factor)
+    d3.selectAll(".Sex").transition().attr("height", sexTotal*factor);
 
 svg.selectAll("line")
-    .data(d3.range(data.length))
+    .data(d3.range(dataTypes.length))
     .enter()
     .append("line")
     .attr("class", "line")
     .attr("x1", function(){
-        x1 = d3.select(".Source").attr("x");
+        x1 = d3.select(".ID").attr("x");
         return x1;
     })
     .attr("y1", function(d,i){
         return heightScale(i);//i*10;
     })
     .attr("x2", function(){
-        x2 = d3.select(".Sex").attr("x");
-        return wide+x2;
+        x2 = d3.select(".Age").attr("x");
+        // return wide+x2;
+        return parseInt(wide)+parseInt(x2);
     })
     .attr("y2", function(d,i){
         return heightScale(i);
     })
     .attr("stroke","white")
-    .attr("stroke-width", .4)  
+    .attr("stroke-width", .2)  
+})
 
-if(x2>0){
-svg.selectAll("bigRect")
-    .data(d3.range(1))
-    .enter()
-    .append("rect")
+svg.append("rect")
     .attr("class","bigRect")
-    .attr("x", x1) 
+    .attr("x", lMargin+wide) 
     .attr("y", topMargin)
-    .attr("width", (x2-x1)+wide)
+    .attr("width", (width-lMargin)-(lMargin+wide))
     .attr("height",0)
     .attr("fill", "none")
-    .attr("stroke","orange")
+    .attr("stroke","grey")
+    .attr("stroke-dasharray", "2,2")
+    .attr("stroke-width", .2)
     .attr("opacity",0)
     .transition()
-    // .delay(6000)
+    .delay(del*1.5)
     .duration(1000)
     .attr("opacity",1)
-    .attr("height", heightScale(data.length))  
+    .attr("height", sourceTotal*10)  
 }
-})
+    setTimeout(function(){
+        next();
+        next2();
+    },del*2)
+    setTimeout(function(){
+        callSource();
+        callNon();
+    },del*6)
 
-})
+function callSource(){
+    var sourceWidth = [];
+    var sourceHeight = [];
+    var fold = height+100;
+    var randoScale = d3.scale.linear()
+        .domain([0, 20])
+        .range([2, 10])
+    var hScale = d3.scale.linear()
+        .domain([0, dataIs.length])
+        .range([fold/2+10, height+100])
+
+    var line = svg.append("line")
+        .attr("class", "crossLine")
+        .attr("x1", 0)
+        .attr("y1", height/2)
+        .attr("x2", width+200)
+        .attr("y2", height/2)
+        .attr("stroke","grey")
+        .attr("stroke-dasharray", "2,2")
+        .attr("stroke-width", .1);
+
+    svg.selectAll("sourceRect")
+        .data(dataIs)
+        .enter()
+        .append("rect")
+        .attr("class","sourceRect")
+        .attr("x", lMargin) 
+        .attr("y", function(d,i){
+            return hScale(i);//fold/2 + i*25+10;
+        })
+        .attr("opacity", .5)
+        .attr("fill", tamR)   
+        .attr("width", 0)
+        .attr("height",0)
+        .transition()
+        .duration(2000)
+        .attr("width", function(d,i){
+            sourceWidth.push(Math.random()*35)
+            return sourceWidth[i];
+        })
+        .attr("height", function(d,i){
+            sourceHeight.push(randoScale(Math.random()*20))
+            return sourceHeight[i];
+        })
+
+    svg.selectAll("outlineRects")
+        .data(dataIs)
+        .enter()
+        .append("rect")
+        .attr("class","outlineRects")
+        .attr("x", lMargin) 
+        .attr("y", function(d,i){
+            return hScale(i);//fold/2 + i*25+10;
+        })
+        .attr("stroke","white")
+        .attr("opacity", .2)
+        .attr("fill", tamR)   
+        .attr("width", 0)
+        .attr("height",0)
+        .transition()
+        .duration(2000)
+        .attr("width", function(d,i){
+            return sourceWidth[i]+10;
+        })
+        .attr("height", function(d,i){
+            return sourceHeight[i]+10;
+        })
 
 
-                // .transition()
+
+    // var sourceText = "Source"
+    svg.selectAll("sourceText")
+        .data(dataIs)
+        .enter()
+        .append("text")
+        .attr("class", "sourceText")
+        .attr("x", lMargin)
+        .attr("y", function(d,i){
+            return hScale(i)+10;//fold/2+i*25+20;
+        })
+        .transition()
+        .delay(1000)
+        .duration(2000)
+        .attr("x", function(d,i){
+            return lMargin+sourceWidth[i]+14;
+        })
+        .text(function(d,i){
+            return d.Source;
+        })
+
+    svg.append("text")
+        .attr("class","sourceLabel")
+        .attr("x", lMargin)
+        .attr("y", fold/2)
+        .text("Source")   
+        } 
+
+function callNon(){
+    // var sourceWidth = [];
+    // var sourceHeight = [];
+    var fold = height+100;
+    // var randoScale = d3.scale.linear()
+    //     .domain([0, 20])
+    //     .range([2, 10])
+    var hScale = d3.scale.linear()
+        .domain([0, dataIs.length])
+        .range([fold/2+10, height+100])
+
+    svg.selectAll("sourceRect")
+        .data(d3.range(20))
+        .enter()
+        .append("rect")
+        .attr("class","sourceRect")
+        .attr("x", width-lMargin) 
+        .attr("y", function(d,i){
+            return hScale(i);//fold/2 + i*25+10;
+        })
+        .attr("opacity", .5)
+        .attr("fill", tamR)   
+        .attr("width", 0)
+        .attr("height",0)
+        .attr("stroke","white")
+        .transition()
+        .duration(2000)
+        .attr("width", 10)
+        .attr("height", 10);
+
+    svg.selectAll("sourceRect")
+        .data(d3.range(20))
+        .enter()
+        .append("rect")
+        .attr("class","sourceRect")
+        .attr("x", width-lMargin+10) 
+        .attr("y", function(d,i){
+            return hScale(i);//fold/2 + i*25+10;
+        })
+        .attr("opacity", .5)
+        .attr("fill", tamR)   
+        .attr("width", 0)
+        .attr("height",10)
+        .attr("stroke","white")
+        .transition()
+        .duration(2000)
+        .attr("width", 10);
+    svg.selectAll("sourceRect")
+        .data(d3.range(20))
+        .enter()
+        .append("rect")
+        .attr("class","sourceRect")
+        .attr("x", width-lMargin+20) 
+        .attr("y", function(d,i){
+            return hScale(i);//fold/2 + i*25+10;
+        })
+        .attr("opacity", .5)
+        .attr("fill", tamR)   
+        .attr("width", 0)
+        .attr("height",10)
+        .attr("stroke","white")
+        .transition()
+        .duration(2000)
+        .attr("width", function(d,i){
+            if(i%3==1){
+                return 10
+            }else{
+                return 0;
+            }
+        })
+
+    svg.append("text")
+        .attr("class","sourceLabel")
+        .attr("x", width-lMargin)
+        .attr("y", fold/2)
+        .text("Non-unified")   
+        } 
+
+// })
+             // .transition()
                 // .duration(1000)
                 // .attr("x", function(d,i){
                 //       return 100 * Math.cos( i ) + 200;
@@ -298,3 +499,68 @@ svg.selectAll("bigRect")
                 //      return 100 * Math.sin( i ) + 200;
 
                 // })
+
+
+
+
+
+
+
+
+
+
+
+function next2(){
+        // xScale = d3.scale.ordinal()
+        //     .domain(dataTypes)
+        //     .rangeBands([lMargin, width-lMargin], 1)//.2)
+
+svg.selectAll("text2")
+    .data(dataTypes)
+    .enter()
+    .append("text")
+    .attr("class", "label")
+    .style("text-anchor", "middle")
+    .attr("x", function(d,i){
+        return xScale(d)+wide/2;
+    })
+    .attr("y",topMargin*topFactor*topFactor-10)
+    .text(function(d){ return d });
+
+var j = 0;
+svg.selectAll("rect2")
+    .data(dataTypes)
+    .enter()
+    .append("rect")
+    .attr("class", "rect2")
+    .attr("x", function(d,i){
+        return xScale(d);
+    })
+    .attr("y",topMargin*topFactor*topFactor)
+    .attr("fill",tamR)
+    .attr("width", wide)
+    .attr("height",10)
+
+    var height2Scale = d3.scale.linear()
+    .domain([0, 1])
+    .range([topMargin*topFactor, topMargin*topFactor*topFactor])
+
+svg.selectAll("text3")
+    .data(dataTypes)
+    .enter()
+    .append("text")
+    .attr("class", "label")
+    .style("text-anchor", "middle")
+    .attr("x", function(d,i){
+        return xScale(d)+wide/2;
+    })
+    .attr("y",topMargin*topFactor*topFactor)
+    .text(function(d){ 
+        for (var j=0; j<dataIs[0].length; j++){
+            console.log(dataIs[0][j])
+            return dataIs[0][j];
+        }
+
+        // return dataIs[0] 
+    });
+}
