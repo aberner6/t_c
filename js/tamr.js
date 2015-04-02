@@ -2,8 +2,8 @@ var width=window.innerWidth;
 var height=window.outerHeight;
 
 var topMargin = 100;
-var lMargin = width/10;
-var wide = 75;
+var lMargin = 20;
+var wide = 85;
 
 var svg = d3.select("#compress")
             .append("svg")
@@ -101,9 +101,10 @@ function next(){
     heightScale = d3.scale.linear()
     .domain([0, dataTypes.length])
     .range([topMargin, topMargin+50])
-        xScale = d3.scale.ordinal()
-            .domain(dataTypes)
-            .rangeBands([lMargin, width-lMargin], 1)//.2)
+
+    xScale = d3.scale.ordinal()
+        .domain(dataTypes)
+        .rangeBands([-lMargin*4, width-lMargin*2], 1)//.2)
 
 svg.selectAll("text")
     .data(dataTypes)
@@ -538,8 +539,20 @@ svg.selectAll("text2")
     .attr("x", function(d,i){
         return xScale(d)+wide/2;
     })
-    .attr("y",topMargin*topFactor*topFactor-10)
+    .attr("y",topMargin*topFactor*topFactor-8)
     .text(function(d){ return d });
+svg.selectAll("text2")
+    .data(dataTypes)
+    .enter()
+    .append("text")
+    .attr("class", "label")
+    .style("text-anchor", "right")
+    .style("font-weight",900)
+    .attr("x", function(d,i){
+        return xScale(d)+wide-10;
+    })
+    .attr("y",topMargin*topFactor*topFactor-8)
+    .text("▼"); //▼ ▲
 
 var j = 0;
 svg.selectAll("rect2")
@@ -570,7 +583,7 @@ svg.selectAll("text3")
     .attr("x", function(d,i){
         return xScale(d);
     })
-    .attr("y",topMargin*topFactor*topFactor+10)
+    .attr("y",topMargin*topFactor*topFactor+12)
     .attr("fill","white")
     .text(function(d,i){ 
         return oneData[i];
