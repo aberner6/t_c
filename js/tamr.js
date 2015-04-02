@@ -427,7 +427,7 @@ function callNon(){
         .enter()
         .append("rect")
         .attr("class","sourceRect")
-        .attr("x", width-lMargin) 
+        .attr("x", width-130) 
         .attr("y", function(d,i){
             return hScale(i);//fold/2 + i*25+10;
         })
@@ -446,7 +446,7 @@ function callNon(){
         .enter()
         .append("rect")
         .attr("class","sourceRect")
-        .attr("x", width-lMargin+10) 
+        .attr("x", width-120) 
         .attr("y", function(d,i){
             return hScale(i);//fold/2 + i*25+10;
         })
@@ -463,7 +463,7 @@ function callNon(){
         .enter()
         .append("rect")
         .attr("class","sourceRect")
-        .attr("x", width-lMargin+20) 
+        .attr("x", width-110) 
         .attr("y", function(d,i){
             return hScale(i);//fold/2 + i*25+10;
         })
@@ -484,7 +484,7 @@ function callNon(){
 
     svg.append("text")
         .attr("class","sourceLabel")
-        .attr("x", width-lMargin)
+        .attr("x", width-130)
         .attr("y", fold/2)
         .text("Non-unified")   
         } 
