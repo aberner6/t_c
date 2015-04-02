@@ -3,7 +3,7 @@ var height=window.outerHeight;
 
 var topMargin = 100;
 var lMargin = width/10;
-var wide = 65;
+var wide = 75;
 
 var svg = d3.select("#compress")
             .append("svg")
@@ -514,6 +514,20 @@ function next2(){
         // xScale = d3.scale.ordinal()
         //     .domain(dataTypes)
         //     .rangeBands([lMargin, width-lMargin], 1)//.2)
+svg.selectAll("rectBack")
+    .data(dataTypes)
+    .enter()
+    .append("rect")
+    .attr("class", "rectBack")
+    .attr("x", function(d,i){
+        return xScale(d);
+    })
+    .attr("y",topMargin*topFactor*topFactor-20)
+    .attr("fill","lightgray")
+    .attr("opacity",.5)
+    .attr("stroke","white")
+    .attr("width", wide)
+    .attr("height",20)
 
 svg.selectAll("text2")
     .data(dataTypes)
@@ -538,13 +552,15 @@ svg.selectAll("rect2")
     })
     .attr("y",topMargin*topFactor*topFactor)
     .attr("fill",tamR)
+    .attr("stroke","white")
     .attr("width", wide)
-    .attr("height",10)
+    .attr("height",20)
 
     var height2Scale = d3.scale.linear()
     .domain([0, 1])
     .range([topMargin*topFactor, topMargin*topFactor*topFactor])
 
+var oneData = ["id","title","first name","","suffix","email Address","phone Number","street Address","city","zip code","state","country","sex","age"]
 svg.selectAll("text3")
     .data(dataTypes)
     .enter()
@@ -552,15 +568,16 @@ svg.selectAll("text3")
     .attr("class", "label")
     .style("text-anchor", "middle")
     .attr("x", function(d,i){
-        return xScale(d)+wide/2;
+        return xScale(d);
     })
-    .attr("y",topMargin*topFactor*topFactor)
-    .text(function(d){ 
-        for (var j=0; j<dataIs[0].length; j++){
-            console.log(dataIs[0][j])
-            return dataIs[0][j];
-        }
-
-        // return dataIs[0] 
-    });
+    .attr("y",topMargin*topFactor*topFactor+10)
+    .attr("fill","white")
+    .text(function(d,i){ 
+        return oneData[i];
+    })
+    .transition()
+    .duration(2000)
+    .attr("x", function(d,i){
+        return xScale(d)+wide/2
+    })
 }
