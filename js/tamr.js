@@ -3,7 +3,9 @@ var height=window.outerHeight;
 
 var topMargin = 100;
 var lMargin = 20;
-var wide = 85;
+var wide = 30;
+var widthBottom = 30;
+
     var fold = height+100;
 
 var svg = d3.select("#compress")
@@ -89,35 +91,49 @@ for(i=0; i<data.length; i++){
         if(saveOne[i][j]=="Records"){
             saveOne[i].splice(0,1)
         }
-        // else{
-            // for(k=0; k<23; k++){
+
                 dataTypes[j]=(saveOne[i][j])
-            // }
-        // }
     }
 }
-            // dataTypes.splice(0,2);
+ wide = (width-350)/parseInt(dataTypes.length);
+  widthBottom = (width-350)/parseInt(dataTypes.length);
 })
 function next(){
+svg.selectAll("circle")
+.data(d3.range(1))
+.enter()
+.append("circle")
+.attr("cx",width/2)
+.attr("cy",height/2)
+.attr("r",10)
+
     heightScale = d3.scale.linear()
     .domain([0, dataTypes.length])
     .range([topMargin, topMargin+50])
 
     xScale = d3.scale.ordinal()
         .domain(dataTypes)
-        .rangeBands([-lMargin*4, width-lMargin*2], 1)//.2)
+        .rangeBands([lMargin*5, width-lMargin*9], 1)//.2)
+    // xScale = d3.scale.ordinal()
+    //     .domain(dataTypes)
+    //     .rangeBands([-lMargin*4, width-lMargin*2], 1)//.2)
 
 svg.selectAll("text")
     .data(dataTypes)
     .enter()
     .append("text")
-    .attr("class", "label")
+    .attr("class", function(d,i){
+        return d;
+        // xScale(dataTypes[i]); 
+        // dataTypes[i].replace(/\s+/g, '');
+    })
     .style("text-anchor", "middle")
     .attr("x", function(d,i){
         return xScale(d)+wide/2;
     })
     .attr("y",topMargin-10)
-    .text(function(d){ return d });
+    .text(function(d){ return d })
+    .attr("opacity",0);
 
 var j = 0;
 svg.selectAll("rect")
@@ -125,15 +141,17 @@ svg.selectAll("rect")
     .enter()
     .append("rect")
     .attr("class", function(d,i){
+        // for(j=0; j<dataTypes.length; j++){
+        // if(isNaN(dataTypes[i])){
+        //     // console.log(dataTypes[i])
+        // }else{
+        //     return dataTypes[i].replace(/\s+/g, '')
+        // }
+        // return xScale(dataTypes[i]);
+            // return dataTypes[j].replace(/\s+/g, '');
+        // }
+        // conso
         return dataTypes[i];
-        // var j = i;
-        // var p;
-        //     if(j<dataTypes.length){
-        //         p = saveOne[i][j];
-        //     }
-        //     if(d.hasOwnProperty(p)){
-        //         return p;                
-        //     } 
     })
     .attr("x", function(d,i){
         return xScale(dataTypes[i])
@@ -157,6 +175,16 @@ svg.selectAll("rect")
                 return 0;
             }   
     })
+    .on("mouseover", function(d,i){
+        var thisName = (d3.select(this).attr("class"));
+        d3.selectAll("text."+thisName).transition().attr("opacity",1)
+        // console.log("moused"+"text."+thisName)
+    })
+    .on("mouseout", function(d,i){
+        var thisName = (d3.select(this).attr("class"));
+        d3.selectAll("text."+thisName).transition().attr("opacity",0)
+        // console.log("moused"+"text."+thisName)
+    })
     .transition()
     .delay(del)
     .duration(2000)
@@ -171,19 +199,11 @@ svg.selectAll("rect")
                 return xScale(p);                
             } 
             else{ 
-                // return -100; 
             }   
-            // if(j<dataTypes.length){
-               // return xScale(saveOne[i][j]);
-            // }
     })
-    .attr("y", function(d,i){                     // howMany.push({total:j,type:d[val]});
+    .attr("y", function(d,i){
             Object.getOwnPropertyNames(d).forEach(function(val, idx, array) {
-              console.log(val + ' -> ' + d[val]);
-              // if(val=="Source" && d[val].length>0){
-              //      source++;
-              //       sourceTotal = source;
-              //   }
+              // console.log(val + ' -> ' + d[val]);
               if(val=="City" && d[val].length>0){
                     city++;
                     cityTotal = city;
@@ -212,10 +232,6 @@ svg.selectAll("rect")
                     phone++;
                     phoneTotal = phone;
                 }
-              // if(val=="Records" && d[val].length>0){
-              //      record++;
-              //       recordTotal = record;
-              //   }
               if(val=="Sex" && d[val].length>0){
                     sex++;
                     sexTotal = sex;
@@ -243,6 +259,8 @@ svg.selectAll("rect")
         })
         return topMargin;
     })
+// .transition()
+// .attr("class", function(d,i))
 .each("end", function(){
     var factor = 2;
     d3.selectAll(".ID").transition().attr("height", idTotal*factor)
@@ -263,16 +281,18 @@ svg.selectAll("line")
     .data(d3.range(dataTypes.length))
     .enter()
     .append("line")
-    .attr("class", "line")
+    .attr("class", function(d,i){
+        return dataTypes[i];
+    })
     .attr("x1", function(){
-        x1 = d3.select(".ID").attr("x");
+        x1 = d3.select("rect.ID").attr("x");
         return x1;
     })
     .attr("y1", function(d,i){
         return heightScale(i);//i*10;
     })
     .attr("x2", function(){
-        x2 = d3.select(".Age").attr("x");
+        x2 = d3.select("rect.Age").attr("x");
         // return wide+x2;
         return parseInt(wide)+parseInt(x2);
     })
@@ -281,6 +301,7 @@ svg.selectAll("line")
     })
     .attr("stroke","white")
     .attr("stroke-width", .2)  
+
 })
 
 svg.append("rect")
@@ -435,7 +456,7 @@ function callNon(){
     var hScale = d3.scale.linear()
         .domain([0, dataIs.length])
         .range([fold/2+10, height+100])
-
+var rMargin = 130;
     svg.selectAll("sourceRect")
         .data(d3.range(20))
         .enter()
@@ -501,7 +522,7 @@ function callNon(){
         .attr("x", width-130)
         .attr("y", fold/2-10)
         .text("Non-unified")   
-        } 
+} 
 
 // })
              // .transition()
@@ -632,10 +653,9 @@ function bottom(){
     // height3Scale = d3.scale.linear()
     // .domain([0, dataTypes.length])
     // .range([fold/2, fold/2+200])
-widthBottom = 30;
-    xScale = d3.scale.ordinal()
-        .domain(dataTypes)
-        .rangeBands([lMargin*3, width-lMargin*6], 1)//.2)
+    // xScale = d3.scale.ordinal()
+    //     .domain(dataTypes)
+    //     .rangeBands([lMargin*3, width-lMargin*6], 1)//.2)
 
 svg.selectAll("textBottom")
     .data(dataTypes)
@@ -684,6 +704,7 @@ svg.selectAll("rectBottom")
     .duration(2000)
     .attr("width",widthBottom)
     .attr("x", function(d,i){
+        // console.log(d);
         var j = i;
         var p;
             if(j<dataTypes.length){
@@ -757,5 +778,7 @@ svg.append("rect")
     .delay(del*1.5)
     .duration(1000)
     .attr("opacity",1)
-    .attr("height", sourceTotal*10)  
+    .attr("height", sourceTotal*10) 
+
+d3.selectAll("rect").attr("stroke","white");     
 }
