@@ -318,7 +318,11 @@ function callSource(){
         .range([2, 10])
     var hScale = d3.scale.linear()
         .domain([0, dataIs.length])
-        .range([fold/2+10, height+100])
+        .range([fold/2+10, height+400])
+
+    var recordScale = d3.scale.linear()
+        .domain([0, 2000000])
+        .range([2, 20])
 
     var line = svg.append("line")
         .attr("class", "crossLine")
@@ -359,8 +363,14 @@ var thisOne = 0;
             return sourceWidth[i];
         })
         .attr("height", function(d,i){
-            sourceHeight.push(randoScale(Math.random()*20))
-            return sourceHeight[i];
+            sourceHeight.push(recordScale(d.Records));
+            console.log(recordScale(d.Records))
+              // if(val=="Records" && d[val].length>0){
+              //      record++;
+              //       recordTotal = record;
+              //   }
+            // sourceHeight.push(randoScale(Math.random()*20))
+            return recordScale(d.Records);
         })
 
     svg.selectAll("outlineRects")
@@ -612,6 +622,10 @@ svg.selectAll("text3")
 
 
 function bottom(){
+        var hScale = d3.scale.linear()
+        .domain([0, dataIs.length])
+        .range([fold/2+10, height+400])
+
     var height3Scale = d3.scale.linear()
         .domain([0, dataIs.length])
         .range([fold/2+10, height+100])
@@ -686,22 +700,25 @@ svg.selectAll("rectBottom")
     })
 .each("end", function(){
     var factor = 10;
-    d3.selectAll(".ID2").transition().attr("height", idTotal*factor)
-    d3.selectAll(".Title2").transition().attr("height", titTotal*factor)
-    d3.selectAll(".First.Name2").transition().attr("height", firstTotal*factor)
-    d3.selectAll(".Last.Name2").transition().attr("height", lastTotal*factor)
-    d3.selectAll(".Suffix2").transition().attr("height", sufTotal*factor)
-    d3.selectAll(".Email.Address2").transition().attr("height", emailTotal*factor)
-    d3.selectAll(".Phone.Number2").transition().attr("height", phoneTotal*factor)
-    d3.selectAll(".Street.Address2").transition().attr("height", stTotal*factor)
-    d3.selectAll(".City2").transition().attr("height", cityTotal*factor)
-    d3.selectAll(".Zip.Code2").transition().attr("height", zipTotal*factor)
-    d3.selectAll(".State2").transition().attr("height", stateTotal*factor)
-    d3.selectAll(".Country2").transition().attr("height", countryTotal*factor)
-    d3.selectAll(".Sex2").transition().attr("height", sexTotal*factor);
+    d3.selectAll(".ID2")
+    .transition()
+    .attr("height", hScale(idTotal));
+
+    d3.selectAll(".Title2").transition().attr("height", hScale(titTotal))
+    d3.selectAll(".First.Name2").transition().attr("height", hScale(firstTotal))
+    d3.selectAll(".Last.Name2").transition().attr("height", hScale(lastTotal))
+    d3.selectAll(".Suffix2").transition().attr("height", hScale(sufTotal))
+    d3.selectAll(".Email.Address2").transition().attr("height", hScale(emailTotal))
+    d3.selectAll(".Phone.Number2").transition().attr("height", hScale(phoneTotal))
+    d3.selectAll(".Street.Address2").transition().attr("height", hScale(stTotal))
+    d3.selectAll(".City2").transition().attr("height", hScale(cityTotal))
+    d3.selectAll(".Zip.Code2").transition().attr("height", hScale(zipTotal))
+    d3.selectAll(".State2").transition().attr("height", hScale(stateTotal))
+    d3.selectAll(".Country2").transition().attr("height", hScale(countryTotal))
+    d3.selectAll(".Sex2").transition().attr("height", hScale(sexTotal))
 
 svg.selectAll("line2")
-    .data(d3.range(dataTypes.length))
+    .data(dataIs)
     .enter()
     .append("line")
     .attr("class", "line2")
@@ -711,7 +728,7 @@ svg.selectAll("line2")
         // return lMargin*2;
     })
     .attr("y1", function(d,i){
-        return height3Scale(i);//i*10;
+        return hScale(i);//i*10;
     })
     .attr("x2", function(){
         x4 = d3.select(".Age2").attr("x");
@@ -719,7 +736,7 @@ svg.selectAll("line2")
         return parseInt(widthBottom)+parseInt(x4);
     })
     .attr("y2", function(d,i){
-        return height3Scale(i);
+        return hScale(i);//height3Scale(i);
     })
     .attr("stroke","white")
     .attr("stroke-width", .2)  
