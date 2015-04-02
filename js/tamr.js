@@ -180,12 +180,6 @@ svg.selectAll("rect")
     .attr("y", function(d,i){                     // howMany.push({total:j,type:d[val]});
             Object.getOwnPropertyNames(d).forEach(function(val, idx, array) {
               console.log(val + ' -> ' + d[val]);
-                // var k=0;
-              // if(d[val].length>0&&dataTypes[i]==val){
-              //   k+=1;
-              //   howMany[i]=({source: val, total: k})
-              // } 
-
               // if(val=="Source" && d[val].length>0){
               //      source++;
               //       sourceTotal = source;
@@ -335,7 +329,7 @@ function callSource(){
         .attr("stroke","grey")
         .attr("stroke-dasharray", "2,2")
         .attr("stroke-width", .1);
-
+var thisOne = 0;
     svg.selectAll("sourceRect")
         .data(dataIs)
         .enter()
@@ -352,7 +346,16 @@ function callSource(){
         .transition()
         .duration(2000)
         .attr("width", function(d,i){
-            sourceWidth.push(Math.random()*35)
+            Object.getOwnPropertyNames(d).forEach(function(val, idx, array) {
+              if(d[val].length>0){
+                thisOne++;
+                sourceWidth[i]=(thisOne);
+                    // sourceTotal = source;
+                }
+            })
+              console.log(sourceWidth[i])
+                thisOne = 0;
+            // sourceWidth.push(Math.random()*35)
             return sourceWidth[i];
         })
         .attr("height", function(d,i){
@@ -615,10 +618,10 @@ function bottom(){
     // height3Scale = d3.scale.linear()
     // .domain([0, dataTypes.length])
     // .range([fold/2, fold/2+200])
-widthBottom = 50;
+widthBottom = 30;
     xScale = d3.scale.ordinal()
         .domain(dataTypes)
-        .rangeBands([lMargin*2, width-lMargin*6], 1)//.2)
+        .rangeBands([lMargin*3, width-lMargin*6], 1)//.2)
 
 svg.selectAll("textBottom")
     .data(dataTypes)
@@ -643,7 +646,7 @@ svg.selectAll("rectBottom")
     .attr("x", function(d,i){
         return xScale(dataTypes[i])
     })
-    .attr("y", fold/2)
+    .attr("y", fold/2+10)
     .attr("width", 1)
     .attr("height", function(d,i){
         return 20;//heightScale(i);
@@ -665,7 +668,7 @@ svg.selectAll("rectBottom")
     .transition()
     .delay(del)
     .duration(2000)
-    .attr("width",wide)
+    .attr("width",widthBottom)
     .attr("x", function(d,i){
         var j = i;
         var p;
@@ -679,7 +682,7 @@ svg.selectAll("rectBottom")
             }   
     })
     .attr("y", function(d,i){                     // howMany.push({total:j,type:d[val
-        return fold/2;
+        return fold/2+10;
     })
 .each("end", function(){
     var factor = 10;
@@ -703,13 +706,17 @@ svg.selectAll("line2")
     .append("line")
     .attr("class", "line2")
     .attr("x1", function(){
-        return lMargin*2;
+        x3 = d3.select(".ID2").attr("x");
+        return parseInt(x3);
+        // return lMargin*2;
     })
     .attr("y1", function(d,i){
         return height3Scale(i);//i*10;
     })
     .attr("x2", function(){
-        return parseInt(widthBottom)+parseInt(x2);
+        x4 = d3.select(".Age2").attr("x");
+        // return wide+x2;
+        return parseInt(widthBottom)+parseInt(x4);
     })
     .attr("y2", function(d,i){
         return height3Scale(i);
