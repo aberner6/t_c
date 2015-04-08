@@ -175,9 +175,12 @@ svg.selectAll("rect")
     .attr("width", 1)
     .attr("height", function(d,i){
                     Object.getOwnPropertyNames(d).forEach(function(val, idx, array) {
-                                  // console.log(val + ' -> ' + d[val]);
                                   if(val=="City"){
+                                    // console.log(val + ' -> ' + d[val]);
                                         cityData.push(d[val])
+                                    }
+                                  if(val=="Age"){
+                                       ageData.push(d[val])
                                     }
                                   if(val=="Country"){
                                         countryData.push(d[val])
@@ -395,11 +398,13 @@ svg.append("rect")
     setTimeout(function(){
         next();
         next2();
-        bottom();
     },del*2)
     setTimeout(function(){
+        if(cityData.length==25){
+            bottom();
         callSource();
         callNon();
+    }
     },del*6)
 
 function callSource(){
@@ -714,19 +719,13 @@ svg.selectAll("text3")
 
 
 function bottom(){
-        var hScale = d3.scale.linear()
+    var hScale = d3.scale.linear()
         .domain([0, dataIs.length])
         .range([fold/2+10, height-40])//+400])
 
     var height3Scale = d3.scale.linear()
         .domain([0, dataIs.length])
         .range([fold/2+10, height-340])//+100])
-    // height3Scale = d3.scale.linear()
-    // .domain([0, dataTypes.length])
-    // .range([fold/2, fold/2+200])
-    // xScale = d3.scale.ordinal()
-    //     .domain(dataTypes)
-    //     .rangeBands([lMargin*3, width-lMargin*6], 1)//.2)
 
 svg.selectAll("textBottom")
     .data(dataTypes)
@@ -743,91 +742,384 @@ svg.selectAll("textBottom")
 
 var j = 0;
 
-svg.selectAll("rectBottom")
-    .data(dataIs)
+svg.selectAll("City2")
+    .data(cityData)
     .enter()
     .append("rect")
-    .attr("class", function(d,i){
-        return dataTypes[i]+2;
-    })
-    .attr("width", 1)
-    .attr("height", function(d,i){
-        return 20;//heightScale(i);
-    })
-    .attr("fill",tamR)// return "rgb("+colorScale(i)+","+100+","+100+")";
+    .attr("class", "City2")
     .attr("opacity", function(d,i){
-        var j = i;
-        var p;
-            if(j<dataTypes.length){
-                p = saveOne[i][j];
-            }
-            if(d.hasOwnProperty(p)){
+            if(d.length>0){
                 return .9;               
             } 
             else{ 
                 return 0;
             }   
     })
-    .transition()
-    .delay(del)
-    .duration(2000)
-    .attr("width",widthBottom)
-    .attr("x", function(d,i){
-        // console.log(d);
-        var j = i;
-        var p;
-            if(j<dataTypes.length){
-                p = saveOne[i][j];
-            }
-            if(d.hasOwnProperty(p)){
-                // console.log(d)
-                return xScale(p);                
-            } 
-            else{ 
-            }   
-    })
-    .attr("y", function(d,i){   
-            Object.getOwnPropertyNames(d).forEach(function(val, idx, array) {
-              if(val=="City" && d[val].length>0){
-                    city++;
-                    // cityTotal = city;
-
-                    // console.log(hScale(city));
-                }
-
-                // else{
-                //     return hScale(i);
-                // }
-
-            })
-            console.log(d.Source)
-            return fold/2;
-    })
-
-svg.selectAll(".City2")
-    .data(cityData)
-    .enter()
-    .append("rect")
-    .attr("class", ".City2")
-    .attr("width", 1)
-    .attr("height", function(d,i){
-        return 20;//heightScale(i);
-    })
     .attr("fill",tamR)
     .transition()
     .delay(del)
     .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
     .attr("width",widthBottom)
     .attr("x", function(d,i){
         return xScale("City");
     })
     .attr("y", function(d,i){
-        // for(i=0; i<dataIs.length; i++){
-            // if()
-        // }
         return hScale(i)
     })
-
+svg.selectAll("Age2")
+    .data(ageData)
+    .enter()
+    .append("rect")
+    .attr("class", "Age2")
+    .attr("opacity", function(d,i){
+            if(d.length>0){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
+    .attr("fill",tamR)
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
+    .attr("width",widthBottom)
+    .attr("x", function(d,i){
+        return xScale("Age");
+    })
+    .attr("y", function(d,i){
+        return hScale(i)
+    })
+svg.selectAll("Country2")
+    .data(countryData)
+    .enter()
+    .append("rect")
+    .attr("class", "Country2")
+    .attr("opacity", function(d,i){
+            if(d.length>0){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
+    .attr("fill",tamR)
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
+    .attr("width",widthBottom)
+    .attr("x", function(d,i){
+        return xScale("Country");
+    })
+    .attr("y", function(d,i){
+        return hScale(i)
+    })
+svg.selectAll("Email2")
+    .data(emailData)
+    .enter()
+    .append("rect")
+    .attr("class", "Email2")
+    .attr("opacity", function(d,i){
+            if(d.length>0){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
+    .attr("fill",tamR)
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
+    .attr("width",widthBottom)
+    .attr("x", function(d,i){
+        return xScale("Email Address");
+    })
+    .attr("y", function(d,i){
+        return hScale(i)
+    })
+svg.selectAll("FirstName2")
+    .data(firstData)
+    .enter()
+    .append("rect")
+    .attr("class", "FirstName2")
+    .attr("opacity", function(d,i){
+            if(d.length>0){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
+    .attr("fill",tamR)
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
+    .attr("width",widthBottom)
+    .attr("x", function(d,i){
+        return xScale("First Name");
+    })
+    .attr("y", function(d,i){
+        return hScale(i)
+    })
+svg.selectAll("LastName2")
+    .data(lastData)
+    .enter()
+    .append("rect")
+    .attr("class", "LastName2")
+    .attr("opacity", function(d,i){
+            if(d.length>0){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
+    .attr("fill",tamR)
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
+    .attr("width",widthBottom)
+    .attr("x", function(d,i){
+        return xScale("Last Name");
+    })
+    .attr("y", function(d,i){
+        return hScale(i)
+    })
+svg.selectAll("ID2")
+    .data(idData)
+    .enter()
+    .append("rect")
+    .attr("class", "ID2")
+    .attr("opacity", function(d,i){
+            if(d.length>0){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
+    .attr("fill",tamR)
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
+    .attr("width",widthBottom)
+    .attr("x", function(d,i){
+        return xScale("ID");
+    })
+    .attr("y", function(d,i){
+        return hScale(i)
+    })
+svg.selectAll("Phone2")
+    .data(phoneData)
+    .enter()
+    .append("rect")
+    .attr("class", "Phone2")
+    .attr("opacity", function(d,i){
+            if(d.length>0){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
+    .attr("fill",tamR)
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
+    .attr("width",widthBottom)
+    .attr("x", function(d,i){
+        return xScale("Phone Number");
+    })
+    .attr("y", function(d,i){
+        return hScale(i)
+    })
+svg.selectAll("Sex2")
+    .data(sexData)
+    .enter()
+    .append("rect")
+    .attr("class", "Sex2")
+    .attr("opacity", function(d,i){
+            if(d.length>0){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
+    .attr("fill",tamR)
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
+    .attr("width",widthBottom)
+    .attr("x", function(d,i){
+        return xScale("Sex");
+    })
+    .attr("y", function(d,i){
+        return hScale(i)
+    })
+svg.selectAll("State2")
+    .data(stateData)
+    .enter()
+    .append("rect")
+    .attr("class", "State2")
+    .attr("opacity", function(d,i){
+            if(d.length>0){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
+    .attr("fill",tamR)
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
+    .attr("width",widthBottom)
+    .attr("x", function(d,i){
+        return xScale("State");
+    })
+    .attr("y", function(d,i){
+        return hScale(i)
+    })
+svg.selectAll("StreetAdress2")
+    .data(stData)
+    .enter()
+    .append("rect")
+    .attr("class", "StreetAddress2")
+    .attr("opacity", function(d,i){
+            if(d.length>0){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
+    .attr("fill",tamR)
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
+    .attr("width",widthBottom)
+    .attr("x", function(d,i){
+        return xScale("Street Address");
+    })
+    .attr("y", function(d,i){
+        return hScale(i)
+    })
+svg.selectAll("Suffix2")
+    .data(suffixData)
+    .enter()
+    .append("rect")
+    .attr("class", "Suffix2")
+    .attr("opacity", function(d,i){
+            if(d.length>0){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
+    .attr("fill",tamR)
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
+    .attr("width",widthBottom)
+    .attr("x", function(d,i){
+        return xScale("Suffix");
+    })
+    .attr("y", function(d,i){
+        return hScale(i)
+    })
+svg.selectAll("Title2")
+    .data(titleData)
+    .enter()
+    .append("rect")
+    .attr("class", "Title2")
+    .attr("opacity", function(d,i){
+            if(d.length>0){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
+    .attr("fill",tamR)
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
+    .attr("width",widthBottom)
+    .attr("x", function(d,i){
+        return xScale("Title");
+    })
+    .attr("y", function(d,i){
+        return hScale(i)
+    })
+svg.selectAll("ZipCode2")
+    .data(zipData)
+    .enter()
+    .append("rect")
+    .attr("class", "ZipCode2")
+    .attr("opacity", function(d,i){
+            if(d.length>0){
+                return .9;               
+            } 
+            else{ 
+                return 0;
+            }   
+    })
+    .attr("fill",tamR)
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("height", function(d,i){
+        return 20;//heightScale(i);
+    })
+    .attr("width",widthBottom)
+    .attr("x", function(d,i){
+        return xScale("Zip Code");
+    })
+    .attr("y", function(d,i){
+        return hScale(i)
+    })
 
 
 
@@ -903,3 +1195,93 @@ svg.append("rect")
 
 d3.selectAll("rect").attr("stroke","white");     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// svg.selectAll("rectBottom")
+//     .data(dataIs)
+//     .enter()
+//     .append("rect")
+//     .attr("class", function(d,i){
+//         return dataTypes[i]+2;
+//     })
+//     .attr("width", 0)
+//     .attr("height",0)
+//     .attr("x", function(d,i){
+//         // console.log(d);
+//         var j = i;
+//         var p;
+//             if(j<dataTypes.length){
+//                 p = saveOne[i][j];
+//             }
+//             if(d.hasOwnProperty(p)){
+//                 // console.log(d)
+//                 return xScale(p);                
+//             } 
+//             else{ 
+//             }   
+//     })
+//     .attr("fill",tamR);
+    // return "rgb("+colorScale(i)+","+100+","+100+")";
+    // .attr("opacity", function(d,i){
+    //     var j = i;
+    //     var p;
+    //         if(j<dataTypes.length){
+    //             p = saveOne[i][j];
+    //         }
+    //         if(d.hasOwnProperty(p)){
+    //             return .9;               
+    //         } 
+    //         else{ 
+    //             return 0;
+    //         }   
+    // })
+    // .transition()
+    // .delay(del)
+    // .duration(2000)
+    // .attr("x", function(d,i){
+    //     // console.log(d);
+    //     var j = i;
+    //     var p;
+    //         if(j<dataTypes.length){
+    //             p = saveOne[i][j];
+    //         }
+    //         if(d.hasOwnProperty(p)){
+    //             // console.log(d)
+    //             return xScale(p);                
+    //         } 
+    //         else{ 
+    //         }   
+    // })
+    // .attr("y", function(d,i){   
+    //         return fold/2;
+    // })
