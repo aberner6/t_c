@@ -1,12 +1,12 @@
 var width=window.innerWidth;
-var height=window.outerHeight*2;
+var height=window.outerHeight;
 
 var topMargin = 100;
 var lMargin = 20;
 var wide = 30;
 var widthBottom = 30;
 
-    var fold = height;
+    var fold = height+100;
 
 var svg = d3.select("#compress")
             .append("svg")
@@ -65,21 +65,6 @@ var sufTotal = 0;
 var titTotal = 0;
 var zipTotal = 0;
 
-var cityData = [];
-var ageData = [];
-var countryData = [];
-var emailData = [];
-var firstData = [];
-var lastData = [];
-var idData = [];
-var phoneData = [];
-var sexData = [];
-var stateData = [];
-var stData = [];
-var suffixData = [];
-var titleData = [];
-var zipData = [];
-
 var del = 1000;
 
 var topFactor = 1.9;
@@ -122,16 +107,29 @@ svg.selectAll("circle")
 .attr("cy",height/2)
 .attr("r",10)
 
+
+
+
     heightScale = d3.scale.linear()
     .domain([0, dataTypes.length])
     .range([topMargin, topMargin+50])
 
-    xScale = d3.scale.ordinal()
+    xScale = d3.fisheye.scale(d3.scale.ordinal())
         .domain(dataTypes)
         .rangeBands([lMargin*5, width-lMargin*9], 1)//.2)
     // xScale = d3.scale.ordinal()
     //     .domain(dataTypes)
+    //     .rangeBands([lMargin*5, width-lMargin*9], 1)//.2)
+//old
+    // xScale = d3.scale.ordinal()
+    //     .domain(dataTypes)
     //     .rangeBands([-lMargin*4, width-lMargin*2], 1)//.2)
+  var widthScale = d3.fisheye.scale(d3.scale.linear)
+                .domain([0, dataIs.length])
+                .range([wide, wide*3]);
+      // yScale = d3.fisheye.scale(d3.scale.linear)
+      //           .domain([20, 90])
+      //           .range([height, 0]),
 
 svg.selectAll("text")
     .data(dataTypes)
@@ -151,74 +149,22 @@ svg.selectAll("text")
     .attr("opacity",1);
 
 var j = 0;
-svg.selectAll("rect")
+
+var rectOne = svg.selectAll("rect")
     .data(dataIs)
     .enter()
     .append("rect")
     .attr("class", function(d,i){
-        // for(j=0; j<dataTypes.length; j++){
         // if(isNaN(dataTypes[i])){
-        //     // console.log(dataTypes[i])
         // }else{
         //     return dataTypes[i].replace(/\s+/g, '')
         // }
-        // return xScale(dataTypes[i]);
-            // return dataTypes[j].replace(/\s+/g, '');
-        // }
-        // conso
         return dataTypes[i];
     })
-    .attr("x", function(d,i){
-        return xScale(dataTypes[i])
-    })
     .attr("y", topMargin)
-    .attr("width", 1)
-    .attr("height", function(d,i){
-                    Object.getOwnPropertyNames(d).forEach(function(val, idx, array) {
-                                  // console.log(val + ' -> ' + d[val]);
-                                  if(val=="City"){
-                                        cityData.push(d[val])
-                                    }
-                                  if(val=="Country"){
-                                        countryData.push(d[val])
-                                    }
-                                  if(val=="Email Address"){
-                                        emailData.push(d[val])                    
-                                    }
-                                  if(val=="First Name"){
-                                        firstData.push(d[val])
-                                    }
-                                  if(val=="Last Name"){
-                                        lastData.push(d[val])
-                                    }
-                                  if(val=="ID"){
-                                        idData.push(d[val])
-                                    }
-                                  if(val=="Phone Number"){
-                                        phoneData.push(d[val])
-                                    }
-                                  if(val=="Sex"){
-                                        sexData.push(d[val])
-                                    }
-                                  if(val=="State"){
-                                        stateData.push(d[val])
-                                    }
-                                  if(val=="Street Address"){
-                                        stData.push(d[val])
-                                    }
-                                  if(val=="Suffix"){
-                                        suffixData.push(d[val])
-                                    }
-                                  if(val=="Title"){
-                                        titleData.push(d[val])
-                                    }
-                                  if(val=="Zip Code"){
-                                        zipData.push(d[val])
-                                    }
-                            })
-        return 20;//heightScale(i);
-    })
-    .attr("fill",tamR)// return "rgb("+colorScale(i)+","+100+","+100+")";
+    .attr("width",1)
+    .attr("height",20)
+    .attr("fill",tamR)
     .attr("opacity", function(d,i){
         var j = i;
         var p;
@@ -232,6 +178,129 @@ svg.selectAll("rect")
                 return 0;
             }   
     })
+    .transition()
+    .delay(del)
+    .duration(2000)
+    .attr("width",wide)
+    .attr("y", function(d,i){
+            Object.getOwnPropertyNames(d).forEach(function(val, idx, array) {
+              // console.log(val + ' -> ' + d[val]);
+              if(val=="City" && d[val].length>0){
+                    city++;
+                    cityTotal = city;
+                }
+              if(val=="Country" && d[val].length>0){
+                    country++;
+                    countryTotal = country;
+                }
+              if(val=="Email Address" && d[val].length>0){
+                    email++;
+                    emailTotal = email;
+                }
+              if(val=="First Name" && d[val].length>0){
+                   first++;
+                    firstTotal = first;
+                }
+              if(val=="Last Name" && d[val].length>0){
+                   last++;
+                    lastTotal = last;
+                }
+              if(val=="ID" && d[val].length>0){
+                    id++;
+                    idTotal = id;
+                }
+              if(val=="Phone Number" && d[val].length>0){
+                    phone++;
+                    phoneTotal = phone;
+                }
+              if(val=="Sex" && d[val].length>0){
+                    sex++;
+                    sexTotal = sex;
+                }
+              if(val=="State" && d[val].length>0){
+                    state++;
+                    stateTotal = state;
+                }
+              if(val=="Street Address" && d[val].length>0){
+                    st++;
+                    stTotal = st;
+                }
+              if(val=="Suffix" && d[val].length>0){
+                    suf++;
+                    sufTotal = suf;
+                }
+              if(val=="Title" && d[val].length>0){
+                    tit++;
+                    titTotal = tit;
+                }
+              if(val=="Zip Code" && d[val].length>0){
+                    zip++;
+                    zipTotal = zip;
+                }
+        })
+        return topMargin;
+    })
+    .call(position)
+    .each("end", function(){
+        var factor = 2;
+        d3.selectAll(".ID").transition().attr("height", idTotal*factor)
+        d3.selectAll(".Title").transition().attr("height", titTotal*factor)
+        d3.selectAll(".First.Name").transition().attr("height", firstTotal*factor)
+        d3.selectAll(".Last.Name").transition().attr("height", lastTotal*factor)
+        d3.selectAll(".Suffix").transition().attr("height", sufTotal*factor)
+        d3.selectAll(".Email.Address").transition().attr("height", emailTotal*factor)
+        d3.selectAll(".Phone.Number").transition().attr("height", phoneTotal*factor)
+        d3.selectAll(".Street.Address").transition().attr("height", stTotal*factor)
+        d3.selectAll(".City").transition().attr("height", cityTotal*factor)
+        d3.selectAll(".Zip.Code").transition().attr("height", zipTotal*factor)
+        d3.selectAll(".State").transition().attr("height", stateTotal*factor)
+        d3.selectAll(".Country").transition().attr("height", countryTotal*factor)
+        d3.selectAll(".Sex").transition().attr("height", sexTotal*factor);
+
+    svg.selectAll("line")
+        .data(d3.range(dataTypes.length))
+        .enter()
+        .append("line")
+        .attr("class", function(d,i){
+            return dataTypes[i];
+        })
+        .attr("x1", function(){
+            x1 = d3.select("rect.ID").attr("x");
+            return x1;
+        })
+        .attr("y1", function(d,i){
+            return heightScale(i);//i*10;
+        })
+        .attr("x2", function(){
+            x2 = d3.select("rect.Age").attr("x");
+            // return wide+x2;
+            return parseInt(wide)+parseInt(x2);
+        })
+        .attr("y2", function(d,i){
+            return heightScale(i);
+        })
+        .attr("stroke","white")
+        .attr("stroke-width", .2)  
+})
+
+function position(rect){
+      rectOne
+        .attr("width", function(d,i){
+            return widthScale(i)
+        })
+            .attr("x", function(d,i){
+                return xScale(dataTypes[i])
+            })
+          // .attr("y", topMargin)
+          // .attr("height", function(d) { return radiusScale(radius(d)); });
+}   
+    svg.on("mousemove", function() {
+      var mouse = d3.mouse(this);
+      xScale.distortion(2.5).focus(mouse[0]);
+      // yScale.distortion(2.5).focus(mouse[1]);
+
+      dot.call(position);
+    }); 
 
     // .on("mouseover", function(d,i){
     //     var thisName = (d3.select(this).attr("class"));
@@ -243,154 +312,38 @@ svg.selectAll("rect")
     //     d3.selectAll("text."+thisName).transition().attr("opacity",0)
     //     // console.log("moused"+"text."+thisName)
     // })
-    .transition()
-    .delay(del)
-    .duration(2000)
-    .attr("width",wide)
-    .attr("x", function(d,i){
-        var j = i;
-        var p;
-            if(j<dataTypes.length){
-                p = saveOne[i][j];
-            }
-            if(d.hasOwnProperty(p)){
-                return xScale(p);                
-            } 
-            else{ 
-            }   
-    })
-    .attr("y", function(d,i){
-            Object.getOwnPropertyNames(d).forEach(function(val, idx, array) {
-              // console.log(val + ' -> ' + d[val]);
-              if(val=="City" && d[val].length>0){
-                    city++;
-                    cityTotal = city;
-                    // cityData.push(d[val])
-                }
-              if(val=="Country" && d[val].length>0){
-                    country++;
-                    countryTotal = country;
-                    // countryData.push(d[val])
-                }
-              if(val=="Email Address" && d[val].length>0){
-                    email++;
-                    emailTotal = email;
-                    // emailData.push(d[val])                    
-                }
-              if(val=="First Name" && d[val].length>0){
-                   first++;
-                    firstTotal = first;
-                    // firstData.push(d[val])
-                }
-              if(val=="Last Name" && d[val].length>0){
-                   last++;
-                    lastTotal = last;
-                    // lastData.push(d[val])
-                }
-              if(val=="ID" && d[val].length>0){
-                    id++;
-                    idTotal = id;
-                    // idData.push(d[val])
-                }
-              if(val=="Phone Number" && d[val].length>0){
-                    phone++;
-                    phoneTotal = phone;
-                    // phoneData.push(d[val])
-                }
-              if(val=="Sex" && d[val].length>0){
-                    sex++;
-                    sexTotal = sex;
-                    // sexData.push(d[val])
-                }
-              if(val=="State" && d[val].length>0){
-                    state++;
-                    stateTotal = state;
-                    // stateData.push(d[val])
-                }
-              if(val=="Street Address" && d[val].length>0){
-                    st++;
-                    stTotal = st;
-                    // stData.push(d[val])
-                }
-              if(val=="Suffix" && d[val].length>0){
-                    suf++;
-                    sufTotal = suf;
-                    // suffixData.push(d[val])
-                }
-              if(val=="Title" && d[val].length>0){
-                    tit++;
-                    titTotal = tit;
-                    // titleData.push(d[val])
-                }
-              if(val=="Zip Code" && d[val].length>0){
-                    zip++;
-                    zipTotal = zip;
-                    // zipData.push(d[val])
-                }
-        })
-        return topMargin;
-    })
-// .transition()
-// .attr("class", function(d,i))
-.each("end", function(){
-    var factor = 2;
-    d3.selectAll(".ID").transition().attr("height", idTotal*factor)
-    d3.selectAll(".Title").transition().attr("height", titTotal*factor)
-    d3.selectAll(".First.Name").transition().attr("height", firstTotal*factor)
-    d3.selectAll(".Last.Name").transition().attr("height", lastTotal*factor)
-    d3.selectAll(".Suffix").transition().attr("height", sufTotal*factor)
-    d3.selectAll(".Email.Address").transition().attr("height", emailTotal*factor)
-    d3.selectAll(".Phone.Number").transition().attr("height", phoneTotal*factor)
-    d3.selectAll(".Street.Address").transition().attr("height", stTotal*factor)
-    d3.selectAll(".City").transition().attr("height", cityTotal*factor)
-    d3.selectAll(".Zip.Code").transition().attr("height", zipTotal*factor)
-    d3.selectAll(".State").transition().attr("height", stateTotal*factor)
-    d3.selectAll(".Country").transition().attr("height", countryTotal*factor)
-    d3.selectAll(".Sex").transition().attr("height", sexTotal*factor);
 
-svg.selectAll("line")
-    .data(d3.range(dataTypes.length))
-    .enter()
-    .append("line")
-    .attr("class", function(d,i){
-        return dataTypes[i];
-    })
-    .attr("x1", function(){
-        x1 = d3.select("rect.ID").attr("x");
-        return x1;
-    })
-    .attr("y1", function(d,i){
-        return heightScale(i);//i*10;
-    })
-    .attr("x2", function(){
-        x2 = d3.select("rect.Age").attr("x");
-        // return wide+x2;
-        return parseInt(wide)+parseInt(x2);
-    })
-    .attr("y2", function(d,i){
-        return heightScale(i);
-    })
-    .attr("stroke","white")
-    .attr("stroke-width", .2)  
+    // .attr("x", function(d,i){
+    //     var j = i;
+    //     var p;
+    //         if(j<dataTypes.length){
+    //             p = saveOne[i][j];
+    //         }
+    //         if(d.hasOwnProperty(p)){
+    //             return xScale(p);                
+    //         } 
+    //         else{ 
+    //         }   
+    // })
 
-})
 
-svg.append("rect")
-    .attr("class","bigRect")
-    .attr("x", lMargin+wide) 
-    .attr("y", topMargin)
-    .attr("width", (width-lMargin)-(lMargin+wide))
-    .attr("height",0)
-    .attr("fill", "none")
-    .attr("stroke","grey")
-    .attr("stroke-dasharray", "2,2")
-    .attr("stroke-width", .2)
-    .attr("opacity",0)
-    .transition()
-    .delay(del*1.5)
-    .duration(1000)
-    .attr("opacity",1)
-    .attr("height", sourceTotal*10)  
+
+// svg.append("rect")
+//     .attr("class","bigRect")
+//     .attr("x", lMargin+wide) 
+//     .attr("y", topMargin)
+//     .attr("width", (width-lMargin)-(lMargin+wide))
+//     .attr("height",0)
+//     .attr("fill", "none")
+//     .attr("stroke","grey")
+//     .attr("stroke-dasharray", "2,2")
+//     .attr("stroke-width", .2)
+//     .attr("opacity",0)
+//     .transition()
+//     .delay(del*1.5)
+//     .duration(1000)
+//     .attr("opacity",1)
+//     .attr("height", sourceTotal*10)  
 }
     setTimeout(function(){
         next();
@@ -410,7 +363,7 @@ function callSource(){
         .range([2, 10])
     var hScale = d3.scale.linear()
         .domain([0, dataIs.length])
-        .range([fold/2+10, height-40])
+        .range([fold/2+10, height+400])
 
     var recordScale = d3.scale.linear()
         .domain([0, 2000000])
@@ -449,14 +402,14 @@ var thisOne = 0;
                     // sourceTotal = source;
                 }
             })
-              // console.log(sourceWidth[i])
+              console.log(sourceWidth[i])
                 thisOne = 0;
             // sourceWidth.push(Math.random()*35)
             return sourceWidth[i];
         })
         .attr("height", function(d,i){
             sourceHeight.push(recordScale(d.Records));
-            // console.log(recordScale(d.Records))
+            console.log(recordScale(d.Records))
               // if(val=="Records" && d[val].length>0){
               //      record++;
               //       recordTotal = record;
@@ -520,16 +473,16 @@ var thisOne = 0;
 function callNon(){
     // var sourceWidth = [];
     // var sourceHeight = [];
-    var fold = height;
+    var fold = height+100;
     // var randoScale = d3.scale.linear()
     //     .domain([0, 20])
     //     .range([2, 10])
     var hScale = d3.scale.linear()
         .domain([0, dataIs.length])
-        .range([fold/2+10, height-40])
+        .range([fold/2+10, height+100])
 var rMargin = 130;
     svg.selectAll("sourceRect")
-        .data(d3.range(dataIs.length))
+        .data(d3.range(20))
         .enter()
         .append("rect")
         .attr("class","sourceRect")
@@ -548,7 +501,7 @@ var rMargin = 130;
         .attr("height", 10);
 
     svg.selectAll("sourceRect")
-        .data(d3.range(dataIs.length))
+        .data(d3.range(20))
         .enter()
         .append("rect")
         .attr("class","sourceRect")
@@ -565,7 +518,7 @@ var rMargin = 130;
         .duration(2000)
         .attr("width", 10);
     svg.selectAll("sourceRect")
-        .data(d3.range(dataIs.length))
+        .data(d3.range(20))
         .enter()
         .append("rect")
         .attr("class","sourceRect")
@@ -647,18 +600,18 @@ svg.selectAll("text2")
     })
     .attr("y",topMargin*topFactor*topFactor-8)
     .text(function(d){ return d });
-// svg.selectAll("text2")
-//     .data(dataTypes)
-//     .enter()
-//     .append("text")
-//     .attr("class", "label")
-//     .style("text-anchor", "right")
-//     .style("font-weight",900)
-//     .attr("x", function(d,i){
-//         return xScale(d)+wide-10;
-//     })
-//     .attr("y",topMargin*topFactor*topFactor-8)
-    // .text("▼"); //▼ ▲
+svg.selectAll("text2")
+    .data(dataTypes)
+    .enter()
+    .append("text")
+    .attr("class", "label")
+    .style("text-anchor", "right")
+    .style("font-weight",900)
+    .attr("x", function(d,i){
+        return xScale(d)+wide-10;
+    })
+    .attr("y",topMargin*topFactor*topFactor-8)
+    .text("▼"); //▼ ▲
 
 var j = 0;
 svg.selectAll("rect2")
@@ -716,11 +669,11 @@ svg.selectAll("text3")
 function bottom(){
         var hScale = d3.scale.linear()
         .domain([0, dataIs.length])
-        .range([fold/2+10, height-40])//+400])
+        .range([fold/2+10, height+400])
 
     var height3Scale = d3.scale.linear()
         .domain([0, dataIs.length])
-        .range([fold/2+10, height-340])//+100])
+        .range([fold/2+10, height+100])
     // height3Scale = d3.scale.linear()
     // .domain([0, dataTypes.length])
     // .range([fold/2, fold/2+200])
@@ -739,10 +692,8 @@ svg.selectAll("textBottom")
     })
     .attr("y", (fold/2)-10)
     .text(function(d){ return d });
-        city = 0;                  
 
 var j = 0;
-
 svg.selectAll("rectBottom")
     .data(dataIs)
     .enter()
@@ -750,6 +701,10 @@ svg.selectAll("rectBottom")
     .attr("class", function(d,i){
         return dataTypes[i]+2;
     })
+    .attr("x", function(d,i){
+        return xScale(dataTypes[i])
+    })
+    .attr("y", fold/2+10)
     .attr("width", 1)
     .attr("height", function(d,i){
         return 20;//heightScale(i);
@@ -780,84 +735,32 @@ svg.selectAll("rectBottom")
                 p = saveOne[i][j];
             }
             if(d.hasOwnProperty(p)){
-                // console.log(d)
                 return xScale(p);                
             } 
             else{ 
             }   
     })
-    .attr("y", function(d,i){   
-            Object.getOwnPropertyNames(d).forEach(function(val, idx, array) {
-              if(val=="City" && d[val].length>0){
-                    city++;
-                    // cityTotal = city;
-
-                    // console.log(hScale(city));
-                }
-
-                // else{
-                //     return hScale(i);
-                // }
-
-            })
-            console.log(d.Source)
-            return fold/2;
+    .attr("y", function(d,i){                     // howMany.push({total:j,type:d[val
+        return fold/2+10;
     })
-
-svg.selectAll(".City2")
-    .data(cityData)
-    .enter()
-    .append("rect")
-    .attr("class", ".City2")
-    .attr("width", 1)
-    .attr("height", function(d,i){
-        return 20;//heightScale(i);
-    })
-    .attr("fill",tamR)
-    .transition()
-    .delay(del)
-    .duration(2000)
-    .attr("width",widthBottom)
-    .attr("x", function(d,i){
-        return xScale("City");
-    })
-    .attr("y", function(d,i){
-        // for(i=0; i<dataIs.length; i++){
-            // if()
-        // }
-        return hScale(i)
-    })
-
-
-
-
-
-
-
-
-
-
-
-
-
 .each("end", function(){
     var factor = 10;
-    // d3.selectAll(".ID2")
-    // .transition()
-    // .attr("height", hScale(idTotal));
+    d3.selectAll(".ID2")
+    .transition()
+    .attr("height", hScale(idTotal));
 
-    // d3.selectAll(".Title2").transition().attr("height", hScale(titTotal))
-    // d3.selectAll(".First.Name2").transition().attr("height", hScale(firstTotal))
-    // d3.selectAll(".Last.Name2").transition().attr("height", hScale(lastTotal))
-    // d3.selectAll(".Suffix2").transition().attr("height", hScale(sufTotal))
-    // d3.selectAll(".Email.Address2").transition().attr("height", hScale(emailTotal))
-    // d3.selectAll(".Phone.Number2").transition().attr("height", hScale(phoneTotal))
-    // d3.selectAll(".Street.Address2").transition().attr("height", hScale(stTotal))
-    // d3.selectAll(".City2").transition().attr("height", hScale(cityTotal))
-    // d3.selectAll(".Zip.Code2").transition().attr("height", hScale(zipTotal))
-    // d3.selectAll(".State2").transition().attr("height", hScale(stateTotal))
-    // d3.selectAll(".Country2").transition().attr("height", hScale(countryTotal))
-    // d3.selectAll(".Sex2").transition().attr("height", hScale(sexTotal))
+    d3.selectAll(".Title2").transition().attr("height", hScale(titTotal))
+    d3.selectAll(".First.Name2").transition().attr("height", hScale(firstTotal))
+    d3.selectAll(".Last.Name2").transition().attr("height", hScale(lastTotal))
+    d3.selectAll(".Suffix2").transition().attr("height", hScale(sufTotal))
+    d3.selectAll(".Email.Address2").transition().attr("height", hScale(emailTotal))
+    d3.selectAll(".Phone.Number2").transition().attr("height", hScale(phoneTotal))
+    d3.selectAll(".Street.Address2").transition().attr("height", hScale(stTotal))
+    d3.selectAll(".City2").transition().attr("height", hScale(cityTotal))
+    d3.selectAll(".Zip.Code2").transition().attr("height", hScale(zipTotal))
+    d3.selectAll(".State2").transition().attr("height", hScale(stateTotal))
+    d3.selectAll(".Country2").transition().attr("height", hScale(countryTotal))
+    d3.selectAll(".Sex2").transition().attr("height", hScale(sexTotal))
 
 svg.selectAll("line2")
     .data(dataIs)
@@ -870,7 +773,7 @@ svg.selectAll("line2")
         // return lMargin*2;
     })
     .attr("y1", function(d,i){
-        return hScale(i)-10;//i*10;
+        return hScale(i);//i*10;
     })
     .attr("x2", function(){
         x4 = d3.select(".Age2").attr("x");
@@ -878,7 +781,7 @@ svg.selectAll("line2")
         return parseInt(widthBottom)+parseInt(x4);
     })
     .attr("y2", function(d,i){
-        return hScale(i)-10;//height3Scale(i);
+        return hScale(i);//height3Scale(i);
     })
     .attr("stroke","white")
     .attr("stroke-width", .2)  
