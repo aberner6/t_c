@@ -12,6 +12,7 @@ var svg = d3.select("#compress")
             .append("svg")
             .attr("width",width)
             .attr("height",height);
+var minRects;
 
 var dataIs = [];
 var xScale, heightScale, colorScale;
@@ -221,44 +222,21 @@ for(i=0; i<data.length; i++){
 
 
 
-
-
-
-
-
-
+var topSpace = topMargin-20;
+var topSpaceText = topMargin-8;
+var topSpaceRect = topMargin;
+var topSpaceText3 = topMargin+12;
 function topPart(){
-            // svg.selectAll("circle")
-            // .data(d3.range(1))
-            // .enter()
-            // .append("circle")
-            // .attr("cx",width/2)
-            // .attr("cy",height/2)
-            // .attr("r",10)
-var topMargin = 10;
-                heightScale = d3.scale.linear()
+topMargin = 10;
+            heightScale = d3.scale.linear()
                 .domain([0, dataTypes.length])
                 .range([topMargin, topMargin+50])
 
-                xScale = d3.scale.ordinal()
+            xScale = d3.scale.ordinal()
                     .domain(dataTypes)
                     .rangeBands([lMargin*5, width-lMargin*9], 1)//.2)
 
-            svg.selectAll("text")
-                .data(dataTypes)
-                .enter()
-                .append("text")
-                .attr("class", "topText")
-                //     function(d,i){
-                //     return d;
-                // })
-                .style("text-anchor", "middle")
-                .attr("x", function(d,i){
-                    return xScale(d)+wide/2;
-                })
-                .attr("y",topMargin)
-                .text(function(d){ return d })
-                .attr("opacity",0);
+            var j = 0;
 
             var j = 0;
             svg.selectAll("rect")
@@ -275,8 +253,9 @@ var topMargin = 10;
                 .attr("width", 1)
                 .attr("height", function(d,i){
                     return 20;//heightScale(i);
-                })
-                .attr("fill",tamR)
+                }) 
+                .attr("fill","white")
+                .attr("stroke",tamR)
                 .attr("opacity", function(d,i){
                     var j = i;
                     var p;
@@ -290,39 +269,27 @@ var topMargin = 10;
                             return 0;
                         }   
                 })
-
-                // .on("mouseover", function(d,i){
-                //     var thisName = (d3.select(this).attr("class"));
-                //     d3.selectAll("text."+thisName).transition().attr("opacity",1)
-                //     // console.log("moused"+"text."+thisName)
-                // })
-                // .on("mouseout", function(d,i){
-                //     var thisName = (d3.select(this).attr("class"));
-                //     d3.selectAll("text."+thisName).transition().attr("opacity",0)
-                //     // console.log("moused"+"text."+thisName)
-                // })
+                .attr("width",wide)
                 .transition()
                 .delay(del)
                 .duration(2000)
-                .attr("width",wide)
-                .attr("x", function(d,i){
-                    var j = i;
-                    var p;
-                        if(j<dataTypes.length){
-                            p = saveOne[i][j];
-                        }
-                        if(d.hasOwnProperty(p)){
-                            return xScale(p);                
-                        } 
-                        else{ 
-                        }   
-                })
-                .attr("y", function(d,i){
-                    return topMargin+5;
-                })
-                .attr("opacity",0)
+                // .attr("x", function(d,i){
+                //     var j = i;
+                //     var p;
+                //         if(j<dataTypes.length){
+                //             p = saveOne[i][j];
+                //         }
+                //         if(d.hasOwnProperty(p)){
+                //             return xScale(p);                
+                //         } 
+                //         else{ 
+                //         }   
+                // })
+                // .attr("y", function(d,i){
+                //     return topMargin*2+12;
+                // })
             .each("end", function(){
-                var factor = .5;
+                var factor = 1;
                 d3.selectAll(".ID").transition().attr("height", idTotal*factor)
                 d3.selectAll(".Title").transition().attr("height", titTotal*factor)
                 d3.selectAll(".First.Name").transition().attr("height", firstTotal*factor)
@@ -337,56 +304,35 @@ var topMargin = 10;
                 d3.selectAll(".Country").transition().attr("height", countryTotal*factor)
                 d3.selectAll(".Sex").transition().attr("height", sexTotal*factor);
                 d3.selectAll(".Age").transition().attr("height", ageTotal*factor);
-
-            svg.selectAll("line")
-                .data(d3.range(dataTypes.length/2))
-                .enter()
-                .append("line")
-                .attr("class", "topLine")
-                .attr("x1", function(){
-                    x1 = d3.select("rect.ID").attr("x");
-                    return x1;
-                })
-                .attr("y1", function(d,i){
-                    return heightScale(i);//i*10;
-                })
-                .attr("x2", function(){
-                    x2 = d3.select("rect.Age").attr("x");
-                    // return wide+x2;
-                    return parseInt(wide)+parseInt(x2);
-                })
-                .attr("y2", function(d,i){
-                    return heightScale(i);
-                })
-                .attr("stroke","white")
-                .attr("stroke-width", .2)  
-                .attr("opacity",0)
-
             })
 
-            svg.append("rect")
-                .attr("class","bigRect")
-                .attr("x", lMargin+wide) 
-                .attr("y", topMargin)
-                .attr("width", (width-lMargin)-(lMargin+wide))
-                .attr("height",0)
-                .attr("fill", "none")
-                .attr("stroke","grey")
-                .attr("stroke-dasharray", "2,2")
-                .attr("stroke-width", .2)
-                .attr("opacity",0)
-                .transition()
-                .delay(del*1.5)
-                .duration(1000)
-                .attr("opacity",1)
-                .attr("height", sourceTotal*10)  
+           // svg.selectAll("rectBack")
+           //      .data(dataTypes)
+           //      .enter()
+           //      .append("rect")
+           //      .attr("class", "rectBack")
+           //      .attr("x", function(d,i){
+           //          return xScale(d);
+           //      })
+           //      .attr("y",topMargin)
+           //      .attr("fill","none")
+           //      .attr("opacity",.5)
+           //      .attr("stroke","lightgray")
+           //      .attr("width", wide)
+           //      .attr("height",20)
+            svg.selectAll("text")
+                .data(dataTypes)
+                .enter()
+                .append("text")
+                .attr("class", "topText")
+                .style("text-anchor", "middle")
+                .attr("x", function(d,i){
+                    return xScale(d)+wide/2;
+                })
+                .attr("y",topMargin+12)
+                .text(function(d){ return d })
+                .attr("opacity",1);
 }
-
-var topSpace = topMargin-20;
-var topSpaceText = topMargin-8;
-var topSpaceRect = topMargin;
-var topSpaceText3 = topMargin+12;
-
 function center(){
     
         xScale = d3.scale.ordinal()
@@ -400,32 +346,38 @@ function center(){
         // xScale = d3.scale.ordinal()
         //     .domain(dataTypes)
         //     .rangeBands([lMargin, width-lMargin], 1)//.2)
-            svg.selectAll("rectBack")
-                .data(dataTypes)
-                .enter()
-                .append("rect")
-                .attr("class", "rectBack")
-                .attr("x", function(d,i){
-                    return xScale(d);
-                })
-                .attr("y",topSpace)
-                .attr("fill","lightgray")
-                .attr("opacity",.5)
-                .attr("stroke","white")
-                .attr("width", wide)
-                .attr("height",20)
 
-            svg.selectAll("text2")
-                .data(dataTypes)
-                .enter()
-                .append("text")
-                .attr("class", "text2")
-                .style("text-anchor", "middle")
-                .attr("x", function(d,i){
-                    return xScale(d)+wide/2;
-                })
-                .attr("y",topSpaceText)
-                .text(function(d){ return d });
+
+
+            // svg.selectAll("rectBack")
+            //     .data(dataTypes)
+            //     .enter()
+            //     .append("rect")
+            //     .attr("class", "rectBack")
+            //     .attr("x", function(d,i){
+            //         return xScale(d);
+            //     })
+            //     .attr("y",topSpace)
+            //     .attr("fill","lightgray")
+            //     .attr("opacity",.5)
+            //     .attr("stroke","white")
+            //     .attr("width", wide)
+            //     .attr("height",20)
+
+            // svg.selectAll("text2")
+            //     .data(dataTypes)
+            //     .enter()
+            //     .append("text")
+            //     .attr("class", "text2")
+            //     .style("text-anchor", "middle")
+            //     .attr("x", function(d,i){
+            //         return xScale(d)+wide/2;
+            //     })
+            //     .attr("y",topSpaceText)
+            //     .text(function(d){ return d });
+
+
+
             // svg.selectAll("text2")
             //     .data(dataTypes)
             //     .enter()
@@ -1461,3 +1413,23 @@ function bottom(){
     // .attr("y", function(d,i){   
     //         return fold/2;
     // })
+
+
+
+
+
+
+
+
+
+
+                // .on("mouseover", function(d,i){
+                //     var thisName = (d3.select(this).attr("class"));
+                //     d3.selectAll("text."+thisName).transition().attr("opacity",1)
+                //     // console.log("moused"+"text."+thisName)
+                // })
+                // .on("mouseout", function(d,i){
+                //     var thisName = (d3.select(this).attr("class"));
+                //     d3.selectAll("text."+thisName).transition().attr("opacity",0)
+                //     // console.log("moused"+"text."+thisName)
+                // })
