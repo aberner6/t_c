@@ -1,5 +1,5 @@
 var width=window.innerWidth;
-var height=window.outerHeight;
+var height=window.outerHeight*2;
 
 var topMargin = 100;
 var lMargin = 20;
@@ -273,6 +273,21 @@ topMargin = 10;
                 .transition()
                 .delay(del)
                 .duration(2000)
+                // .attr("x", function(d,i){
+                //     var j = i;
+                //     var p;
+                //         if(j<dataTypes.length){
+                //             p = saveOne[i][j];
+                //         }
+                //         if(d.hasOwnProperty(p)){
+                //             return xScale(p);                
+                //         } 
+                //         else{ 
+                //         }   
+                // })
+                // .attr("y", function(d,i){
+                //     return topMargin*2+12;
+                // })
             .each("end", function(){
                 var factor = 2;
                 d3.selectAll(".ID").transition().attr("height", idTotal*factor)
@@ -323,6 +338,58 @@ function center(){
         xScale = d3.scale.ordinal()
             .domain(dataTypes)
             .rangeBands([lMargin*5, width-lMargin*9], 1)//.2)
+
+// var topSpace = topMargin*topFactor*topFactor-20;
+// var topSpaceText = topMargin*topFactor*topFactor-8;
+// var topSpaceRect = topMargin*topFactor*topFactor;
+// var topSpaceText3 = topMargin*topFactor*topFactor+12;
+        // xScale = d3.scale.ordinal()
+        //     .domain(dataTypes)
+        //     .rangeBands([lMargin, width-lMargin], 1)//.2)
+
+
+
+            // svg.selectAll("rectBack")
+            //     .data(dataTypes)
+            //     .enter()
+            //     .append("rect")
+            //     .attr("class", "rectBack")
+            //     .attr("x", function(d,i){
+            //         return xScale(d);
+            //     })
+            //     .attr("y",topSpace)
+            //     .attr("fill","lightgray")
+            //     .attr("opacity",.5)
+            //     .attr("stroke","white")
+            //     .attr("width", wide)
+            //     .attr("height",20)
+
+            // svg.selectAll("text2")
+            //     .data(dataTypes)
+            //     .enter()
+            //     .append("text")
+            //     .attr("class", "text2")
+            //     .style("text-anchor", "middle")
+            //     .attr("x", function(d,i){
+            //         return xScale(d)+wide/2;
+            //     })
+            //     .attr("y",topSpaceText)
+            //     .text(function(d){ return d });
+
+
+
+            // svg.selectAll("text2")
+            //     .data(dataTypes)
+            //     .enter()
+            //     .append("text")
+            //     .attr("class", "label")
+            //     .style("text-anchor", "right")
+            //     .style("font-weight",900)
+            //     .attr("x", function(d,i){
+            //         return xScale(d)+wide-10;
+            //     })
+            //     .attr("y",topMargin*topFactor*topFactor-8)
+                // .text("▼"); //▼ ▲
 
             var j = 0;
             svg.selectAll("rect2")
@@ -566,7 +633,7 @@ function callSource(){
                         .range([2, 10])
                     var hScale = d3.scale.linear()
                         .domain([0, dataIs.length])
-                        .range([topSpaceText3, height])
+                        .range([fold/2+10, height-40])
 
                     var recordScale = d3.scale.linear()
                         .domain([0, 2000000])
@@ -591,13 +658,7 @@ function callSource(){
                         .attr("y", function(d,i){
                             return hScale(i);//fold/2 + i*25+10;
                         })
-                        .attr("opacity", function(d,i){
-                            if(i>0){
-                                return .5;
-                            }else{
-                                return 0;
-                            }
-                        })
+                        .attr("opacity", .5)
                         .attr("fill", tamR)   
                         .attr("width", 0)
                         .attr("height",0)
@@ -637,13 +698,7 @@ function callSource(){
                             return hScale(i);//fold/2 + i*25+10;
                         })
                         .attr("stroke","white")
-                        .attr("opacity", function(d,i){
-                            if(i>0){
-                                return .2;
-                            }else{
-                                return 0;
-                            }
-                        })
+                        .attr("opacity", .2)
                         .attr("fill", tamR)   
                         .attr("width", 0)
                         .attr("height",0)
@@ -675,23 +730,20 @@ function callSource(){
                             return lMargin+sourceWidth[i]+14;
                         })
                         .text(function(d,i){
-                            if(i>0){
                             return d.Source;
-                            } else{}     
                         })
 
-                    // svg.append("text")
-                    //     .attr("class","sourceLabel")
-                    //     .attr("x", lMargin)
-                    //     .attr("y", fold/2-10)
-                    //     .text("Source")   
+                    svg.append("text")
+                        .attr("class","sourceLabel")
+                        .attr("x", lMargin)
+                        .attr("y", fold/2-10)
+                        .text("Source")   
         } 
 
 function callNon(){
                 var hScale = d3.scale.linear()
                     .domain([0, dataIs.length])
-                    .range([topSpaceText3-5, height])
-
+                    .range([fold/2+10, height-40])
             var rMargin = 130;
                 svg.selectAll("sourceRect")
                     .data(d3.range(dataIs.length))
@@ -702,13 +754,7 @@ function callNon(){
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
                     })
-                        .attr("opacity", function(d,i){
-                            if(i>0){
-                                return .5;
-                            }else{
-                                return 0;
-                            }
-                        })
+                    .attr("opacity", .5)
                     .attr("fill", tamR)   
                     .attr("width", 0)
                     .attr("height",0)
@@ -727,13 +773,7 @@ function callNon(){
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
                     })
-                        .attr("opacity", function(d,i){
-                            if(i>0){
-                                return .5;
-                            }else{
-                                return 0;
-                            }
-                        })
+                    .attr("opacity", .5)
                     .attr("fill", tamR)   
                     .attr("width", 0)
                     .attr("height",10)
@@ -750,13 +790,7 @@ function callNon(){
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
                     })
-                        .attr("opacity", function(d,i){
-                            if(i>0){
-                                return .5;
-                            }else{
-                                return 0;
-                            }
-                        })
+                    .attr("opacity", .5)
                     .attr("fill", tamR)   
                     .attr("width", 0)
                     .attr("height",10)
@@ -771,11 +805,11 @@ function callNon(){
                         }
                     })
 
-                // svg.append("text")
-                //     .attr("class","sourceLabel")
-                //     .attr("x", width-130)
-                //     .attr("y", fold/2-10)
-                //     .text("Non-unified")   
+                svg.append("text")
+                    .attr("class","sourceLabel")
+                    .attr("x", width-130)
+                    .attr("y", fold/2-10)
+                    .text("Non-unified")   
 } 
 
 // })
@@ -815,11 +849,11 @@ function callNon(){
 function bottom(){
             var hScale = d3.scale.linear()
                 .domain([0, dataIs.length])
-                .range([topSpaceRect, height])//+400])
+                .range([topSpaceRect, height/2])//+400])
 
             var height3Scale = d3.scale.linear()
                 .domain([0, dataIs.length])
-                .range([topSpaceRect, height])//+100])
+                .range([topSpaceRect, height/2])//+100])
 
         // svg.selectAll("textBottom")
         //     .data(dataTypes)
