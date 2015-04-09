@@ -25,6 +25,7 @@ var dataNames =["Age","City","Country","Email Address","First Name","Last Name",
 // "Records",
 var x1;
 var x2;
+            var oneData = ["id","title","first name","","suffix","email Address","phone Number","street Address","city","zip code","state","country","sex","age"]
 
 var tamR = "#00ABD3";
 
@@ -84,6 +85,25 @@ var zipData = [];
 var del = 1000;
 
 var topFactor = 1.9;
+
+var plus = false;
+var minus = true;
+
+ $("#plus").on("click", function(){
+   plus = true;
+    minus = false;   
+        bottom();
+        callSource();
+        callNon();
+ })
+ $("#minus").on("click", function(){
+  minus = false;
+  plus = true;
+  undo();
+ })
+
+
+
 
 d3.csv("entity.csv", function(error,data){
 
@@ -345,7 +365,6 @@ function center(){
                 .domain([0, 1])
                 .range([topMargin*topFactor, topMargin*topFactor*topFactor])
 
-            var oneData = ["id","title","first name","","suffix","email Address","phone Number","street Address","city","zip code","state","country","sex","age"]
             svg.selectAll("text3")
                 .data(dataTypes)
                 .enter()
@@ -393,14 +412,14 @@ function center(){
 
 
 
-
+                    var recordScale = d3.scale.linear()
+                        .domain([0, 2000000])
+                        .range([2, 20])
 function callMidSource(){
                     var randoScale = d3.scale.linear()
                         .domain([0, 20])
                         .range([2, 10])
-                    var recordScale = d3.scale.linear()
-                        .domain([0, 2000000])
-                        .range([2, 20])
+
 
                     var hScale = d3.scale.linear()
                         .domain([0, dataIs.length])
@@ -415,11 +434,11 @@ function callMidSource(){
                     //     .attr("stroke-dasharray", "2,2")
                     //     .attr("stroke-width", .1);
                 var thisOne = 0;
-                    svg.selectAll("sourceRect")
+                    svg.selectAll("source1Rect")
                         .data(d3.range(1))
                         .enter()
                         .append("rect")
-                        .attr("class","sourceRect")
+                        .attr("class","source1Rect")
                         .attr("x", lMargin) 
                         .attr("y", function(d,i){
                             return hScale(i);//fold/2 + i*25+10;
@@ -437,11 +456,11 @@ function callMidSource(){
                             return recordScale(dataIs[0].Records);
                         })
 
-                    svg.selectAll("outlineRects")
+                    svg.selectAll("outline1Rects")
                         .data(d3.range(1))
                         .enter()
                         .append("rect")
-                        .attr("class","outlineRects")
+                        .attr("class","outline1Rects")
                         .attr("x", lMargin) 
                         .attr("y", function(d,i){
                             return hScale(i);//fold/2 + i*25+10;
@@ -463,11 +482,11 @@ function callMidSource(){
 
 
                     // var sourceText = "Source"
-                    svg.selectAll("sourceText")
+                    svg.selectAll("source1Text")
                         .data(d3.range(1))
                         .enter()
                         .append("text")
-                        .attr("class", "sourceText")
+                        .attr("class", "source1Text")
                         .attr("x", lMargin)
                         .attr("y", function(d,i){
                             return hScale(i)+10;//fold/2+i*25+20;
@@ -492,11 +511,11 @@ function callMidNon(){
                     .domain([0, dataIs.length])
                     .range([topSpaceRect, height-40])
             var rMargin = 130;
-                svg.selectAll("sourceRect")
+                svg.selectAll("nonMid")
                     .data(d3.range(1))
                     .enter()
                     .append("rect")
-                    .attr("class","sourceRect")
+                    .attr("class","nonMid")
                     .attr("x", width-130) 
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
@@ -511,11 +530,11 @@ function callMidNon(){
                     .attr("width", 10)
                     .attr("height", uniHeight);
 
-                svg.selectAll("sourceRect")
+                svg.selectAll("nonMid")
                     .data(d3.range(1))
                     .enter()
                     .append("rect")
-                    .attr("class","sourceRect")
+                    .attr("class","nonMid")
                     .attr("x", width-120) 
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
@@ -528,11 +547,11 @@ function callMidNon(){
                     .transition()
                     .duration(2000)
                     .attr("width", 10);
-                svg.selectAll("sourceRect")
+                svg.selectAll("nonMid")
                     .data(d3.range(1))
                     .enter()
                     .append("rect")
-                    .attr("class","sourceRect")
+                    .attr("class","nonMid")
                     .attr("x", width-110) 
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
@@ -572,11 +591,11 @@ function callTopSource(){
                         .range([(12+topMargin*2), height-40])
 
                 var thisOne = 0;
-                    svg.selectAll("sourceRect")
+                    svg.selectAll("sourceTop")
                         .data(d3.range(1))
                         .enter()
                         .append("rect")
-                        .attr("class","sourceRect")
+                        .attr("class","sourceTop")
                         .attr("x", lMargin) 
                         .attr("y", function(d,i){
                             return hScale(i);//fold/2 + i*25+10;
@@ -594,11 +613,11 @@ function callTopSource(){
                             return recordScale(dataIs[1].Records);
                         })
 
-                    svg.selectAll("outlineRects")
+                    svg.selectAll("outlineTop")
                         .data(d3.range(1))
                         .enter()
                         .append("rect")
-                        .attr("class","outlineRects")
+                        .attr("class","outlineTop")
                         .attr("x", lMargin) 
                         .attr("y", function(d,i){
                             return hScale(i);//fold/2 + i*25+10;
@@ -629,11 +648,11 @@ function callTopNon(){
                     .domain([0, dataIs.length])
                     .range([(12+topMargin*2), height-40])
             var rMargin = 130;
-                svg.selectAll("sourceRect")
+                svg.selectAll("nonTop")
                     .data(d3.range(4))
                     .enter()
                     .append("rect")
-                    .attr("class","sourceRect")
+                    .attr("class","nonTop")
                     .attr("x", function(d,i){
                         return width-130 + i*10;
                     }) 
@@ -662,6 +681,15 @@ function callTopNon(){
 
 
 
+                    var line = svg.append("line")
+                        .attr("class", "crossLine")
+                        .attr("x1", 0)
+                        .attr("y1", height/2)
+                        .attr("x2", width+200)
+                        .attr("y2", height/2)
+                        .attr("stroke","grey")
+                        .attr("stroke-dasharray", "2,2")
+                        .attr("stroke-width", .1);
 function callSource(){
                     var sourceWidth = [];
                     var sourceHeight = [];
@@ -676,15 +704,6 @@ function callSource(){
                         .domain([0, 2000000])
                         .range([2, 20])
 
-                    var line = svg.append("line")
-                        .attr("class", "crossLine")
-                        .attr("x1", 0)
-                        .attr("y1", height/2)
-                        .attr("x2", width+200)
-                        .attr("y2", height/2)
-                        .attr("stroke","grey")
-                        .attr("stroke-dasharray", "2,2")
-                        .attr("stroke-width", .1);
                 var thisOne = 0;
                     svg.selectAll("sourceRect")
                         .data(dataIs)
@@ -1411,14 +1430,82 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             .attr("y2", function(d,i){
                 return hScale(i);//height3Scale(i);
             })
+            .attr("opacity",1)
             .attr("stroke","white")
             .attr("stroke-width", .2)  
         })
         // d3.selectAll("rect").attr("stroke","white");     
 }
 
+function undo(){
+    d3.selectAll(".text3").transition().duration(2000).attr("opacity",1);
+    d3.selectAll(".line2").transition().duration(2000).attr("opacity",0);
+
+d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2, .StreetAddress2, .City2, .ZipCode2, .State2, .Country2, .Sex2, .Age2")
+    .transition()
+    .duration(2000)
+    .attr("y",topSpaceRect)
+
+//, .sourceMid, .outlineTop
+d3.selectAll(".sourceRect, .outlineRects").transition().duration(2000).attr("height",0)
+// d3.selectAll(".outlineRects").transition().duration(2000).attr("height",0)
+d3.selectAll(".sourceText").transition().duration(2000).attr("opacity",0)
+            svg.selectAll("text3")
+                .data(dataTypes)
+                .enter()
+                .append("text")
+                .attr("class", "text3")
+                .style("text-anchor", "middle")
+                .attr("x", function(d,i){
+                    return xScale(d);
+                })
+                .attr("y",topSpaceText3)
+                .attr("opacity",1)
+                .attr("fill","white")
+                .text(function(d,i){ 
+                    return oneData[i];
+                })
+                .transition()
+                .duration(2000)
+                .attr("x", function(d,i){
+                    return xScale(d)+wide/2
+                })
+}
+function redo(){
+                    var hScale = d3.scale.linear()
+                        .domain([0, dataIs.length])
+                        .range([topSpaceText3, height])
+    d3.selectAll(".text3").transition().duration(2000).attr("opacity",0);
+    d3.selectAll(".line2").transition().duration(2000).attr("opacity",1);
+
+d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2, .StreetAddress2, .City2, .ZipCode2, .State2, .Country2, .Sex2, .Age2")
+    .transition()
+    .duration(2000)
+    .attr("y",function(d,i){
+        return hScale(i);
+    }) 
+        d3.selectAll(".sourceRect").transition().duration(2000)
+                        .attr("height",function(d,i){
+                            return sourceHeight[i];
+                        })
+        d3.selectAll(".outlineRects").transition().duration(2000)
+                        .attr("height",function(d,i){
+                            return sourceHeight[i]+10;
+                        })
 
 
+
+
+        d3.selectAll(".sourceMid").transition().duration(2000)
+                    .attr("height", uniHeight);
+
+        d3.selectAll(".outlineTop").transition().duration(2000)
+                        .attr("height", function(d,i){
+                            return recordScale(dataIs[1].Records)+10;
+                        })
+ // .sourceMid, .outlineTop                        
+        d3.selectAll(".sourceText").transition().duration(2000).attr("opacity",1)   
+}
 
 
 
