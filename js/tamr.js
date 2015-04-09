@@ -226,6 +226,8 @@ var topSpace = topMargin-20;
 var topSpaceText = topMargin-8;
 var topSpaceRect = topMargin;
 var topSpaceText3 = topMargin+12;
+
+var fontAdjust = 12;
 function topPart(){
 topMargin = 10;
             heightScale = d3.scale.linear()
@@ -314,7 +316,7 @@ topMargin = 10;
                 .attr("x", function(d,i){
                     return xScale(d)+wide/2;
                 })
-                .attr("y",topMargin+12)
+                .attr("y",topMargin+fontAdjust)
                 .text(function(d){ return d })
                 .attr("opacity",1);
 }
@@ -373,6 +375,8 @@ function center(){
         center();
         callMidSource();
         callMidNon();
+        callTopSource();
+        callTopNon();
     },del*2)
     setTimeout(function(){
         if(cityData.length==25){
@@ -400,7 +404,7 @@ function callMidSource(){
 
                     var hScale = d3.scale.linear()
                         .domain([0, dataIs.length])
-                        .range([topSpaceText3, height-40])
+                        .range([topSpaceRect+3, height-40])
                     // var line = svg.append("line")
                     //     .attr("class", "crossLine")
                     //     .attr("x1", 0)
@@ -476,16 +480,17 @@ function callMidSource(){
                         })
                         .text("Excel Sheet");
 
-                    svg.append("text")
-                        .attr("class","sourceLabel")
-                        .attr("x", lMargin)
-                        .attr("y", topSpaceText)
-                        .text("Source")   
+                    // svg.append("text")
+                    //     .attr("class","sourceLabel")
+                    //     .attr("x", lMargin)
+                    //     .attr("y", topSpaceText)
+                    //     .text("Source")   
 }
+var uniHeight = 20;
 function callMidNon(){
                 var hScale = d3.scale.linear()
                     .domain([0, dataIs.length])
-                    .range([topSpaceText3-5, height-40])
+                    .range([topSpaceRect, height-40])
             var rMargin = 130;
                 svg.selectAll("sourceRect")
                     .data(d3.range(1))
@@ -504,7 +509,7 @@ function callMidNon(){
                     .transition()
                     .duration(2000)
                     .attr("width", 10)
-                    .attr("height", 10);
+                    .attr("height", uniHeight);
 
                 svg.selectAll("sourceRect")
                     .data(d3.range(1))
@@ -518,7 +523,7 @@ function callMidNon(){
                     .attr("opacity", .5)
                     .attr("fill", tamR)   
                     .attr("width", 0)
-                    .attr("height",10)
+                    .attr("height", uniHeight)
                     .attr("stroke","white")
                     .transition()
                     .duration(2000)
@@ -535,7 +540,7 @@ function callMidNon(){
                     .attr("opacity", .5)
                     .attr("fill", tamR)   
                     .attr("width", 0)
-                    .attr("height",10)
+                    .attr("height",uniHeight)
                     .attr("stroke","white")
                     .transition()
                     .duration(2000)
@@ -547,10 +552,108 @@ function callMidNon(){
                         }
                     })
 
+                // svg.append("text")
+                //     .attr("class","sourceLabel")
+                //     .attr("x", width-130)
+                //     .attr("y", topSpaceText)
+                //     .text("Non-unified")   
+} 
+
+function callTopSource(){
+                    var randoScale = d3.scale.linear()
+                        .domain([0, 20])
+                        .range([2, 10])
+                    var recordScale = d3.scale.linear()
+                        .domain([0, 2000000])
+                        .range([2, 20])
+
+                    var hScale = d3.scale.linear()
+                        .domain([0, dataIs.length])
+                        .range([(12+topMargin*2), height-40])
+
+                var thisOne = 0;
+                    svg.selectAll("sourceRect")
+                        .data(d3.range(1))
+                        .enter()
+                        .append("rect")
+                        .attr("class","sourceRect")
+                        .attr("x", lMargin) 
+                        .attr("y", function(d,i){
+                            return hScale(i);//fold/2 + i*25+10;
+                        })
+                        .attr("opacity", .5)
+                        .attr("fill", tamR)   
+                        .attr("width", 0)
+                        .attr("height",0)
+                        .transition()
+                        .duration(2000)
+                        .attr("width", function(d,i){
+                            return 8;
+                        })
+                        .attr("height", function(d,i){
+                            return recordScale(dataIs[1].Records);
+                        })
+
+                    svg.selectAll("outlineRects")
+                        .data(d3.range(1))
+                        .enter()
+                        .append("rect")
+                        .attr("class","outlineRects")
+                        .attr("x", lMargin) 
+                        .attr("y", function(d,i){
+                            return hScale(i);//fold/2 + i*25+10;
+                        })
+                        .attr("stroke","white")
+                        .attr("opacity", .2)
+                        .attr("fill", tamR)   
+                        .attr("width", 0)
+                        .attr("height",0)
+                        .transition()
+                        .duration(2000)
+                        .attr("width", function(d,i){
+                            return 18;
+                        })
+                        .attr("height", function(d,i){
+                            return recordScale(dataIs[1].Records)+10;
+                        })
+
+
+                    svg.append("text")
+                        .attr("class","sourceLabel")
+                        .attr("x", lMargin)
+                        .attr("y", topMargin+12)
+                        .text("Source")   
+}
+function callTopNon(){
+                var hScale = d3.scale.linear()
+                    .domain([0, dataIs.length])
+                    .range([(12+topMargin*2), height-40])
+            var rMargin = 130;
+                svg.selectAll("sourceRect")
+                    .data(d3.range(4))
+                    .enter()
+                    .append("rect")
+                    .attr("class","sourceRect")
+                    .attr("x", function(d,i){
+                        return width-130 + i*10;
+                    }) 
+                    .attr("y", function(d,i){
+                        return hScale(0);//fold/2 + i*25+10;
+                    })
+                    .attr("opacity", .5)
+                    .attr("fill", tamR)   
+                    .attr("width", 0)
+                    .attr("height",0)
+                    .attr("stroke","white")
+                    .transition()
+                    .duration(2000)
+                    .attr("width", 10)
+                    .attr("height", uniHeight);
+
                 svg.append("text")
                     .attr("class","sourceLabel")
                     .attr("x", width-130)
-                    .attr("y", topSpaceText)
+                    .attr("y", topMargin+12)
                     .text("Non-unified")   
 } 
 
@@ -717,7 +820,7 @@ function callNon(){
                     .transition()
                     .duration(2000)
                     .attr("width", 10)
-                    .attr("height", 10);
+                    .attr("height", uniHeight);
 
                 svg.selectAll("sourceRect")
                     .data(d3.range(dataIs.length))
@@ -737,7 +840,7 @@ function callNon(){
                         })
                     .attr("fill", tamR)   
                     .attr("width", 0)
-                    .attr("height",10)
+                    .attr("height",uniHeight)
                     .attr("stroke","white")
                     .transition()
                     .duration(2000)
@@ -760,7 +863,7 @@ function callNon(){
                         })
                     .attr("fill", tamR)   
                     .attr("width", 0)
-                    .attr("height",10)
+                    .attr("height",uniHeight)
                     .attr("stroke","white")
                     .transition()
                     .duration(2000)
