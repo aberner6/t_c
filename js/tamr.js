@@ -239,7 +239,7 @@ topMargin = 10;
             var j = 0;
 
             var j = 0;
-            svg.selectAll("rect")
+        var theserects = svg.selectAll("rect")
                 .data(dataIs)
                 .enter()
                 .append("rect")
@@ -271,7 +271,7 @@ topMargin = 10;
                 })
                 .attr("width",wide)
                 .transition()
-                .delay(del)
+                .delay(del/2)
                 .duration(2000)
             .each("end", function(){
                 var factor = 2;
@@ -348,12 +348,13 @@ function center(){
                 .data(dataTypes)
                 .enter()
                 .append("text")
-                .attr("class", "label")
+                .attr("class", "text3")
                 .style("text-anchor", "middle")
                 .attr("x", function(d,i){
                     return xScale(d);
                 })
                 .attr("y",topSpaceText3)
+                .attr("opacity",1)
                 .attr("fill","white")
                 .text(function(d,i){ 
                     return oneData[i];
@@ -813,6 +814,8 @@ function callNon(){
 
 
 function bottom(){
+d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
+
             var hScale = d3.scale.linear()
                 .domain([0, dataIs.length])
                 .range([topSpaceRect, height])//+400])
@@ -850,8 +853,9 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("stroke","white")
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("City");
             })
@@ -879,8 +883,10 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+                        .attr("stroke","white")
+
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("Age");
             })
@@ -908,8 +914,10 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+                        .attr("stroke","white")
+
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("Country");
             })
@@ -937,8 +945,10 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+                        .attr("stroke","white")
+
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("Email Address");
             })
@@ -966,8 +976,10 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+                        .attr("stroke","white")
+
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("First Name");
             })
@@ -995,8 +1007,10 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+                        .attr("stroke","white")
+
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("Last Name");
             })
@@ -1024,8 +1038,10 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+                        .attr("stroke","white")
+
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("ID");
             })
@@ -1053,8 +1069,10 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+                        .attr("stroke","white")
+
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("Phone Number");
             })
@@ -1082,8 +1100,10 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+                        .attr("stroke","white")
+
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("Sex");
             })
@@ -1111,8 +1131,10 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+                        .attr("stroke","white")
+
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("State");
             })
@@ -1140,8 +1162,10 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+                        .attr("stroke","white")
+
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("Street Address");
             })
@@ -1169,8 +1193,10 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+                        .attr("stroke","white")
+
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("Suffix");
             })
@@ -1198,8 +1224,10 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+                        .attr("stroke","white")
+
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("Title");
             })
@@ -1227,8 +1255,10 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+                        .attr("stroke","white")
+
             .attr("height",0)
-            .attr("y",0)
+            .attr("y",topSpaceRect)
             .attr("x", function(d,i){
                 return xScale("Zip Code");
             })
@@ -1281,7 +1311,7 @@ function bottom(){
             .attr("stroke","white")
             .attr("stroke-width", .2)  
         })
-        d3.selectAll("rect").attr("stroke","white");     
+        // d3.selectAll("rect").attr("stroke","white");     
 }
 
 
