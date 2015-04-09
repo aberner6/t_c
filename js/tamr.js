@@ -289,7 +289,7 @@ topMargin = 10;
                 //     return topMargin*2+12;
                 // })
             .each("end", function(){
-                var factor = 1;
+                var factor = 2;
                 d3.selectAll(".ID").transition().attr("height", idTotal*factor)
                 d3.selectAll(".Title").transition().attr("height", titTotal*factor)
                 d3.selectAll(".First.Name").transition().attr("height", firstTotal*factor)
@@ -306,20 +306,20 @@ topMargin = 10;
                 d3.selectAll(".Age").transition().attr("height", ageTotal*factor);
             })
 
-           // svg.selectAll("rectBack")
-           //      .data(dataTypes)
-           //      .enter()
-           //      .append("rect")
-           //      .attr("class", "rectBack")
-           //      .attr("x", function(d,i){
-           //          return xScale(d);
-           //      })
-           //      .attr("y",topMargin)
-           //      .attr("fill","none")
-           //      .attr("opacity",.5)
-           //      .attr("stroke","lightgray")
-           //      .attr("width", wide)
-           //      .attr("height",20)
+           svg.selectAll("rectBack")
+                .data(dataTypes)
+                .enter()
+                .append("rect")
+                .attr("class", "rectBack")
+                .attr("x", function(d,i){
+                    return xScale(d);
+                })
+                .attr("y",topMargin)
+                .attr("fill","none")
+                .attr("opacity",.5)
+                .attr("stroke","lightgray")
+                .attr("width", wide)
+                .attr("height",20)
             svg.selectAll("text")
                 .data(dataTypes)
                 .enter()
@@ -884,15 +884,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("City");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("City");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -911,15 +913,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("Age");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("Age");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -938,15 +942,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("Country");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("Country");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -965,15 +971,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("Email Address");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("Email Address");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -992,15 +1000,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("First Name");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("First Name");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -1019,15 +1029,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("Last Name");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("Last Name");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -1046,15 +1058,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("ID");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("ID");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -1073,15 +1087,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("Phone Number");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("Phone Number");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -1100,15 +1116,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("Sex");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("Sex");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -1127,15 +1145,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("State");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("State");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -1154,15 +1174,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("Street Address");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("Street Address");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -1181,15 +1203,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("Suffix");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("Suffix");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -1208,15 +1232,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("Title");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("Title");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -1235,15 +1261,17 @@ function bottom(){
                     }   
             })
             .attr("fill",tamR)
+            .attr("height",0)
+            .attr("y",0)
+            .attr("x", function(d,i){
+                return xScale("Zip Code");
+            })
+            .attr("width",widthBottom)
             .transition()
             .delay(del)
             .duration(2000)
             .attr("height", function(d,i){
                 return 20;//heightScale(i);
-            })
-            .attr("width",widthBottom)
-            .attr("x", function(d,i){
-                return xScale("Zip Code");
             })
             .attr("y", function(d,i){
                 return hScale(i)
@@ -1262,22 +1290,6 @@ function bottom(){
 
         .each("end", function(){
             var factor = 10;
-            // d3.selectAll(".ID2")
-            // .transition()
-            // .attr("height", hScale(idTotal));
-
-            // d3.selectAll(".Title2").transition().attr("height", hScale(titTotal))
-            // d3.selectAll(".First.Name2").transition().attr("height", hScale(firstTotal))
-            // d3.selectAll(".Last.Name2").transition().attr("height", hScale(lastTotal))
-            // d3.selectAll(".Suffix2").transition().attr("height", hScale(sufTotal))
-            // d3.selectAll(".Email.Address2").transition().attr("height", hScale(emailTotal))
-            // d3.selectAll(".Phone.Number2").transition().attr("height", hScale(phoneTotal))
-            // d3.selectAll(".Street.Address2").transition().attr("height", hScale(stTotal))
-            // d3.selectAll(".City2").transition().attr("height", hScale(cityTotal))
-            // d3.selectAll(".Zip.Code2").transition().attr("height", hScale(zipTotal))
-            // d3.selectAll(".State2").transition().attr("height", hScale(stateTotal))
-            // d3.selectAll(".Country2").transition().attr("height", hScale(countryTotal))
-            // d3.selectAll(".Sex2").transition().attr("height", hScale(sexTotal))
 
         svg.selectAll("line2")
             .data(dataIs)
@@ -1303,24 +1315,6 @@ function bottom(){
             .attr("stroke","white")
             .attr("stroke-width", .2)  
         })
-
-        svg.append("rect")
-            .attr("class","bigRect2")
-            .attr("x", lMargin+wide) 
-            .attr("y", fold/2+10)
-            .attr("width", (widthBottom-lMargin)-(lMargin+widthBottom))
-            .attr("height",0)
-            .attr("fill", "none")
-            .attr("stroke","grey")
-            .attr("stroke-dasharray", "2,2")
-            .attr("stroke-width", .2)
-            .attr("opacity",0)
-            .transition()
-            .delay(del*1.5)
-            .duration(1000)
-            .attr("opacity",1)
-            .attr("height", sourceTotal*10) 
-
         d3.selectAll("rect").attr("stroke","white");     
 }
 
