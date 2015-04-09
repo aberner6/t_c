@@ -103,7 +103,18 @@ var minus = true;
  })
 
 
-
+    setTimeout(function(){
+        topPart();
+        center();
+        callMidSource();
+        callMidNon();
+        callTopSource();
+        callTopNon();
+    },del/2)
+    setTimeout(function(){
+        if(cityData.length==25){
+    }
+    },del*6)
 
 d3.csv("entity.csv", function(error,data){
 
@@ -389,25 +400,7 @@ function center(){
 
 
 
-    setTimeout(function(){
-        topPart();
-        center();
-        callMidSource();
-        callMidNon();
-        callTopSource();
-        callTopNon();
-    },del*2)
-    setTimeout(function(){
-        if(cityData.length==25){
-//             bottom();
-//         callSource();
-//         callNon();
 
-// d3.selectAll("line").attr("opacity",0)
-// d3.selectAll("text").attr("opacity",0)
-// d3.selectAll("rect").attr("opacity",0)
-    }
-    },del*6)
 
 
 
@@ -681,15 +674,15 @@ function callTopNon(){
 
 
 
-                    var line = svg.append("line")
-                        .attr("class", "crossLine")
-                        .attr("x1", 0)
-                        .attr("y1", height/2)
-                        .attr("x2", width+200)
-                        .attr("y2", height/2)
-                        .attr("stroke","grey")
-                        .attr("stroke-dasharray", "2,2")
-                        .attr("stroke-width", .1);
+                    // var line = svg.append("line")
+                    //     .attr("class", "crossLine")
+                    //     .attr("x1", 0)
+                    //     .attr("y1", height/2)
+                    //     .attr("x2", width+200)
+                    //     .attr("y2", height/2)
+                    //     .attr("stroke","grey")
+                    //     .attr("stroke-dasharray", "2,2")
+                    //     .attr("stroke-width", .1);
 function callSource(){
                     var sourceWidth = [];
                     var sourceHeight = [];
