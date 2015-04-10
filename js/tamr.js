@@ -1,7 +1,6 @@
 var width=window.innerWidth;
 var height=window.outerHeight;
 
-var topMargin = 100;
 var lMargin = 20;
 var wide = 30;
 var widthBottom = 30;
@@ -20,9 +19,9 @@ var saveOne = [];
 
 var dataTypes = [];
 
-var dataNames =["Age","City","Country","Email Address","First Name","Last Name","ID","Phone Number","Sex","State","Street Address","Suffix","Title","Zip Code"];
-// "Source",
-// "Records",
+var dataNames =
+// ["Age","City","Country","Email Address","First Name","Last Name","ID","Phone Number","Sex","State","Street Address","Suffix","Title","Zip Code"];
+["ID", "Title", "First Name", "Last Name", "Suffix", "Email Address", "Phone Number", "Street Address", "City", "Zip Code", "State", "Country", "Sex", "Age"]
 var x1;
 var x2;
 var oneData = ["id","title","first name","","suffix","email Address","phone Number","street Address","city","zip code","state","country","sex","age"]
@@ -92,11 +91,21 @@ var minus = true;
  $("#plus").on("click", function(){
    plus = true;
     minus = false;   
-        bottom();
-        callSource();
-        callNon();
+          // sortSource();
+          // sortEntries();
+          // sortNon();
+redo();
+        // bottom();
+        // callSource();
+        // callNon();
  })
  $("#minus").on("click", function(){
+        //     unsortSource();
+        //     unsortEntries();
+        // unsortNon();
+        topPart();
+                callTopSource();
+        callTopNon();
   minus = false;
   plus = true;
   undo();
@@ -135,12 +144,14 @@ var sort1 = false;
 
 
     setTimeout(function(){
-        topPart();
-        center();
-        callMidSource();
-        callMidNon();
-        callTopSource();
-        callTopNon();
+        bottom();
+        callSource();
+        callNon();
+
+        // center();
+        // callMidSource();
+        // callMidNon();
+
     },del/10)
     setTimeout(function(){
         if(cityData.length==25){
@@ -269,32 +280,41 @@ for(i=0; i<data.length; i++){
                 dataTypes[j]=(saveOne[i][j])
     }
 }
-  
+              xScale = d3.scale.ordinal()
+                    .domain(dataTypes)
+                    .rangeBands([lMargin*5, width-lMargin*9], 1)//.2)
  wide = (width-350)/parseInt(dataTypes.length);
   widthBottom = (width-350)/parseInt(dataTypes.length);
 })
 
 
 
+var topMargin = 100;
 
 var topSpace = topMargin-20;
 var topSpaceText = topMargin-8;
-var topSpaceRect = topMargin;
-var topSpaceText3 = topMargin+12;
+var topSpaceRect = (topMargin)/2;
+var topSpaceText3 = (topMargin+12)/2;
 
 var fontAdjust = 12;
+
+
+
 function topPart(){
         topMargin = 10;
-            heightScale = d3.scale.linear()
+            oheightScale = d3.scale.linear()
                 .domain([0, dataTypes.length])
-                .range([topMargin, topMargin+50])
+                .range([topSpaceText3, 210])
+                    var heightScale = d3.scale.linear()
+                        .domain([0, dataIs.length])
+                        .range([topSpaceText3, topSpaceText3+50])
 
             xScale = d3.scale.ordinal()
                     .domain(dataTypes)
                     .rangeBands([lMargin*5, width-lMargin*9], 1)//.2)
 
             var j = 0;
-        var theserects = svg.selectAll("rect")
+        var theserects = svg.selectAll("rects")
                 .data(dataIs)
                 .enter()
                 .append("rect")
@@ -304,7 +324,7 @@ function topPart(){
                 .attr("x", function(d,i){
                     return xScale(dataTypes[i])
                 })
-                .attr("y", topMargin+20)
+                .attr("y", topSpaceRect)
                 .attr("width", 1)
                 .attr("height", 0)
                 .attr("fill",tamR)
@@ -316,7 +336,7 @@ function topPart(){
                             p = saveOne[i][j];
                         }
                         if(d.hasOwnProperty(p)){
-                            return .9;               
+                            return 1;               
                         } 
                         else{ 
                             return 0;
@@ -324,10 +344,10 @@ function topPart(){
                 })
                 .attr("width",wide)
                 .transition()
-                .delay(del/2)
-                .duration(2000)
+                // .delay(del/2)
+                .duration(1000)
             .each("end", function(){
-                var factor = 1;
+                var factor = 4;
                 d3.selectAll(".ID").transition().attr("height", idTotal*factor)
                 d3.selectAll(".Title").transition().attr("height", titTotal*factor)
                 d3.selectAll(".First.Name").transition().attr("height", firstTotal*factor)
@@ -343,8 +363,8 @@ function topPart(){
                 d3.selectAll(".Sex").transition().attr("height", sexTotal*factor);
                 d3.selectAll(".Age").transition().attr("height", ageTotal*factor);
     
-                svg.selectAll("line")
-                    .data(d3.range(dataTypes.length))
+                svg.selectAll("topLine")
+                    .data(d3.range(dataIs.length/3))
                     .enter()
                     .append("line")
                     .attr("class", "topLine")
@@ -353,7 +373,7 @@ function topPart(){
                         return x1;
                     })
                     .attr("y1", function(d,i){
-                        return heightScale(i);//i*10;
+                        return oheightScale(i);//i*10;
                     })
                     .attr("x2", function(){
                         x2 = d3.select("rect.Age").attr("x");
@@ -361,39 +381,41 @@ function topPart(){
                         return parseInt(wide)+parseInt(x2);
                     })
                     .attr("y2", function(d,i){
-                        return heightScale(i);
+                        return oheightScale(i);
                     })
                     .attr("stroke","white")
+                    .attr("opacity",1)
                     .attr("stroke-width", .2)  
             })
 
-           svg.selectAll("rectBack")
-                .data(dataTypes)
-                .enter()
-                .append("rect")
-                .attr("class", "rectBack")
-                .attr("x", function(d,i){
-                    return xScale(d);
-                })
-                .attr("y",topMargin)
-                .attr("fill","none")
-                .attr("opacity",.5)
-                .attr("stroke","lightgray")
-                .attr("width", wide)
-                .attr("height",20)
-            svg.selectAll("text")
-                .data(dataTypes)
-                .enter()
-                .append("text")
-                .attr("class", "topText")
-                .style("text-anchor", "middle")
-                .attr("x", function(d,i){
-                    return xScale(d)+wide/2;
-                })
-                .attr("y",topMargin+fontAdjust)
-                .text(function(d){ return d })
-                .attr("opacity",1);
+           // svg.selectAll("rectBack")
+           //      .data(dataTypes)
+           //      .enter()
+           //      .append("rect")
+           //      .attr("class", "rectBack")
+           //      .attr("x", function(d,i){
+           //          return xScale(d);
+           //      })
+           //      .attr("y",topMargin)
+           //      .attr("fill","none")
+           //      .attr("opacity",.5)
+           //      .attr("stroke","lightgray")
+           //      .attr("width", wide)
+           //      .attr("height",20)
+           //  svg.selectAll("text")
+           //      .data(dataTypes)
+           //      .enter()
+           //      .append("text")
+           //      .attr("class", "topText")
+           //      .style("text-anchor", "middle")
+           //      .attr("x", function(d,i){
+           //          return xScale(d)+wide/2;
+           //      })
+           //      .attr("y",topMargin+fontAdjust)
+           //      .text(function(d){ return d })
+           //      .attr("opacity",1);
 }
+
 function center(){
     
         xScale = d3.scale.ordinal()
@@ -419,26 +441,26 @@ function center(){
                 .domain([0, 1])
                 .range([topMargin*topFactor, topMargin*topFactor*topFactor])
 
-            svg.selectAll("text3")
-                .data(dataTypes)
-                .enter()
-                .append("text")
-                .attr("class", "text3")
-                .style("text-anchor", "middle")
-                .attr("x", function(d,i){
-                    return xScale(d);
-                })
-                .attr("y",topSpaceText3)
-                .attr("opacity",1)
-                .attr("fill","white")
-                .text(function(d,i){ 
-                    return oneData[i];
-                })
-                .transition()
-                .duration(2000)
-                .attr("x", function(d,i){
-                    return xScale(d)+wide/2
-                })
+            // svg.selectAll("text3")
+            //     .data(dataTypes)
+            //     .enter()
+            //     .append("text")
+            //     .attr("class", "text3")
+            //     .style("text-anchor", "middle")
+            //     .attr("x", function(d,i){
+            //         return xScale(d);
+            //     })
+            //     .attr("y",topSpaceText3)
+            //     .attr("opacity",1)
+            //     .attr("fill","white")
+            //     .text(function(d,i){ 
+            //         return oneData[i];
+            //     })
+            //     .transition()
+            //     .duration(2000)
+            //     .attr("x", function(d,i){
+            //         return xScale(d)+wide/2
+            //     })
 }
 
 
@@ -609,9 +631,12 @@ function callTopSource(){
                         .domain([0, 2000000])
                         .range([2, 20])
 
+                    // var hScale = d3.scale.linear()
+                    //     .domain([0, dataIs.length])
+                    //     .range([(12+topMargin*2), height-40])
                     var hScale = d3.scale.linear()
                         .domain([0, dataIs.length])
-                        .range([(12+topMargin*2), height-40])
+                        .range([topSpaceRect, height])
 
                 var thisOne = 0;
                     svg.selectAll("sourceTop")
@@ -660,16 +685,24 @@ function callTopSource(){
                         })
 
 
+                    // svg.append("text")
+                    //     .attr("class","sourceLabel")
+                    //     .attr("x", lMargin)
+                    //     .attr("y", topMargin+12)
+                    //     .text("Source")   
+}
                     svg.append("text")
                         .attr("class","sourceLabel")
                         .attr("x", lMargin)
-                        .attr("y", topMargin+12)
-                        .text("Source")   
-}
+                        .attr("y", topSpaceText3-18)
+                        .text("Source") 
 function callTopNon(){
-                var hScale = d3.scale.linear()
-                    .domain([0, dataIs.length])
-                    .range([(12+topMargin*2), height-40])
+                    var hScale = d3.scale.linear()
+                        .domain([0, dataIs.length])
+                        .range([topSpaceRect, height])
+                // var hScale = d3.scale.linear()
+                //     .domain([0, dataIs.length])
+                //     .range([(12+topMargin*2), height-40])
             var rMargin = 130;
                 svg.selectAll("nonTop")
                     .data(d3.range(4))
@@ -692,14 +725,18 @@ function callTopNon(){
                     .attr("width", 10)
                     .attr("height", uniHeight);
 
-                svg.append("text")
-                    .attr("class","sourceLabel")
-                    .attr("x", width-130)
-                    .attr("y", topMargin+12)
-                    .text("Non-unified")   
+                // svg.append("text")
+                //     .attr("class","sourceLabel")
+                //     .attr("x", width-130)
+                //     .attr("y", topMargin+12)
+                //     .text("Non-unified")   
 } 
 
-
+                    svg.append("text")
+                        .attr("class","sourceLabel")
+                    .attr("x", width-130)
+                        .attr("y", topSpaceText3-18)
+                    .text("Non-unified")   
 
 
 
@@ -741,13 +778,7 @@ function callSource(){
                         .attr("y", function(d,i){
                             return hScale(i);//fold/2 + i*25+10;
                         })
-                        .attr("opacity", function(d,i){
-                            if(i>0){
-                                return .5;
-                            }else{
-                                return 0;
-                            }
-                        })
+                        .attr("opacity", .5)
                         .attr("fill", tamR)   
                         .attr("width", 0)
                         .attr("height",0)
@@ -778,13 +809,7 @@ function callSource(){
                             return hScale(i);//fold/2 + i*25+10;
                         })
                         .attr("stroke","white")
-                        .attr("opacity", function(d,i){
-                            if(i>0){
-                                return .2;
-                            }else{
-                                return 0;
-                            }
-                        })
+                        .attr("opacity", .2)
                         .attr("fill", tamR)   
                         .attr("width", 0)
                         .attr("height",0)
@@ -816,9 +841,9 @@ function callSource(){
                             return lMargin+sourceWidth[i]+14;
                         })
                         .text(function(d,i){
-                            if(i>0){
+                            // if(i>0){
                             return d.Source;
-                            } else{}     
+                            // } else{}     
                         })
 
                     // svg.append("text")
@@ -895,6 +920,63 @@ function unsortNon(){
 
 
 function sortEntries(){
+d3.selectAll(".Agetext")
+        .transition()
+        .attr("opacity",0)
+d3.selectAll(".Citytext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Ziptext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Suffixtext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Titletext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Streettext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Statetext")
+        .transition()
+        .attr("opacity",0)  
+    d3.selectAll(".Sextext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Phonetext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".IDtext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Lasttext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Firsttext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Emailtext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Countrytext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Citytext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Citytext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Citytext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Citytext")
+        .transition()
+        .attr("opacity",0)
+    d3.selectAll(".Citytext")
+        .transition()
+        .attr("opacity",0)   
                 var rHScale = d3.scale.linear()
                         .domain([0, 2000000])
                         .range([5, uniHeight]) 
@@ -1035,6 +1117,146 @@ d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2
     .attr("height",uniHeight); 
 d3.selectAll(".rect2").transition().attr("opacity",1)
 
+d3.selectAll(".Citytext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+d3.selectAll(".Agetext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+d3.selectAll(".Countrytext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+d3.selectAll(".Emailtext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+d3.selectAll(".Firsttext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+d3.selectAll(".Lasttext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+d3.selectAll(".IDtext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+d3.selectAll(".Phonetext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+d3.selectAll(".Sextext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+d3.selectAll(".Statetext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+d3.selectAll(".Streettext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+d3.selectAll(".Suffixtext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+d3.selectAll(".Titletext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+d3.selectAll(".Ziptext")
+    .transition()
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
 }
 
 
@@ -1086,13 +1308,14 @@ function callNon(){
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
                     })
-                        .attr("opacity", function(d,i){
-                            if(i>0){
-                                return .5;
-                            }else{
-                                return 0;
-                            }
-                        })
+                        .attr("opacity", .5)
+                        //     function(d,i){
+                        //     if(i>0){
+                        //         return .5;
+                        //     }else{
+                        //         return 0;
+                        //     }
+                        // })
                     .attr("fill", tamR)   
                     .attr("width", 0)
                     .attr("height",0)
@@ -1111,13 +1334,14 @@ function callNon(){
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
                     })
-                        .attr("opacity", function(d,i){
-                            if(i>0){
-                                return .5;
-                            }else{
-                                return 0;
-                            }
-                        })
+                        .attr("opacity", .5)
+                        //     function(d,i){
+                        //     if(i>0){
+                        //         return .5;
+                        //     }else{
+                        //         return 0;
+                        //     }
+                        // })
                     .attr("fill", tamR)   
                     .attr("width", 0)
                     .attr("height",uniHeight)
@@ -1134,13 +1358,14 @@ function callNon(){
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
                     })
-                        .attr("opacity", function(d,i){
-                            if(i>0){
-                                return .5;
-                            }else{
-                                return 0;
-                            }
-                        })
+                        .attr("opacity", .5)
+                        //     function(d,i){
+                        //     if(i>0){
+                        //         return .5;
+                        //     }else{
+                        //         return 0;
+                        //     }
+                        // })
                     .attr("fill", tamR)   
                     .attr("width", 0)
                     .attr("height",uniHeight)
@@ -1214,7 +1439,7 @@ function callNon(){
 // city
 // City, city, City, CITY, CITY, "CITY","city","city"]
 function bottom(){
-d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
+// d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
 
             var hScale = d3.scale.linear()
                 .domain([0, dataIs.length])
@@ -1238,6 +1463,33 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
                 city = 0;                  
 
         var j = 0;
+           svg.selectAll("rectBack")
+                .data(dataTypes)
+                .enter()
+                .append("rect")
+                .attr("class", "rectBack")
+                .attr("x", function(d,i){
+                    return xScale(d);
+                })
+                .attr("y",topSpaceText3-30)
+                .attr("fill","none")
+                .attr("opacity",.5)
+                .attr("stroke","lightgray")
+                .attr("width", wide)
+                .attr("height",20)
+
+            svg.selectAll("topText")
+                .data(dataNames)
+                .enter()
+                .append("text")
+                .attr("class", "topText")
+                .style("text-anchor", "middle")
+                .attr("x", function(d,i){
+                    return xScale(d)+wide/2;
+                })
+                .attr("y",topSpaceText3-16)
+                .text(function(d){ return d })
+
 var textSpace = 12;
         svg.selectAll("City2")
             .data(cityData)
@@ -2107,7 +2359,7 @@ var textSpace = 12;
 }
 
 function undo(){
-    d3.selectAll(".text3").transition().duration(2000).attr("opacity",1);
+    // d3.selectAll(".text3").transition().duration(2000).attr("opacity",0);
     d3.selectAll(".line2").transition().duration(2000).attr("opacity",0);
 
 d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2, .StreetAddress2, .City2, .ZipCode2, .State2, .Country2, .Sex2, .Age2")
@@ -2115,44 +2367,121 @@ d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2
     .duration(1000)
     .attr("y",topSpaceRect)
 
-//, .sourceMid, .outlineTop
-d3.selectAll(".sourceRect, .nonRect, .nonRect2, .nonRect3 .outlineRects").transition().duration(1000).attr("height",0)
-// d3.selectAll(".outlineRects").transition().duration(2000).attr("height",0)
-d3.selectAll(".sourceText").transition().duration(1000).attr("opacity",0)
-            svg.selectAll("text3")
-                .data(dataTypes)
-                .enter()
-                .append("text")
-                .attr("class", "text3")
-                .style("text-anchor", "middle")
-                .attr("x", function(d,i){
-                    return xScale(d);
-                })
-                .attr("y",topSpaceText3)
-                .attr("opacity",1)
-                .attr("fill","white")
-                .text(function(d,i){ 
-                    return oneData[i];
-                })
-                .transition()
-                .duration(2000)
-                .attr("x", function(d,i){
-                    return xScale(d)+wide/2
-                })
+ d3.selectAll(".sourceText").transition().duration(1000).attr("opacity",0);
+
+d3.selectAll(".sourceRect, .nonRect, .nonRect2, .nonRect3, .outlineRects")
+    .transition().duration(1000).attr("height",0) 
 }
 function redo(){
-                    var hScale = d3.scale.linear()
-                        .domain([0, dataIs.length])
-                        .range([topSpaceText3, height])
-    d3.selectAll(".text3").transition().duration(1000).attr("opacity",0);
-    d3.selectAll(".line2").transition().duration(2000).attr("opacity",1);
+    d3.selectAll(".sourceTop, .outlineTop, .nonTop").remove();
 
-d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2, .StreetAddress2, .City2, .ZipCode2, .State2, .Country2, .Sex2, .Age2")
-    .transition()
-    .duration(1000)
-    .attr("y",function(d,i){
-        return hScale(i);
-    }) 
+    d3.selectAll(".topLine").transition().attr("opacity",0);
+                var factor = 0;
+                d3.selectAll(".ID").transition().attr("height", idTotal*factor)
+                d3.selectAll(".Title").transition().attr("height", titTotal*factor)
+                d3.selectAll(".First.Name").transition().attr("height", firstTotal*factor)
+                d3.selectAll(".Last.Name").transition().attr("height", lastTotal*factor)
+                d3.selectAll(".Suffix").transition().attr("height", sufTotal*factor)
+                d3.selectAll(".Email.Address").transition().attr("height", emailTotal*factor)
+                d3.selectAll(".Phone.Number").transition().attr("height", phoneTotal*factor)
+                d3.selectAll(".Street.Address").transition().attr("height", stTotal*factor)
+                d3.selectAll(".City").transition().attr("height", cityTotal*factor)
+                d3.selectAll(".Zip.Code").transition().attr("height", zipTotal*factor)
+                d3.selectAll(".State").transition().attr("height", stateTotal*factor)
+                d3.selectAll(".Country").transition().attr("height", countryTotal*factor)
+                d3.selectAll(".Sex").transition().attr("height", sexTotal*factor);
+                d3.selectAll(".Age").transition().attr("height", ageTotal*factor);
+    
+
+    // d3.selectAll(".text3").transition().duration(1000).attr("opacity",0);
+    d3.selectAll(".line2").transition().duration(2000).attr("opacity",1);
+ d3.selectAll(".sourceText").transition().duration(1000).attr("opacity",1);
+
+
+
+
+            var hScale = d3.scale.linear()
+                .domain([0, dataIs.length])
+                .range([topSpaceRect, height])//+400])
+
+// d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2, .StreetAddress2, .City2, .ZipCode2, .State2, .Country2, .Sex2, .Age2")
+//     .transition()
+//     .duration(1000)
+//     .attr("y",function(d,i){
+//         return hScale(i);
+//     }) 
+
+                d3.selectAll(".ID2").transition()
+                .attr("y",function(d,i){
+                        return hScale(i);
+                    }) 
+                d3.selectAll(".Title2").transition()
+                    .attr("y",function(d,i){
+                        return hScale(i);
+                    }) 
+                    d3.selectAll(".FirstName2").transition()
+                        .attr("y",function(d,i){
+                            return hScale(i);
+                        }) 
+                d3.selectAll(".LastName2").transition()    
+                .attr("y",function(d,i){
+                    return hScale(i);
+                }) 
+                d3.selectAll(".Suffix2").transition()    
+                .attr("y",function(d,i){
+                    return hScale(i);
+                }) 
+                d3.selectAll(".Email2").transition()    
+                .attr("y",function(d,i){
+                    return hScale(i);
+                }) 
+                d3.selectAll(".Phone2").transition()   
+                .attr("y",function(d,i){
+                    return hScale(i);
+                }) 
+                d3.selectAll(".StreetAddress2").transition()    
+                .attr("y",function(d,i){
+                        return hScale(i);
+                    }) 
+                d3.selectAll(".City2").transition()    
+                .attr("y",function(d,i){
+                        return hScale(i);
+                    }) 
+                d3.selectAll(".ZipCode2").transition()    
+                .attr("y",function(d,i){
+                        return hScale(i);
+                    }) 
+                d3.selectAll(".State2").transition()    
+                .attr("y",function(d,i){
+                        return hScale(i);
+                    }) 
+                d3.selectAll(".Country2").transition()    
+                .attr("y",function(d,i){
+                        return hScale(i);
+                    }) 
+                d3.selectAll(".Sex2").transition()    
+                .attr("y",function(d,i){
+                            return hScale(i);
+                        }) 
+                d3.selectAll(".Age2").transition()    
+                .attr("y",function(d,i){
+                        return hScale(i);
+                    }) 
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         d3.selectAll(".sourceRect").transition().duration(1000)
                         .attr("height",function(d,i){
                             return sourceHeight[i];
@@ -2168,8 +2497,8 @@ d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2
 
 
 
-        d3.selectAll(".sourceMid").transition().duration(1000)
-                    .attr("height", uniHeight);
+        // d3.selectAll(".sourceMid").transition().duration(1000)
+        //             .attr("height", uniHeight);
 
         d3.selectAll(".outlineTop").transition().duration(1000)
                         .attr("height", function(d,i){
