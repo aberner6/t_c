@@ -25,7 +25,7 @@ var dataNames =["Age","City","Country","Email Address","First Name","Last Name",
 // "Records",
 var x1;
 var x2;
-            var oneData = ["id","title","first name","","suffix","email Address","phone Number","street Address","city","zip code","state","country","sex","age"]
+var oneData = ["id","title","first name","","suffix","email Address","phone Number","street Address","city","zip code","state","country","sex","age"]
 
 var tamR = "#00ABD3";
 
@@ -102,6 +102,16 @@ var minus = true;
   undo();
  })
 
+var sortIt = false;
+ $("#sort").on("click", function(){
+      // unsort = false;
+      sortIt = !sortIt;
+      if(sortIt){
+          sortBy();
+      }else{
+            unsort();
+      }
+ })
 
     setTimeout(function(){
         topPart();
@@ -110,7 +120,7 @@ var minus = true;
         callMidNon();
         callTopSource();
         callTopNon();
-    },del/2)
+    },del/10)
     setTimeout(function(){
         if(cityData.length==25){
     }
@@ -696,6 +706,10 @@ function callSource(){
                     var recordScale = d3.scale.linear()
                         .domain([0, 2000000])
                         .range([2, 20])
+                    
+                    var recordHScale = d3.scale.linear()
+                        .domain([0, 2000000])
+                        .range([topSpaceText3, height])
 
                 var thisOne = 0;
                     svg.selectAll("sourceRect")
@@ -724,22 +738,13 @@ function callSource(){
                               if(d[val].length>0){
                                 thisOne++;
                                 sourceWidth[i]=(thisOne);
-                                    // sourceTotal = source;
                                 }
                             })
-                              // console.log(sourceWidth[i])
                                 thisOne = 0;
-                            // sourceWidth.push(Math.random()*35)
                             return sourceWidth[i];
                         })
                         .attr("height", function(d,i){
                             sourceHeight.push(recordScale(d.Records));
-                            // console.log(recordScale(d.Records))
-                              // if(val=="Records" && d[val].length>0){
-                              //      record++;
-                              //       recordTotal = record;
-                              //   }
-                            // sourceHeight.push(randoScale(Math.random()*20))
                             return recordScale(d.Records);
                         })
 
@@ -802,18 +807,58 @@ function callSource(){
                     //     .attr("y", fold/2-10)
                     //     .text("Source")   
         } 
+     
+function sortBy(){
+                var hScale = d3.scale.linear()
+                    .domain([0, dataIs.length])
+                    .range([topSpaceText3-5, height])
+                    var recordHScale = d3.scale.linear()
+                        .domain([0, 2000000])
+                        .range([topSpaceText3, height])   
+        d3.selectAll(".sourceRect, .outlineRects")
+        .transition()
+        .attr("y", function(d,i){
+            return recordHScale(d.Records)
+        })
+        d3.selectAll(".sourceText")
+        .transition()
+        .attr("opacity",0);
+    d3.selectAll(".source1Text").transition().attr("opacity",0);
 
+}
+function unsort(){
+                var hScale = d3.scale.linear()
+                    .domain([0, dataIs.length])
+                    .range([topSpaceText3-5, height])  
+        d3.selectAll(".outlineRects")
+        .transition()
+        .attr("y", function(d,i){
+            return hScale(i)
+        })
+        d3.selectAll(".sourceRect")
+        .transition()
+        .attr("y", function(d,i){ 
+            return hScale(i)
+        })
+    d3.selectAll(".source1Text").transition().attr("opacity",1);
+
+        d3.selectAll(".sourceText")
+        .transition()
+        .attr("opacity",1);
+}
 function callNon(){
                 var hScale = d3.scale.linear()
                     .domain([0, dataIs.length])
                     .range([topSpaceText3-5, height])
-
-            var rMargin = 130;
-                svg.selectAll("sourceRect")
+                    var recordHScale = d3.scale.linear()
+                        .domain([0, 2000000])
+                        .range([topSpaceText3, height])   
+            var rMargin = 130; 
+                svg.selectAll("nonRect")
                     .data(d3.range(dataIs.length))
                     .enter()
                     .append("rect")
-                    .attr("class","sourceRect")
+                    .attr("class","nonRect")
                     .attr("x", width-130) 
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
@@ -834,11 +879,11 @@ function callNon(){
                     .attr("width", 10)
                     .attr("height", uniHeight);
 
-                svg.selectAll("sourceRect")
+                svg.selectAll("nonRect")
                     .data(d3.range(dataIs.length))
                     .enter()
                     .append("rect")
-                    .attr("class","sourceRect")
+                    .attr("class","nonRect")
                     .attr("x", width-120) 
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
@@ -857,11 +902,11 @@ function callNon(){
                     .transition()
                     .duration(2000)
                     .attr("width", 10);
-                svg.selectAll("sourceRect")
+                svg.selectAll("nonRect")
                     .data(d3.range(dataIs.length))
                     .enter()
                     .append("rect")
-                    .attr("class","sourceRect")
+                    .attr("class","nonRect")
                     .attr("x", width-110) 
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
@@ -927,7 +972,24 @@ function callNon(){
 
 
 
+// city
 
+// city
+// city
+// city
+// City
+// city
+// City
+// CITY
+// CITY
+// CITY
+// CITY
+// City
+// City
+// city
+// city
+// city
+// City, city, City, CITY, CITY, "CITY","city","city"]
 function bottom(){
 d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
 
@@ -953,7 +1015,7 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
                 city = 0;                  
 
         var j = 0;
-
+var textSpace = 12;
         svg.selectAll("City2")
             .data(cityData)
             .enter()
@@ -983,6 +1045,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             })
             .attr("y", function(d,i){
                 return hScale(i)
+            })
+        svg.selectAll("Citytext")
+            .data(cityData)
+            .enter()
+            .append("text")
+            .attr("class", "Citytext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("City")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
             })
         svg.selectAll("Age2")
             .data(ageData)
@@ -1015,6 +1105,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             .attr("y", function(d,i){
                 return hScale(i)
             })
+        svg.selectAll("Agetext")
+            .data(ageData)
+            .enter()
+            .append("text")
+            .attr("class", "Agetext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("Age")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
+            })
         svg.selectAll("Country2")
             .data(countryData)
             .enter()
@@ -1045,6 +1163,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             })
             .attr("y", function(d,i){
                 return hScale(i)
+            })
+        svg.selectAll("Countrytext")
+            .data(countryData)
+            .enter()
+            .append("text")
+            .attr("class", "Countrytext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("Country")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
             })
         svg.selectAll("Email2")
             .data(emailData)
@@ -1077,6 +1223,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             .attr("y", function(d,i){
                 return hScale(i)
             })
+        svg.selectAll("Emailtext")
+            .data(emailData)
+            .enter()
+            .append("text")
+            .attr("class", "Emailtext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("Email Address")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
+            })
         svg.selectAll("FirstName2")
             .data(firstData)
             .enter()
@@ -1107,6 +1281,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             })
             .attr("y", function(d,i){
                 return hScale(i)
+            })
+        svg.selectAll("Firsttext")
+            .data(firstData)
+            .enter()
+            .append("text")
+            .attr("class", "Firsttext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("First Name")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
             })
         svg.selectAll("LastName2")
             .data(lastData)
@@ -1139,6 +1341,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             .attr("y", function(d,i){
                 return hScale(i)
             })
+        svg.selectAll("Lasttext")
+            .data(lastData)
+            .enter()
+            .append("text")
+            .attr("class", "Lasttext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("Last Name")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
+            })
         svg.selectAll("ID2")
             .data(idData)
             .enter()
@@ -1169,6 +1399,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             })
             .attr("y", function(d,i){
                 return hScale(i)
+            })
+        svg.selectAll("IDtext")
+            .data(idData)
+            .enter()
+            .append("text")
+            .attr("class", "IDtext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("ID")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
             })
         svg.selectAll("Phone2")
             .data(phoneData)
@@ -1201,6 +1459,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             .attr("y", function(d,i){
                 return hScale(i)
             })
+        svg.selectAll("Phonetext")
+            .data(phoneData)
+            .enter()
+            .append("text")
+            .attr("class", "Phonetext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("Phone Number")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
+            })
         svg.selectAll("Sex2")
             .data(sexData)
             .enter()
@@ -1231,6 +1517,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             })
             .attr("y", function(d,i){
                 return hScale(i)
+            })
+        svg.selectAll("Sextext")
+            .data(sexData)
+            .enter()
+            .append("text")
+            .attr("class", "Sextext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("Sex")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
             })
         svg.selectAll("State2")
             .data(stateData)
@@ -1263,6 +1577,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             .attr("y", function(d,i){
                 return hScale(i)
             })
+        svg.selectAll("Statetext")
+            .data(stateData)
+            .enter()
+            .append("text")
+            .attr("class", "Statetext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("State")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
+            })
         svg.selectAll("StreetAdress2")
             .data(stData)
             .enter()
@@ -1293,6 +1635,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             })
             .attr("y", function(d,i){
                 return hScale(i)
+            })
+        svg.selectAll("Streettext")
+            .data(stData)
+            .enter()
+            .append("text")
+            .attr("class", "Streettext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("Street Address")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
             })
         svg.selectAll("Suffix2")
             .data(suffixData)
@@ -1325,6 +1695,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             .attr("y", function(d,i){
                 return hScale(i)
             })
+        svg.selectAll("Suffixtext")
+            .data(suffixData)
+            .enter()
+            .append("text")
+            .attr("class", "Suffixtext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("Suffix")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
+            })
         svg.selectAll("Title2")
             .data(titleData)
             .enter()
@@ -1355,6 +1753,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             })
             .attr("y", function(d,i){
                 return hScale(i)
+            })
+        svg.selectAll("Titletext")
+            .data(titleData)
+            .enter()
+            .append("text")
+            .attr("class", "Titletext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("Title")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
             })
         svg.selectAll("ZipCode2")
             .data(zipData)
@@ -1387,7 +1813,34 @@ d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
             .attr("y", function(d,i){
                 return hScale(i)
             })
-
+        svg.selectAll("Ziptext")
+            .data(zipData)
+            .enter()
+            .append("text")
+            .attr("class", "Ziptext")
+                .style("text-anchor", "middle")
+            .attr("opacity", function(d,i){
+                    if(d.length>0){
+                        return .9;               
+                    } 
+                    else{ 
+                        return 0;
+                    }   
+            })
+            .attr("fill","white")
+            .attr("y",topSpaceRect)
+            .attr("x", function(d,i){
+                return xScale("Zip Code")+wide/2;
+            })
+            .transition()
+            .delay(del)
+            .duration(2000)
+            .attr("y", function(d,i){
+                return hScale(i)+textSpace;
+            })
+            .text(function(d,i){
+                return d;
+            })
 
 
 
@@ -1436,13 +1889,13 @@ function undo(){
 
 d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2, .StreetAddress2, .City2, .ZipCode2, .State2, .Country2, .Sex2, .Age2")
     .transition()
-    .duration(2000)
+    .duration(1000)
     .attr("y",topSpaceRect)
 
 //, .sourceMid, .outlineTop
-d3.selectAll(".sourceRect, .outlineRects").transition().duration(2000).attr("height",0)
+d3.selectAll(".sourceRect, .nonRect, .outlineRects").transition().duration(1000).attr("height",0)
 // d3.selectAll(".outlineRects").transition().duration(2000).attr("height",0)
-d3.selectAll(".sourceText").transition().duration(2000).attr("opacity",0)
+d3.selectAll(".sourceText").transition().duration(1000).attr("opacity",0)
             svg.selectAll("text3")
                 .data(dataTypes)
                 .enter()
@@ -1468,20 +1921,20 @@ function redo(){
                     var hScale = d3.scale.linear()
                         .domain([0, dataIs.length])
                         .range([topSpaceText3, height])
-    d3.selectAll(".text3").transition().duration(2000).attr("opacity",0);
+    d3.selectAll(".text3").transition().duration(1000).attr("opacity",0);
     d3.selectAll(".line2").transition().duration(2000).attr("opacity",1);
 
 d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2, .StreetAddress2, .City2, .ZipCode2, .State2, .Country2, .Sex2, .Age2")
     .transition()
-    .duration(2000)
+    .duration(1000)
     .attr("y",function(d,i){
         return hScale(i);
     }) 
-        d3.selectAll(".sourceRect").transition().duration(2000)
+        d3.selectAll(".sourceRect, .nonRect").transition().duration(1000)
                         .attr("height",function(d,i){
                             return sourceHeight[i];
                         })
-        d3.selectAll(".outlineRects").transition().duration(2000)
+        d3.selectAll(".outlineRects").transition().duration(1000)
                         .attr("height",function(d,i){
                             return sourceHeight[i]+10;
                         })
@@ -1489,15 +1942,15 @@ d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2
 
 
 
-        d3.selectAll(".sourceMid").transition().duration(2000)
+        d3.selectAll(".sourceMid").transition().duration(1000)
                     .attr("height", uniHeight);
 
-        d3.selectAll(".outlineTop").transition().duration(2000)
+        d3.selectAll(".outlineTop").transition().duration(1000)
                         .attr("height", function(d,i){
                             return recordScale(dataIs[1].Records)+10;
                         })
  // .sourceMid, .outlineTop                        
-        d3.selectAll(".sourceText").transition().duration(2000).attr("opacity",1)   
+        d3.selectAll(".sourceText").transition().duration(1000).attr("opacity",1)   
 }
 
 
@@ -1606,3 +2059,23 @@ d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2
                 //     d3.selectAll("text."+thisName).transition().attr("opacity",0)
                 //     // console.log("moused"+"text."+thisName)
                 // })
+
+
+//                 .on("mouseover", function(d,i){
+// // var coordinates = [0, 0];
+// // coordinates = d3.mouse(this);
+// var x = (d3.select(this).attr("x"));
+// var y = (d3.select(this).attr("y"))+20;
+//                     svg.append("text")
+//                         .attr("class","mouseLabel")
+//                         .attr("x", x)
+//                         .attr("y", y)
+//                         // .attr("fill","white")
+//                         .text(oneData[8])   
+//                     // console.log("moused"+"text."+thisName)
+//                 })
+//                 .on("mouseout", function(d,i){
+//                     // var thisName = (d3.select(this).attr("class"));
+//                     d3.selectAll(".mouseLabel").transition().attr("opacity",0)
+//                     // console.log("moused"+"text."+thisName)
+//                 })
