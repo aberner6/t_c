@@ -127,13 +127,6 @@ var sortIt = false;
     },del*6)
 
 d3.csv("entity.csv", function(error,data){
-
-
-    // .range([topMargin, height/2])
-
-    // colorScale = d3.scale.linear()
-    // .domain([0,data.length-1])
-    // .range([0, 255])
 for(i=0; i<data.length; i++){
 
     dataIs.push(data[i]);
@@ -693,9 +686,9 @@ function callTopNon(){
                     //     .attr("stroke","grey")
                     //     .attr("stroke-dasharray", "2,2")
                     //     .attr("stroke-width", .1);
+var sourceHeight = [];
 function callSource(){
                     var sourceWidth = [];
-                    var sourceHeight = [];
                     var randoScale = d3.scale.linear()
                         .domain([0, 20])
                         .range([2, 10])
@@ -835,16 +828,25 @@ function unsort(){
         .attr("y", function(d,i){
             return hScale(i)
         })
+        .attr("height",function(d,i){
+            return sourceHeight[i]+10;
+        })
+
         d3.selectAll(".sourceRect")
         .transition()
+        .attr("height",function(d,i){
+            return sourceHeight[i];
+        })
         .attr("y", function(d,i){ 
             return hScale(i)
         })
-    d3.selectAll(".source1Text").transition().attr("opacity",1);
+
+        d3.selectAll(".source1Text").transition().attr("opacity",1);
 
         d3.selectAll(".sourceText")
         .transition()
         .attr("opacity",1);
+
 }
 function callNon(){
                 var hScale = d3.scale.linear()
@@ -1930,7 +1932,7 @@ d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2
     .attr("y",function(d,i){
         return hScale(i);
     }) 
-        d3.selectAll(".sourceRect, .nonRect").transition().duration(1000)
+        d3.selectAll(".sourceRect").transition().duration(1000)
                         .attr("height",function(d,i){
                             return sourceHeight[i];
                         })
@@ -1938,7 +1940,10 @@ d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2
                         .attr("height",function(d,i){
                             return sourceHeight[i]+10;
                         })
-
+        d3.selectAll(".nonRect").transition().duration(1000)
+                        .attr("height",function(d,i){
+                            return uniHeight;
+                        })
 
 
 
