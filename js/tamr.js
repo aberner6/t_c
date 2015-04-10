@@ -102,17 +102,26 @@ var minus = true;
   undo();
  })
 
-var sortIt = false;
- $("#sort").on("click", function(){
+var sort1 = false;
+ $("#sort1").on("click", function(){
       // unsort = false;
-      sortIt = !sortIt;
+      sort1 = !sort1;
       if(sortIt){
-          sortBy();
+          sortSource();
       }else{
-            unsort();
+            unsortSource();
       }
  })
-
+ var sort2 = false;
+ $("#sort2").on("click", function(){
+      // unsort = false;
+      sort2 = !sort2;
+      if(sort2){
+          sortEntries();
+      }else{
+            unsortEntries();
+      }
+ })
     setTimeout(function(){
         topPart();
         center();
@@ -801,13 +810,14 @@ function callSource(){
                     //     .text("Source")   
         } 
      
-function sortBy(){
+function sortSource(){
                 var hScale = d3.scale.linear()
                     .domain([0, dataIs.length])
                     .range([topSpaceText3-5, height])
                     var recordHScale = d3.scale.linear()
                         .domain([0, 2000000])
-                        .range([topSpaceText3, height])   
+                        .range([topSpaceText3, height])    
+
         d3.selectAll(".sourceRect, .outlineRects")
         .transition()
         .attr("y", function(d,i){
@@ -817,9 +827,154 @@ function sortBy(){
         .transition()
         .attr("opacity",0);
     d3.selectAll(".source1Text").transition().attr("opacity",0);
+}
+function sortEntries(){
+
+                    var rHScale = d3.scale.linear()
+                        .domain([0, 2000000])
+                        .range([5, uniHeight]) 
+d3.selectAll(".ID2")
+    // , .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2, .StreetAddress2, .City2, .ZipCode2, .State2, .Country2, .Sex2, .Age2")
+    .transition()
+    .attr("height", function(d,i){
+        // console.log(dataIs[i].Records);
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })
+d3.selectAll(".Title2")
+    .transition()
+    .attr("height", function(d,i){
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })
+d3.selectAll(".FirstName2")
+    .transition()
+    .attr("height", function(d,i){
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })
+d3.selectAll(".LastName2")
+    .transition()
+    .attr("height", function(d,i){
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })
+d3.selectAll(".Suffix2")
+    .transition()
+    .attr("height", function(d,i){
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })
+d3.selectAll(".Email2")
+    .transition()
+    .attr("height", function(d,i){
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })
+d3.selectAll(".Phone2")
+    .transition()
+    .attr("height", function(d,i){
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })
+d3.selectAll(".StreetAddress2")
+    .transition()
+    .attr("height", function(d,i){
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })
+d3.selectAll(".City2")
+    .transition()
+    .attr("height", function(d,i){
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })
+d3.selectAll(".ZipCode2")
+    .transition()
+    .attr("height", function(d,i){
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })
+d3.selectAll(".State2")
+    .transition()
+    .attr("height", function(d,i){
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })
+d3.selectAll(".Country2")
+    .transition()
+    .attr("height", function(d,i){
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })
+d3.selectAll(".Sex2")
+    .transition()
+    .attr("height", function(d,i){
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })
+d3.selectAll(".Age2")
+    .transition()
+    .attr("height", function(d,i){
+        if(i<25){
+            return rHScale(parseInt(dataIs[i].Records));
+        }else{
+            return uniHeight;
+        }
+    })    
+d3.selectAll(".rect2").transition().attr("opacity",0)
+}
+
+function unsortEntries(){
+d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2, .StreetAddress2, .City2, .ZipCode2, .State2, .Country2, .Sex2, .Age2")
+    .transition()
+    .duration(1000)
+    .attr("height",uniHeight); 
+d3.selectAll(".rect2").transition().attr("opacity",1)
 
 }
-function unsort(){
+
+
+function unsortSource(){
                 var hScale = d3.scale.linear()
                     .domain([0, dataIs.length])
                     .range([topSpaceText3-5, height])  
@@ -846,8 +1001,10 @@ function unsort(){
         d3.selectAll(".sourceText")
         .transition()
         .attr("opacity",1);
-
 }
+
+
+
 function callNon(){
                 var hScale = d3.scale.linear()
                     .domain([0, dataIs.length])
