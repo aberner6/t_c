@@ -106,7 +106,7 @@ var sort1 = false;
  $("#sort1").on("click", function(){
       // unsort = false;
       sort1 = !sort1;
-      if(sortIt){
+      if(sort1){
           sortSource();
       }else{
             unsortSource();
@@ -122,6 +122,18 @@ var sort1 = false;
             unsortEntries();
       }
  })
+ var sort3 = false;
+ $("#sort3").on("click", function(){
+      // unsort = false;
+      sort3 = !sort3;
+      if(sort3){
+          sortNon();
+      }else{
+        unsortNon();
+      }
+ })
+
+
     setTimeout(function(){
         topPart();
         center();
@@ -272,7 +284,7 @@ var topSpaceText3 = topMargin+12;
 
 var fontAdjust = 12;
 function topPart(){
-topMargin = 10;
+        topMargin = 10;
             heightScale = d3.scale.linear()
                 .domain([0, dataTypes.length])
                 .range([topMargin, topMargin+50])
@@ -280,8 +292,6 @@ topMargin = 10;
             xScale = d3.scale.ordinal()
                     .domain(dataTypes)
                     .rangeBands([lMargin*5, width-lMargin*9], 1)//.2)
-
-            var j = 0;
 
             var j = 0;
         var theserects = svg.selectAll("rect")
@@ -294,13 +304,11 @@ topMargin = 10;
                 .attr("x", function(d,i){
                     return xScale(dataTypes[i])
                 })
-                .attr("y", topMargin)
+                .attr("y", topMargin+20)
                 .attr("width", 1)
-                .attr("height", function(d,i){
-                    return 20;//heightScale(i);
-                }) 
-                .attr("fill","white")
-                .attr("stroke",tamR)
+                .attr("height", 0)
+                .attr("fill",tamR)
+                // .attr("stroke",tamR)
                 .attr("opacity", function(d,i){
                     var j = i;
                     var p;
@@ -319,7 +327,7 @@ topMargin = 10;
                 .delay(del/2)
                 .duration(2000)
             .each("end", function(){
-                var factor = 2;
+                var factor = 1;
                 d3.selectAll(".ID").transition().attr("height", idTotal*factor)
                 d3.selectAll(".Title").transition().attr("height", titTotal*factor)
                 d3.selectAll(".First.Name").transition().attr("height", firstTotal*factor)
@@ -334,6 +342,29 @@ topMargin = 10;
                 d3.selectAll(".Country").transition().attr("height", countryTotal*factor)
                 d3.selectAll(".Sex").transition().attr("height", sexTotal*factor);
                 d3.selectAll(".Age").transition().attr("height", ageTotal*factor);
+    
+                svg.selectAll("line")
+                    .data(d3.range(dataTypes.length))
+                    .enter()
+                    .append("line")
+                    .attr("class", "topLine")
+                    .attr("x1", function(){
+                        x1 = d3.select("rect.ID").attr("x");
+                        return x1;
+                    })
+                    .attr("y1", function(d,i){
+                        return heightScale(i);//i*10;
+                    })
+                    .attr("x2", function(){
+                        x2 = d3.select("rect.Age").attr("x");
+                        // return wide+x2;
+                        return parseInt(wide)+parseInt(x2);
+                    })
+                    .attr("y2", function(d,i){
+                        return heightScale(i);
+                    })
+                    .attr("stroke","white")
+                    .attr("stroke-width", .2)  
             })
 
            svg.selectAll("rectBack")
@@ -429,15 +460,7 @@ function callMidSource(){
                     var hScale = d3.scale.linear()
                         .domain([0, dataIs.length])
                         .range([topSpaceRect+3, height-40])
-                    // var line = svg.append("line")
-                    //     .attr("class", "crossLine")
-                    //     .attr("x1", 0)
-                    //     .attr("y1", topSpace)
-                    //     .attr("x2", width+200)
-                    //     .attr("y2", topSpace)
-                    //     .attr("stroke","grey")
-                    //     .attr("stroke-dasharray", "2,2")
-                    //     .attr("stroke-width", .1);
+
                 var thisOne = 0;
                     svg.selectAll("source1Rect")
                         .data(d3.range(1))
@@ -575,12 +598,7 @@ function callMidNon(){
                             return 0;
                         }
                     })
-
-                // svg.append("text")
-                //     .attr("class","sourceLabel")
-                //     .attr("x", width-130)
-                //     .attr("y", topSpaceText)
-                //     .text("Non-unified")   
+ 
 } 
 
 function callTopSource(){
@@ -814,6 +832,7 @@ function sortSource(){
                 var hScale = d3.scale.linear()
                     .domain([0, dataIs.length])
                     .range([topSpaceText3-5, height])
+
                     var recordHScale = d3.scale.linear()
                         .domain([0, 2000000])
                         .range([topSpaceText3, height])    
@@ -828,16 +847,60 @@ function sortSource(){
         .attr("opacity",0);
     d3.selectAll(".source1Text").transition().attr("opacity",0);
 }
-function sortEntries(){
+function sortNon(){
+                var rHScale = d3.scale.linear()
+                        .domain([0, 2000000])
+                        .range([5, uniHeight])    
 
-                    var rHScale = d3.scale.linear()
+    d3.selectAll(".nonRect")
+        .transition()
+        .attr("height", function(d,i){
+            if(i<25){
+            return rHScale(dataIs[i].Records)                
+            }
+            else{
+                return uniHeight;
+            }
+        })
+// , .nonRect2, .nonRect3
+    d3.selectAll(".nonRect2")
+        .transition()
+        .attr("height", function(d,i){
+            if(i<25){
+            return rHScale(dataIs[i].Records)                
+            }
+            else{
+                return uniHeight;
+            }
+        })
+    d3.selectAll(".nonRect3")
+        .transition()
+        .attr("height", function(d,i){
+            if(i<25){
+            return rHScale(dataIs[i].Records)                
+            }
+            else{
+                return uniHeight;
+            }
+        })
+}
+function unsortNon(){
+    d3.selectAll(".nonRect, .nonRect2, .nonRect3")
+        .transition()
+        .attr("height", function(d,i){
+            return uniHeight;
+        })
+
+}
+
+
+function sortEntries(){
+                var rHScale = d3.scale.linear()
                         .domain([0, 2000000])
                         .range([5, uniHeight]) 
 d3.selectAll(".ID2")
-    // , .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2, .StreetAddress2, .City2, .ZipCode2, .State2, .Country2, .Sex2, .Age2")
     .transition()
     .attr("height", function(d,i){
-        // console.log(dataIs[i].Records);
         if(i<25){
             return rHScale(parseInt(dataIs[i].Records));
         }else{
@@ -960,8 +1023,9 @@ d3.selectAll(".Age2")
         }else{
             return uniHeight;
         }
-    })    
-d3.selectAll(".rect2").transition().attr("opacity",0)
+    })  
+
+d3.selectAll(".rect2").transition().attr("opacity",0);
 }
 
 function unsortEntries(){
@@ -1038,11 +1102,11 @@ function callNon(){
                     .attr("width", 10)
                     .attr("height", uniHeight);
 
-                svg.selectAll("nonRect")
+                svg.selectAll("nonRect2")
                     .data(d3.range(dataIs.length))
                     .enter()
                     .append("rect")
-                    .attr("class","nonRect")
+                    .attr("class","nonRect2")
                     .attr("x", width-120) 
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
@@ -1061,11 +1125,11 @@ function callNon(){
                     .transition()
                     .duration(2000)
                     .attr("width", 10);
-                svg.selectAll("nonRect")
+                svg.selectAll("nonRect3")
                     .data(d3.range(dataIs.length))
                     .enter()
                     .append("rect")
-                    .attr("class","nonRect")
+                    .attr("class","nonRect3")
                     .attr("x", width-110) 
                     .attr("y", function(d,i){
                         return hScale(i);//fold/2 + i*25+10;
@@ -2052,7 +2116,7 @@ d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2
     .attr("y",topSpaceRect)
 
 //, .sourceMid, .outlineTop
-d3.selectAll(".sourceRect, .nonRect, .outlineRects").transition().duration(1000).attr("height",0)
+d3.selectAll(".sourceRect, .nonRect, .nonRect2, .nonRect3 .outlineRects").transition().duration(1000).attr("height",0)
 // d3.selectAll(".outlineRects").transition().duration(2000).attr("height",0)
 d3.selectAll(".sourceText").transition().duration(1000).attr("opacity",0)
             svg.selectAll("text3")
@@ -2097,7 +2161,7 @@ d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2
                         .attr("height",function(d,i){
                             return sourceHeight[i]+10;
                         })
-        d3.selectAll(".nonRect").transition().duration(1000)
+        d3.selectAll(".nonRect, .nonRect2, .nonRect3").transition().duration(1000)
                         .attr("height",function(d,i){
                             return uniHeight;
                         })
@@ -2241,3 +2305,10 @@ d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .Email2, .Phone2
 //                     d3.selectAll(".mouseLabel").transition().attr("opacity",0)
 //                     // console.log("moused"+"text."+thisName)
 //                 })
+
+
+                // svg.append("text")
+                //     .attr("class","sourceLabel")
+                //     .attr("x", width-130)
+                //     .attr("y", topSpaceText)
+                //     .text("Non-unified")  
