@@ -135,8 +135,10 @@ var sort1 = false;
       // unsort = false;
       sort2 = !sort2;
       if(sort2){
+        hideDetails();
           sortEntries();
       }else{
+        showDetails();
             unsortEntries();
       }
  })
@@ -154,18 +156,20 @@ var sort1 = false;
 
     setTimeout(function(){
         bottom();
+        // hideDetails();
         callSource();
         callNon();
-
+// for (i=0; i<dataTypes.length; i++){ 
+//     d3.selectAll("."+dataTypes[i]+"text").transition().attr("opacity",0)
+// }
         // center();
         // callMidSource();
         // callMidNon();
 
     },del/10)
     setTimeout(function(){
-        if(cityData.length==25){
-    }
-    },del*6)
+        sortEntries();
+    },del*4)
 
 var uniHeight = 15;
 var textSpace = 10;
@@ -931,9 +935,52 @@ function unsortNon(){
         })
 
 }
-
-
-function sortEntries(){
+function showDetails(){
+    var on = 1;
+d3.selectAll(".Agetext")
+        .transition()
+        .attr("opacity",on)
+d3.selectAll(".Citytext")
+        .transition()
+        .attr("opacity",on)
+    d3.selectAll(".Ziptext")
+        .transition()
+        .attr("opacity",on)
+    d3.selectAll(".Suffixtext")
+        .transition()
+        .attr("opacity",on)
+    d3.selectAll(".Titletext")
+        .transition()
+        .attr("opacity",on)
+    d3.selectAll(".Streettext")
+        .transition()
+        .attr("opacity",on)
+    d3.selectAll(".Statetext")
+        .transition()
+        .attr("opacity",on)  
+    d3.selectAll(".Sextext")
+        .transition()
+        .attr("opacity",on)
+    d3.selectAll(".Phonetext")
+        .transition()
+        .attr("opacity",on)
+    d3.selectAll(".IDtext")
+        .transition()
+        .attr("opacity",on)
+    d3.selectAll(".Lasttext")
+        .transition()
+        .attr("opacity",on)
+    d3.selectAll(".Firsttext")
+        .transition()
+        .attr("opacity",on)
+    d3.selectAll(".Emailtext")
+        .transition()
+        .attr("opacity",on)
+    d3.selectAll(".Countrytext")
+        .transition()
+        .attr("opacity",on)       
+}
+function hideDetails(){
 d3.selectAll(".Agetext")
         .transition()
         .attr("opacity",0)
@@ -975,22 +1022,9 @@ d3.selectAll(".Citytext")
         .attr("opacity",0)
     d3.selectAll(".Countrytext")
         .transition()
-        .attr("opacity",0)
-    d3.selectAll(".Citytext")
-        .transition()
-        .attr("opacity",0)
-    d3.selectAll(".Citytext")
-        .transition()
-        .attr("opacity",0)
-    d3.selectAll(".Citytext")
-        .transition()
-        .attr("opacity",0)
-    d3.selectAll(".Citytext")
-        .transition()
-        .attr("opacity",0)
-    d3.selectAll(".Citytext")
-        .transition()
         .attr("opacity",0)   
+}
+function sortEntries(){
                 var rHScale = d3.scale.linear()
                         .domain([0, 2000000])
                         .range([5, uniHeight]) 
@@ -1120,6 +1154,7 @@ d3.selectAll(".Age2")
             return uniHeight;
         }
     })  
+ // hideDetails();
 
 d3.selectAll(".rect2").transition().attr("opacity",0);
 }
@@ -1455,7 +1490,7 @@ function callNon(){
 var backHeight = 20;
 function bottom(){
 // d3.selectAll(".text3").transition().duration(2000).attr("opacity",0)
-
+var off = 0;
             var hScale = d3.scale.linear()
                 .domain([0, dataIs.length])
                 .range([topSpaceRect, height])//+400])
@@ -1543,14 +1578,7 @@ function bottom(){
             .append("text")
             .attr("class", "Citytext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity",off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
@@ -1602,14 +1630,7 @@ function bottom(){
             .append("text")
             .attr("class", "Agetext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity",off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
@@ -1661,14 +1682,7 @@ function bottom(){
             .append("text")
             .attr("class", "Countrytext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity",off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
@@ -1720,14 +1734,7 @@ function bottom(){
             .append("text")
             .attr("class", "Emailtext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity", off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
@@ -1779,14 +1786,7 @@ function bottom(){
             .append("text")
             .attr("class", "Firsttext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity", off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
@@ -1838,14 +1838,7 @@ function bottom(){
             .append("text")
             .attr("class", "Lasttext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity",off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
@@ -1897,14 +1890,7 @@ function bottom(){
             .append("text")
             .attr("class", "IDtext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity", off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
@@ -1924,7 +1910,7 @@ function bottom(){
             .enter()
             .append("rect")
             .attr("class", "Phone2")
-            .attr("opacity", function(d,i){
+            .attr("opacity",  function(d,i){
                     if(d.length>0){
                         return .9;               
                     } 
@@ -1956,14 +1942,7 @@ function bottom(){
             .append("text")
             .attr("class", "Phonetext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity", off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
@@ -1983,7 +1962,7 @@ function bottom(){
             .enter()
             .append("rect")
             .attr("class", "Sex2")
-            .attr("opacity", function(d,i){
+            .attr("opacity",  function(d,i){
                     if(d.length>0){
                         return .9;               
                     } 
@@ -2015,14 +1994,7 @@ function bottom(){
             .append("text")
             .attr("class", "Sextext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity", off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
@@ -2074,14 +2046,7 @@ function bottom(){
             .append("text")
             .attr("class", "Statetext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity", off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
@@ -2133,14 +2098,7 @@ function bottom(){
             .append("text")
             .attr("class", "Streettext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity",off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
@@ -2192,14 +2150,7 @@ function bottom(){
             .append("text")
             .attr("class", "Suffixtext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity",off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
@@ -2251,14 +2202,7 @@ function bottom(){
             .append("text")
             .attr("class", "Titletext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity", off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
@@ -2310,14 +2254,7 @@ function bottom(){
             .append("text")
             .attr("class", "Ziptext")
                 .style("text-anchor", "middle")
-            .attr("opacity", function(d,i){
-                    if(d.length>0){
-                        return .9;               
-                    } 
-                    else{ 
-                        return 0;
-                    }   
-            })
+            .attr("opacity", off)
             .attr("fill","white")
             .attr("y",topSpaceRect)
             .attr("x", function(d,i){
