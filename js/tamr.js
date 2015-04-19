@@ -91,10 +91,11 @@ var minus = true;
 
 //min and max szing for rectangle
 //min
-// var uniHeight = 15;
-// var textSpace = 10;
-var uniHeight = 65;
-var textSpace = uniHeight/2;
+var uniHeight = 15;
+var textSpace = 10;
+//max possible sizing for rectangle
+// var uniHeight = 65;
+// var textSpace = 36;
 
  $("#plus").on("click", function(){
    plus = true;
@@ -166,11 +167,23 @@ var sort1 = false;
     }
     },del*6)
 
+var uniHeight = 15;
+var textSpace = 10;
+//max possible sizing for rectangle
+var uniHeight = 65;
+var textSpace = 36;
 d3.csv("entity2.csv", function(error,data){
 for(i=0; i<data.length; i++){
 
     dataIs.push(data[i]);
-    
+
+var uniScale = d3.scale.linear()
+    .domain([0, 100000000])
+    .range([65, 15]);
+
+uniHeight = uniScale(data.length);
+textSpace = uniHeight/1.8;
+
     if(Object.getOwnPropertyNames(data[i])=="Source"){
     }
     else{         
@@ -361,31 +374,31 @@ function topPart(){
                 d3.selectAll(".Sex").transition().attr("height", sexTotal*factor);
                 d3.selectAll(".Age").transition().attr("height", ageTotal*factor);
     
-                // svg.selectAll("topLine")
-                //     .data(d3.range(dataIs.length/3))
-                //     .enter()
-                //     .append("line")
-                //     .attr("class", "topLine")
-                //     .attr("x1", function(){
-                //         x1 = d3.select(".back0").attr("x");
-                //         // x1 = d3.select("rect.ID").attr("x");
-                //         return x1;
-                //     })
-                //     .attr("y1", function(d,i){
-                //         return oheightScale(i);//i*10;
-                //     })
-                //     .attr("x2", function(){
-                //         x2 = d3.select(".back"+dataTypes.length).attr("x");
-                //         // x2 = d3.select("rect.Age").attr("x");
-                //         // return wide+x2;
-                //         return parseInt(wide)+parseInt(x2);
-                //     })
-                //     .attr("y2", function(d,i){
-                //         return oheightScale(i);
-                //     })
-                //     .attr("stroke","white")
-                //     .attr("opacity",1)
-                //     .attr("stroke-width", .2)  
+                svg.selectAll("topLine")
+                    .data(d3.range(dataIs.length/3))
+                    .enter()
+                    .append("line")
+                    .attr("class", "topLine")
+                    .attr("x1", function(){
+                        x1 = d3.select(".back0").attr("x");
+                        // x1 = d3.select("rect.ID").attr("x");
+                        return x1;
+                    })
+                    .attr("y1", function(d,i){
+                        return oheightScale(i);//i*10;
+                    })
+                    .attr("x2", function(){
+                        x2 = d3.select(".back"+parseInt(dataTypes.length-1)).attr("x");
+                        // x2 = d3.select("rect.Age").attr("x");
+                        // return wide+x2;
+                        return parseInt(wide)+parseInt(x2);
+                    })
+                    .attr("y2", function(d,i){
+                        return oheightScale(i);
+                    })
+                    .attr("stroke","white")
+                    .attr("opacity",1)
+                    .attr("stroke-width", .2)  
             })
 
            // svg.selectAll("rectBack")
