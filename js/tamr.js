@@ -173,20 +173,29 @@ var sort1 = false;
 
 var uniHeight = 15;
 var textSpace = 10;
-//max possible sizing for rectangle
-var uniHeight = 65;
-var textSpace = 36;
-d3.csv("entity2.csv", function(error,data){
+// //max possible sizing for rectangle
+// var uniHeight = 65;
+// var textSpace = 36;
+
+var recordsAre = [];
+var indexes = [];
+d3.csv("entity.csv", function(error,data){
 for(i=0; i<data.length; i++){
 
     dataIs.push(data[i]);
 
-var uniScale = d3.scale.linear()
-    .domain([0, 100000000])
-    .range([65, 15]);
+recordsAre.push(parseInt(data[i].Records));
+recordsAre.sort(d3.descending);
 
+
+var uniScale = d3.scale.linear()
+    .domain([0, data.length])
+    .range([65, 15]);
+var txtScale = d3.scale.linear()
+    .domain([15, 65])
+    .range([10, 50]);
 uniHeight = uniScale(data.length);
-textSpace = uniHeight/1.8;
+textSpace = txtScale(uniHeight);
 
     if(Object.getOwnPropertyNames(data[i])=="Source"){
     }
@@ -882,12 +891,26 @@ function sortSource(){
 
         d3.selectAll(".sourceRect, .outlineRects")
         .transition()
-        .attr("y", function(d,i){
-            return recordHScale(d.Records)
-        })
+    .attr("y", function(d,i){
+      for(j=0; j<recordsAre.length; j++){
+        if(parseInt(d.Records)==recordsAre[j]){
+          return hScale(j);
+        }
+      }
+    })
+        // .attr("y", function(d,i){
+        //     return recordHScale(d.Records)
+        // })
         d3.selectAll(".sourceText")
         .transition()
-        .attr("opacity",0);
+    .attr("y", function(d,i){
+      for(j=0; j<recordsAre.length; j++){
+        if(parseInt(d.Records)==recordsAre[j]){
+          return hScale(j);
+        }
+      }
+    })
+        // .attr("opacity",0);
     d3.selectAll(".source1Text").transition().attr("opacity",0);
 }
 function sortNon(){
@@ -1024,7 +1047,14 @@ d3.selectAll(".Citytext")
         .transition()
         .attr("opacity",0)   
 }
+
+
+
 function sortEntries(){
+            var hScale = d3.scale.linear()
+                .domain([0, dataIs.length])
+                .range([topSpaceRect, height])//+400])
+
                 var rHScale = d3.scale.linear()
                         .domain([0, 2000000])
                         .range([5, uniHeight]) 
@@ -1036,6 +1066,13 @@ d3.selectAll(".ID2")
         }else{
             return uniHeight;
         }
+    })
+    .attr("y", function(d,i){
+      for(j=0; j<recordsAre.length; j++){
+        if(parseInt(dataIs[i].Records)==recordsAre[j]){
+          return hScale(j);
+        }
+      }
     })
 d3.selectAll(".Title2")
     .transition()
