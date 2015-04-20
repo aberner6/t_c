@@ -894,6 +894,7 @@ function sortSource(){
     .attr("y", function(d,i){
       for(j=0; j<recordsAre.length; j++){
         if(parseInt(d.Records)==recordsAre[j]){
+          // console.log(d.Records+"d"+recordsAre[j]+"records"+i+"i")
           return hScale(j);
         }
       }
@@ -905,9 +906,11 @@ function sortSource(){
         .transition()
     .attr("y", function(d,i){
       for(j=0; j<recordsAre.length; j++){
-        if(parseInt(d.Records)==recordsAre[j]){
+        // if(parseInt(d.Records)==recordsAre[j]){
+          // console.log(i+"i"+j+"j")
+
           return hScale(j);
-        }
+        // }
       }
     })
         // .attr("opacity",0);
