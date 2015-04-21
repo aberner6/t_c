@@ -179,10 +179,15 @@ var textSpace = 10;
 
 var recordsAre = [];
 var indexes = [];
-d3.csv("entity.csv", function(error,data){
+var key;
+var key = function(d) {
+  return d.key;
+};
+d3.csv("entity2.csv", function(error,data){
 for(i=0; i<data.length; i++){
 
     dataIs.push(data[i]);
+
 
 recordsAre.push(parseInt(data[i].Records));
 recordsAre.sort(d3.descending);
@@ -778,8 +783,9 @@ function callTopNon(){
                     //     .attr("stroke-dasharray", "2,2")
                     //     .attr("stroke-width", .1);
 var sourceHeight = [];
-function callSource(){
                     var sourceWidth = [];
+
+function callSource(){
                     var randoScale = d3.scale.linear()
                         .domain([0, 20])
                         .range([2, 10])
@@ -849,17 +855,19 @@ function callSource(){
                             return sourceHeight[i]+10;
                         })
 
-
+var sortScale = d3.scale.ordinal()
+        .domain(d3.range(dataIs.length))
+        .rangeRoundBands([topSpaceText3-5, height], 0.05); 
 
                     // var sourceText = "Source"
                     svg.selectAll("sourceText")
-                        .data(dataIs)
+                        .data(dataIs, key)
                         .enter()
                         .append("text")
                         .attr("class", "sourceText")
                         .attr("x", lMargin)
                         .attr("y", function(d,i){
-                            return hScale(i)+10;//fold/2+i*25+20;
+                            return sortScale(i)+10;//fold/2+i*25+20;
                         })
                         .transition()
                         .delay(1000)
@@ -881,18 +889,24 @@ function callSource(){
         } 
      
 function sortSource(){
-                var hScale = d3.scale.linear()
-                    .domain([0, dataIs.length])
-                    .range([topSpaceText3-5, height])
-
+                // var hScale = d3.scale.linear()
+                //     .domain([0, dataIs.length])
+                //     .range([topSpaceText3-5, height])
+var hScale = d3.scale.ordinal()
+        .domain(d3.range(dataIs.length))
+        .rangeRoundBands([topSpaceText3-5, height], 0.05); 
                     var recordHScale = d3.scale.linear()
                         .domain([0, 2000000])
                         .range([topSpaceText3, height])    
 
         d3.selectAll(".sourceRect, .outlineRects")
-        .transition()
+        // .transition()
+        .data(recordsAre)
+        .enter()
+        .append("rect")
+        // .attr("class", "sourceRect")
     .attr("y", function(d,i){
-      for(j=0; j<recordsAre.length; j++){
+      for(var j=0; j<recordsAre.length; j++){
         if(parseInt(d.Records)==recordsAre[j]){
           // console.log(d.Records+"d"+recordsAre[j]+"records"+i+"i")
           return hScale(j);
@@ -902,17 +916,77 @@ function sortSource(){
         // .attr("y", function(d,i){
         //     return recordHScale(d.Records)
         // })
-        d3.selectAll(".sourceText")
-        .transition()
-    .attr("y", function(d,i){
-      for(j=0; j<recordsAre.length; j++){
-        // if(parseInt(d.Records)==recordsAre[j]){
-          // console.log(i+"i"+j+"j")
 
-          return hScale(j);
-        // }
-      }
+
+
+    //     d3.selectAll(".sourceText")
+    //     .transition()
+    // .attr("y", function(d,i){
+    //   for(var j=0; j<recordsAre.length; j++){
+    //     // if(recordsAre[j]!=recordsAre[1+j]){
+    //    if(parseInt(d.Records)==recordsAre[j]&& recordsAre[j]!=recordsAre[1+j]){
+    //       console.log(recordsAre[j]+d.Records)
+
+    //       // console.log(j)
+    //       // j*columnHeight
+    //       return hScale(j);
+    //     // }
+    //   } else{
+    //     if(parseInt(d.Records)==recordsAre[j]){
+    //     //           console.log("else"+d.Records+i+"i"+(1+j)+"j")
+    //     //           // console.log(j+1);
+    //       return hScale(1+j);
+    //     }
+    //   }
+    //     // if(parseInt(d.Records)==recordsAre[j+1]){
+    //     //   return hScale(j+1);
+    //     // }
+    //   }
+    // })
+
+var sortOrder = true;
+    sortItems = function (a, b) {
+        if (sortOrder) {
+            return a.value - b.value;
+        }
+        return b.value - a.value;
+    };
+
+
+
+     svg.selectAll(".sourceText")
+        .sort(sortItems)
+        .transition()
+        .delay(function (d, i) {
+        return i * 50;
     })
+        .duration(1000)
+                        .attr("x", lMargin)
+                        .attr("y", function(d,i){
+                            return hScale(i)+10;//fold/2+i*25+20;
+                        })
+                        .transition()
+                        .delay(1000)
+                        .duration(2000)
+                        .attr("x", function(d,i){
+                            return lMargin+sourceWidth[i]+14;
+                        })
+                        .text(function(d,i){
+                            // if(i>0){
+                            return d.Source;
+                            // } else{}     
+                        })
+
+
+
+
+
+
+
+
+
+
+
         // .attr("opacity",0);
     d3.selectAll(".source1Text").transition().attr("opacity",0);
 }
