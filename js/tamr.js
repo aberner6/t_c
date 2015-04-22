@@ -1045,6 +1045,7 @@ function hideDetails() {
 }
 
 
+var amtDel = 2000;
 
 function sortEntries() {
     var hScale = d3.scale.linear()
@@ -1054,7 +1055,6 @@ function sortEntries() {
     var rHScale = d3.scale.linear()
         .domain([0, 500000])
         .range([5, uniHeight])
-var amtDel = 2000;
 
     d3.selectAll(".ID2")
         .transition()
@@ -1275,9 +1275,16 @@ var amtDel = 2000;
 }
 
 function unsortEntries() {
+    var hScale = d3.scale.linear()
+        .domain([0, dataIs.length])
+        .range([topSpaceRect, height])
+
+        var delValunSort = amtDel+1000;
+  
+
     d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .EmailAddress2, .PhoneNumber2, .StreetAddress2, .City2, .ZipCode2, .State2, .Country2, .Sex2, .Age2")
         .transition()
-        .duration(1000)
+        // .duration(1000)
         .attr("height", uniHeight);
     d3.selectAll(".rect2").transition().attr("opacity", 1)
 
@@ -1407,6 +1414,62 @@ function unsortEntries() {
                 return 0;
             }
         })
+        d3.selectAll(".ID2").transition().delay(delValunSort)
+        .attr("y",function(d,i){
+                return hScale(i);
+            }) 
+        d3.selectAll(".Title2").transition().delay(delValunSort)
+            .attr("y",function(d,i){
+                return hScale(i);
+            }) 
+            d3.selectAll(".FirstName2").transition().delay(delValunSort)
+                .attr("y",function(d,i){
+                    return hScale(i);
+                }) 
+        d3.selectAll(".LastName2").transition().delay(delValunSort)    
+        .attr("y",function(d,i){
+            return hScale(i);
+        }) 
+        d3.selectAll(".Suffix2").transition().delay(delValunSort)    
+        .attr("y",function(d,i){
+            return hScale(i);
+        }) 
+        d3.selectAll(".EmailAddress2").transition().delay(delValunSort)    
+        .attr("y",function(d,i){
+            return hScale(i);
+        }) 
+        d3.selectAll(".PhoneNumber2").transition().delay(delValunSort)   
+        .attr("y",function(d,i){
+            return hScale(i);
+        }) 
+        d3.selectAll(".StreetAddress2").transition().delay(delValunSort)    
+        .attr("y",function(d,i){
+                return hScale(i);
+            }) 
+        d3.selectAll(".City2").transition().delay(delValunSort)    
+        .attr("y",function(d,i){
+                return hScale(i);
+            }) 
+        d3.selectAll(".ZipCode2").transition().delay(delValunSort)    
+        .attr("y",function(d,i){
+                return hScale(i);
+            }) 
+        d3.selectAll(".State2").transition().delay(delValunSort)    
+        .attr("y",function(d,i){
+                return hScale(i);
+            }) 
+        d3.selectAll(".Country2").transition().delay(delValunSort)    
+        .attr("y",function(d,i){
+                return hScale(i);
+            }) 
+        d3.selectAll(".Sex2").transition().delay(delValunSort)    
+        .attr("y",function(d,i){
+                    return hScale(i);
+                }) 
+        d3.selectAll(".Age2").transition().delay(delValunSort)    
+        .attr("y",function(d,i){
+                return hScale(i);
+            }) 
 }
 
 
@@ -2440,62 +2503,6 @@ function redo() {
     d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .EmailAddress2, .PhoneNumber2, .StreetAddress2, .City2, .ZipCode2, .State2, .Country2, .Sex2, .Age2")
         .transition()
         .attr("height", uniHeight)
-        // d3.selectAll(".ID2").transition()
-        // .attr("y",function(d,i){
-        //         return hScale(i);
-        //     }) 
-        // d3.selectAll(".Title2").transition()
-        //     .attr("y",function(d,i){
-        //         return hScale(i);
-        //     }) 
-        //     d3.selectAll(".FirstName2").transition()
-        //         .attr("y",function(d,i){
-        //             return hScale(i);
-        //         }) 
-        // d3.selectAll(".LastName2").transition()    
-        // .attr("y",function(d,i){
-        //     return hScale(i);
-        // }) 
-        // d3.selectAll(".Suffix2").transition()    
-        // .attr("y",function(d,i){
-        //     return hScale(i);
-        // }) 
-        // d3.selectAll(".EmailAddress2").transition()    
-        // .attr("y",function(d,i){
-        //     return hScale(i);
-        // }) 
-        // d3.selectAll(".PhoneNumber2").transition()   
-        // .attr("y",function(d,i){
-        //     return hScale(i);
-        // }) 
-        // d3.selectAll(".StreetAddress2").transition()    
-        // .attr("y",function(d,i){
-        //         return hScale(i);
-        //     }) 
-        // d3.selectAll(".City2").transition()    
-        // .attr("y",function(d,i){
-        //         return hScale(i);
-        //     }) 
-        // d3.selectAll(".ZipCode2").transition()    
-        // .attr("y",function(d,i){
-        //         return hScale(i);
-        //     }) 
-        // d3.selectAll(".State2").transition()    
-        // .attr("y",function(d,i){
-        //         return hScale(i);
-        //     }) 
-        // d3.selectAll(".Country2").transition()    
-        // .attr("y",function(d,i){
-        //         return hScale(i);
-        //     }) 
-        // d3.selectAll(".Sex2").transition()    
-        // .attr("y",function(d,i){
-        //             return hScale(i);
-        //         }) 
-        // d3.selectAll(".Age2").transition()    
-        // .attr("y",function(d,i){
-        //         return hScale(i);
-        //     }) 
 
 
 
@@ -2527,104 +2534,3 @@ function redo() {
 }
 
 
-
-
-// svg.selectAll("rectBottom")
-//     .data(dataIs)
-//     .enter()
-//     .append("rect")
-//     .attr("class", function(d,i){
-//         return dataTypes[i]+2;
-//     })
-//     .attr("width", 0)
-//     .attr("height",0)
-//     .attr("x", function(d,i){
-//         // console.log(d);
-//         var j = i;
-//         var p;
-//             if(j<dataTypes.length){
-//                 p = saveOne[i][j];
-//             }
-//             if(d.hasOwnProperty(p)){
-//                 // console.log(d)
-//                 return xScale(p);                
-//             } 
-//             else{ 
-//             }   
-//     })
-//     .attr("fill",tamR);
-// return "rgb("+colorScale(i)+","+100+","+100+")";
-// .attr("opacity", function(d,i){
-//     var j = i;
-//     var p;
-//         if(j<dataTypes.length){
-//             p = saveOne[i][j];
-//         }
-//         if(d.hasOwnProperty(p)){
-//             return .9;               
-//         } 
-//         else{ 
-//             return 0;
-//         }   
-// })
-// .transition()
-// .delay(del)
-// .duration(2000)
-// .attr("x", function(d,i){
-//     // console.log(d);
-//     var j = i;
-//     var p;
-//         if(j<dataTypes.length){
-//             p = saveOne[i][j];
-//         }
-//         if(d.hasOwnProperty(p)){
-//             // console.log(d)
-//             return xScale(p);                
-//         } 
-//         else{ 
-//         }   
-// })
-// .attr("y", function(d,i){   
-//         return fold/2;
-// })
-
-
-
-
-// .on("mouseover", function(d,i){
-//     var thisName = (d3.select(this).attr("class"));
-//     d3.selectAll("text."+thisName).transition().attr("opacity",1)
-//     // console.log("moused"+"text."+thisName)
-// })
-// .on("mouseout", function(d,i){
-//     var thisName = (d3.select(this).attr("class"));
-//     d3.selectAll("text."+thisName).transition().attr("opacity",0)
-//     // console.log("moused"+"text."+thisName)
-// })
-
-
-//                 .on("mouseover", function(d,i){
-// // var coordinates = [0, 0];
-// // coordinates = d3.mouse(this);
-// var x = (d3.select(this).attr("x"));
-// var y = (d3.select(this).attr("y"))+20;
-//                     svg.append("text")
-//                         .attr("class","mouseLabel")
-//                         .attr("x", x)
-//                         .attr("y", y)
-//                         // .attr("fill","white")
-//                         .text(oneData[8])   
-//                     // console.log("moused"+"text."+thisName)
-//                 })
-//                 .on("mouseout", function(d,i){
-//                     // var thisName = (d3.select(this).attr("class"));
-//                     d3.selectAll(".mouseLabel").transition().attr("opacity",0)
-//                     // console.log("moused"+"text."+thisName)
-//                 })
-
-
-// svg.append("text")
-//     .attr("class","sourceLabel")
-//     .attr("x", width-130)
-//     .attr("y", topSpaceText)
-//     .text("Non-unified")
