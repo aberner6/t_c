@@ -167,9 +167,9 @@ setTimeout(function() {
     // callMidNon();
 
 }, del / 10)
-setTimeout(function() {
-    sortEntries();
-}, del * 4)
+// setTimeout(function() {
+//     sortEntries();
+// }, del * 4)
 
 var uniHeight = 15;
 var textSpace = 10;
@@ -216,19 +216,19 @@ d3.csv("entity2.csv", function(error, data) {
             if (val == "Country") {
                 countryData.push(data[i][val])
             }
-            if (val == "Email Address") {
+            if (val == "EmailAddress") {
                 emailData.push(data[i][val])
             }
-            if (val == "First Name") {
+            if (val == "FirstName") {
                 firstData.push(data[i][val])
             }
-            if (val == "Last Name") {
+            if (val == "LastName") {
                 lastData.push(data[i][val])
             }
             if (val == "ID") {
                 idData.push(data[i][val])
             }
-            if (val == "Phone Number") {
+            if (val == "PhoneNumber") {
                 phoneData.push(data[i][val])
             }
             if (val == "Sex") {
@@ -237,7 +237,7 @@ d3.csv("entity2.csv", function(error, data) {
             if (val == "State") {
                 stateData.push(data[i][val])
             }
-            if (val == "Street Address") {
+            if (val == "StreetAddress") {
                 stData.push(data[i][val])
             }
             if (val == "Suffix") {
@@ -246,7 +246,7 @@ d3.csv("entity2.csv", function(error, data) {
             if (val == "Title") {
                 titleData.push(data[i][val])
             }
-            if (val == "Zip Code") {
+            if (val == "ZipCode") {
                 zipData.push(data[i][val])
             }
             if (val == "City" && data[i][val].length > 0) {
@@ -261,15 +261,15 @@ d3.csv("entity2.csv", function(error, data) {
                 country++;
                 countryTotal = country;
             }
-            if (val == "Email Address" && data[i][val].length > 0) {
+            if (val == "EmailAddress" && data[i][val].length > 0) {
                 email++;
                 emailTotal = email;
             }
-            if (val == "First Name" && data[i][val].length > 0) {
+            if (val == "FirstName" && data[i][val].length > 0) {
                 first++;
                 firstTotal = first;
             }
-            if (val == "Last Name" && data[i][val].length > 0) {
+            if (val == "LastName" && data[i][val].length > 0) {
                 last++;
                 lastTotal = last;
             }
@@ -277,7 +277,7 @@ d3.csv("entity2.csv", function(error, data) {
                 id++;
                 idTotal = id;
             }
-            if (val == "Phone Number" && data[i][val].length > 0) {
+            if (val == "PhoneNumber" && data[i][val].length > 0) {
                 phone++;
                 phoneTotal = phone;
             }
@@ -289,7 +289,7 @@ d3.csv("entity2.csv", function(error, data) {
                 state++;
                 stateTotal = state;
             }
-            if (val == "Street Address" && data[i][val].length > 0) {
+            if (val == "StreetAddress" && data[i][val].length > 0) {
                 st++;
                 stTotal = st;
             }
@@ -301,7 +301,7 @@ d3.csv("entity2.csv", function(error, data) {
                 tit++;
                 titTotal = tit;
             }
-            if (val == "Zip Code" && data[i][val].length > 0) {
+            if (val == "ZipCode" && data[i][val].length > 0) {
                 zip++;
                 zipTotal = zip;
             }
@@ -1052,16 +1052,9 @@ function sortEntries() {
         .range([topSpaceRect, height])
 
     var rHScale = d3.scale.linear()
-        .domain([0, 2000000])
+        .domain([0, 500000])
         .range([5, uniHeight])
-// for(var i=0; i<dataTypes.length; i++){
-      d3.selectAll(".ID2")
-        .transition()
-        .attr("y", function(d, i) {
-            return hScale(d.key);
-        })
-      // }
-
+var amtDel = 2000;
 
     d3.selectAll(".ID2")
         .transition()
@@ -1072,13 +1065,15 @@ function sortEntries() {
                 return uniHeight;
             }
         })
-        .attr("y", function(d, i) {
-            for (j = 0; j < recordsAre.length; j++) {
-                if (parseInt(dataIs[i].Records) == recordsAre[j]) {
-                    return hScale(j);
-                }
-            }
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
         })
+       // .attr("y", function(d, i) {
+       //      return hScale(dataIs[i].key);
+       //  })
+
     d3.selectAll(".Title2")
         .transition()
         .attr("height", function(d, i) {
@@ -1088,6 +1083,13 @@ function sortEntries() {
                 return uniHeight;
             }
         })
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })        
+
+
     d3.selectAll(".FirstName2")
         .transition()
         .attr("height", function(d, i) {
@@ -1097,6 +1099,12 @@ function sortEntries() {
                 return uniHeight;
             }
         })
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })
+
     d3.selectAll(".LastName2")
         .transition()
         .attr("height", function(d, i) {
@@ -1106,6 +1114,12 @@ function sortEntries() {
                 return uniHeight;
             }
         })
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })
+
     d3.selectAll(".Suffix2")
         .transition()
         .attr("height", function(d, i) {
@@ -1115,6 +1129,12 @@ function sortEntries() {
                 return uniHeight;
             }
         })
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })
+
     d3.selectAll(".EmailAddress2")
         .transition()
         .attr("height", function(d, i) {
@@ -1124,6 +1144,12 @@ function sortEntries() {
                 return uniHeight;
             }
         })
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })
+
     d3.selectAll(".PhoneNumber2")
         .transition()
         .attr("height", function(d, i) {
@@ -1133,6 +1159,12 @@ function sortEntries() {
                 return uniHeight;
             }
         })
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })
+
     d3.selectAll(".StreetAddress2")
         .transition()
         .attr("height", function(d, i) {
@@ -1142,6 +1174,12 @@ function sortEntries() {
                 return uniHeight;
             }
         })
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })
+
     d3.selectAll(".City2")
         .transition()
         .attr("height", function(d, i) {
@@ -1151,6 +1189,12 @@ function sortEntries() {
                 return uniHeight;
             }
         })
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })
+
     d3.selectAll(".ZipCode2")
         .transition()
         .attr("height", function(d, i) {
@@ -1160,6 +1204,12 @@ function sortEntries() {
                 return uniHeight;
             }
         })
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })
+
     d3.selectAll(".State2")
         .transition()
         .attr("height", function(d, i) {
@@ -1169,6 +1219,12 @@ function sortEntries() {
                 return uniHeight;
             }
         })
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })
+
     d3.selectAll(".Country2")
         .transition()
         .attr("height", function(d, i) {
@@ -1178,6 +1234,12 @@ function sortEntries() {
                 return uniHeight;
             }
         })
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })
+
     d3.selectAll(".Sex2")
         .transition()
         .attr("height", function(d, i) {
@@ -1187,6 +1249,12 @@ function sortEntries() {
                 return uniHeight;
             }
         })
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })
+
     d3.selectAll(".Age2")
         .transition()
         .attr("height", function(d, i) {
@@ -1195,6 +1263,11 @@ function sortEntries() {
             } else {
                 return uniHeight;
             }
+        })
+        .transition()
+        .delay(amtDel)
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
         })
         // hideDetails();
 
