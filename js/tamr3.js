@@ -88,7 +88,13 @@ var topFactor = 1.9;
 var plus = false;
 var minus = true;
 
-
+var newData = [ 
+  { key: 0, value: 5 },
+  { key: 1, value: 10 },
+  { key: 2, value: 13 },
+  { key: 3, value: 19 },
+  { key: 4, value: 21 },
+  { key: 5, value: 25 }];
 //min and max szing for rectangle
 //min
 var uniHeight = 15;
@@ -180,9 +186,13 @@ var textSpace = 10;
 var recordsAre = [];
 var indexes = [];
 var key;
+
 var key = function(d) {
   return d.key;
 };
+
+
+
 d3.csv("entity2.csv", function(error,data){
 for(i=0; i<data.length; i++){
 
@@ -562,7 +572,6 @@ function callMidSource(){
 
 
 
-                    // var sourceText = "Source"
                     svg.selectAll("source1Text")
                         .data(d3.range(1))
                         .enter()
@@ -859,27 +868,42 @@ var sortScale = d3.scale.ordinal()
         .domain(d3.range(dataIs.length))
         .rangeRoundBands([topSpaceText3-5, height], 0.05); 
 
-                    // var sourceText = "Source"
-                    svg.selectAll("sourceText")
-                        .data(dataIs, key)
-                        .enter()
-                        .append("text")
-                        .attr("class", "sourceText")
-                        .attr("x", lMargin)
-                        .attr("y", function(d,i){
-                            return sortScale(i)+10;//fold/2+i*25+20;
-                        })
-                        .transition()
-                        .delay(1000)
-                        .duration(2000)
+svg.selectAll("sourceText")
+   .data(newData, key)
+   .enter()
+   .append("text")
+   .attr("class", "sourceText")
+        .text(function (d) {
+        return d.value;
+    })
+        .attr("text-anchor", "middle")
                         .attr("x", function(d,i){
                             return lMargin+sourceWidth[i]+14;
                         })
-                        .text(function(d,i){
-                            // if(i>0){
-                            return d.Source;
-                            // } else{}     
+                        .attr("y", function(d,i){
+                            return sortScale(i)+10;//fold/2+i*25+20;
                         })
+                    // var sourceText = "Source"
+                    // svg.selectAll("sourceText")
+                    //     .data(dataset, key)
+                    //     .enter()
+                    //     .append("text")
+                    //     .attr("class", "sourceText")
+                    //     .attr("x", lMargin)
+                    //     .attr("y", function(d,i){
+                    //         return sortScale(i)+10;//fold/2+i*25+20;
+                    //     })
+                    //     .transition()
+                    //     .delay(1000)
+                    //     .duration(2000)
+                    //     .attr("x", function(d,i){
+                    //         return lMargin+sourceWidth[i]+14;
+                    //     })
+                    //     .text(function(d,i){
+                    //         // if(i>0){
+                    //         return d.Source;
+                    //         // } else{}     
+                    //     })
 
                     // svg.append("text")
                     //     .attr("class","sourceLabel")
@@ -889,49 +913,33 @@ var sortScale = d3.scale.ordinal()
         } 
      
 function sortSource(){
-                var hScale = d3.scale.linear()
-                    .domain([0, dataIs.length])
-                    .range([topSpaceText3-5, height])
-// var hiScale = d3.scale.ordinal()
-//         .domain(d3.range(dataIs.length))
-//         .rangeRoundBands([topSpaceText3-5, height], 0.05); 
+                // var hScale = d3.scale.linear()
+                //     .domain([0, dataIs.length])
+                //     .range([topSpaceText3-5, height])
+var hiScale = d3.scale.ordinal()
+        .domain(d3.range(dataIs.length))
+        .rangeRoundBands([topSpaceText3-5, height], 0.05); 
                     var recordHScale = d3.scale.linear()
                         .domain([0, 2000000])
                         .range([topSpaceText3, height])    
 
         d3.selectAll(".sourceRect, .outlineRects")
-        .transition()
-        // .data(recordsAre)
-        // .enter()
-        // .append("rect")
+        // .transition()
+        .data(recordsAre)
+        .enter()
+        .append("rect")
         // .attr("class", "sourceRect")
     .attr("y", function(d,i){
-      return hScale(d.key);
+      for(var j=0; j<recordsAre.length; j++){
+        if(parseInt(d.Records)==recordsAre[j]){
+          // console.log(d.Records+"d"+recordsAre[j]+"records"+i+"i")
+          return hScale(j);
+        }
+      }
     })
         // .attr("y", function(d,i){
         //     return recordHScale(d.Records)
         // })
-
-
-
-
-
-// recordsAre.sort(d3.descending);
-
-d3.selectAll(".sourceText")
-  .transition()
-  .attr("y", function(d,i){
-    console.log(d.key)
-    return hScale(d.key)+10;
-  })
-
-
-
-
-
-
-
-
 
 
 
@@ -960,38 +968,38 @@ d3.selectAll(".sourceText")
     //   }
     // })
 
-// var sortOrder = true;
-//     sortItems = function (a, b) {
-//         if (sortOrder) {
-//             return a.value - b.value;
-//         }
-//         return b.value - a.value;
-//     };
+var sortOrder = true;
+    sortItems = function (a, b) {
+        if (sortOrder) {
+            return a.value - b.value;
+        }
+        return b.value - a.value;
+    };
 
 
 
-    //  svg.selectAll(".sourceText")
-    //     .sort(sortItems)
-    //     .transition()
-    //     .delay(function (d, i) {
-    //     return i * 50;
-    // })
-    //     .duration(1000)
-    //                     .attr("x", lMargin)
-    //                     .attr("y", function(d,i){
-    //                         return hScale(i)+10;//fold/2+i*25+20;
-    //                     })
-    //                     .transition()
-    //                     .delay(1000)
-    //                     .duration(2000)
-    //                     .attr("x", function(d,i){
-    //                         return lMargin+sourceWidth[i]+14;
-    //                     })
-    //                     .text(function(d,i){
-    //                         // if(i>0){
-    //                         return d.Source;
-    //                         // } else{}     
-    //                     })
+     svg.selectAll(".sourceText")
+        .sort(sortItems)
+        .transition()
+        .delay(function (d, i) {
+        return i * 50;
+    })
+        .duration(1000)
+                        .attr("x", lMargin)
+                        .attr("y", function(d,i){
+                            return hiScale(i)+10;//fold/2+i*25+20;
+                        })
+                        .transition()
+                        .delay(1000)
+                        .duration(2000)
+                        .attr("x", function(d,i){
+                            return lMargin+sourceWidth[i]+14;
+                        })
+                        .text(function(d,i){
+                            // if(i>0){
+                            return d.value;
+                            // } else{}     
+                        })
 
 
 
@@ -1462,14 +1470,9 @@ function unsortSource(){
         })
 
         d3.selectAll(".source1Text").transition().attr("opacity",1);
-d3.selectAll(".sourceText")
-  .transition()
-  .attr("y", function(d,i){
-    // console.log(d.key)
-    return hScale(i)+10;
-  })
-        // d3.selectAll(".sourceText")
-        // .transition()
+
+        d3.selectAll(".sourceText")
+        .transition()
         .attr("opacity",1);
 }
 
