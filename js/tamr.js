@@ -141,6 +141,9 @@ unsortSource();
 unsortEntries();
 unsortNon();
 }
+function showNames(){
+
+}
 var sort2 = false;
 $("#sort2").on("click", function() {
     // unsort = false;
@@ -356,11 +359,12 @@ var fontAdjust = 12;
 
 function topPart() {
                   dataTypes.splice(dataTypes.length-1,1)
+        var factor = 4;
 
     topMargin = 10;
     oheightScale = d3.scale.linear()
-        .domain([0, dataTypes.length-2])
-        .range([topSpaceText3, 210])
+        .domain([0, dataIs.length])
+        .range([topSpaceText3-2, topSpaceText3+20])
     var heightScale = d3.scale.linear()
         .domain([0, dataIs.length])
         .range([topSpaceText3, topSpaceText3 + 50])
@@ -393,7 +397,6 @@ function topPart() {
         .duration(1000)
 
     .each("end", function() {
-        var factor = 4;
         d3.selectAll(".ID").transition().attr("height", idTotal * factor)
         d3.selectAll(".Title").transition().attr("height", titTotal * factor)
         d3.selectAll(".FirstName").transition().attr("height", firstTotal * factor)
@@ -410,7 +413,7 @@ function topPart() {
         d3.selectAll(".Age").transition().attr("height", ageTotal * factor);
 
         svg.selectAll("topLine")
-            .data(d3.range(dataIs.length / 3))
+            .data(d3.range(dataIs.length))
             .enter()
             .append("line")
             .attr("class", "topLine")
@@ -812,9 +815,6 @@ function callSource() {
         .domain([0, 2000000])
         .range([2, uniHeight])
 
-    var recordHScale = d3.scale.linear()
-        .domain([0, 2000000])
-        .range([topSpaceText3, height])
 
     var thisOne = 0;
     svg.selectAll("sourceRect")
@@ -908,9 +908,7 @@ function sortSource() {
         .domain([0, dataIs.length])
         .range([topSpaceText3 - 5, height])
 
-    var recordHScale = d3.scale.linear()
-        .domain([0, 2000000])
-        .range([topSpaceText3, height])
+
 
     d3.selectAll(".sourceRect, .outlineRects")
         .transition()
@@ -1008,6 +1006,7 @@ function unsortNon() {
   }
 
 function showDetails() {
+
     var on = 1;
    d3.selectAll(".Citytext")
         .transition()
@@ -1177,9 +1176,240 @@ function showDetails() {
     // d3.selectAll(".Countrytext")
     //     .transition()
     //     .attr("opacity", on)
+    d3.selectAll(".ID2, .Title2, .FirstName2, .LastName2, .Suffix2, .EmailAddress2, .PhoneNumber2, .StreetAddress2, .City2, .ZipCode2, .State2, .Country2, .Sex2, .Age2")
+        .transition()
+        .delay(500)
+        .duration(1000)
+        .attr("height", uniHeight)
 }
 
 function hideDetails() {
+    var rHScale = d3.scale.linear()
+        .domain([minRecords, maxRecords])
+        .range([5, uniHeight])
+
+    var hScale = d3.scale.linear()
+        .domain([0, dataIs.length])
+        .range([topSpaceRect, height])
+        
+    d3.selectAll(".ID2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })
+
+    d3.selectAll(".Title2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })      
+
+
+    d3.selectAll(".FirstName2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })
+    d3.selectAll(".LastName2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })
+
+    d3.selectAll(".Suffix2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })
+
+    d3.selectAll(".EmailAddress2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })
+
+    d3.selectAll(".PhoneNumber2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })
+
+    d3.selectAll(".StreetAddress2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })
+
+    d3.selectAll(".City2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })
+
+    d3.selectAll(".ZipCode2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })
+
+    d3.selectAll(".State2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })
+
+    d3.selectAll(".Country2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })
+
+    d3.selectAll(".Sex2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })
+
+    d3.selectAll(".Age2")
+        .transition()
+        .attr("height", function(d,i){
+            if (i < 25) {
+                return rHScale(parseInt(dataIs[i].Records));
+            } else {
+                return uniHeight;
+            }
+        })
+
+
+
+
+
+
+        // hideDetails();
+   d3.selectAll(".Citytext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Agetext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Countrytext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Emailtext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Firsttext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Lasttext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".IDtext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Phonetext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Sextext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Statetext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Streettext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Suffixtext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Titletext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Ziptext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+
+
 
     d3.selectAll(".Agetext")
         .transition()
@@ -1242,9 +1472,6 @@ function sortEntries() {
         .attr("y", function(d,i) {
             return hScale(dataIs[i].key);
         })
-       // .attr("y", function(d, i) {
-       //      return hScale(dataIs[i].key);
-       //  })
 
     d3.selectAll(".Title2")
         .transition()
@@ -1325,7 +1552,76 @@ function sortEntries() {
             return hScale(dataIs[i].key);
         })
         // hideDetails();
-
+   d3.selectAll(".Citytext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Agetext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Countrytext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Emailtext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Firsttext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Lasttext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".IDtext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Phonetext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Sextext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Statetext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Streettext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Suffixtext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Titletext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
+    d3.selectAll(".Ziptext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })   
     d3.selectAll(".rect2").transition().attr("opacity", 0);
 }
 
@@ -1342,6 +1638,76 @@ function unsortEntries() {
     //     // .duration(1000)
     //     .attr("height", uniHeight);
     d3.selectAll(".rect2").transition().attr("opacity", 1)
+   d3.selectAll(".Citytext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })   
+    d3.selectAll(".Agetext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })   
+    d3.selectAll(".Countrytext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })   
+    d3.selectAll(".Emailtext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })   
+    d3.selectAll(".Firsttext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })   
+    d3.selectAll(".Lasttext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })   
+    d3.selectAll(".IDtext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })   
+    d3.selectAll(".Phonetext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })   
+    d3.selectAll(".Sextext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })   
+    d3.selectAll(".Statetext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })   
+    d3.selectAll(".Streettext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })   
+    d3.selectAll(".Suffixtext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })   
+    d3.selectAll(".Titletext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })   
+    d3.selectAll(".Ziptext")
+        .transition()
+        .attr("y", function(d,i) {
+            return hScale(i);
+        })  
 
  
         d3.selectAll(".ID2").transition().delay(delValunSort)
@@ -1448,9 +1814,7 @@ function callNon() {
     var hScale = d3.scale.linear()
         .domain([0, dataIs.length])
         .range([topSpaceText3 - 5, height])
-    var recordHScale = d3.scale.linear()
-        .domain([0, 2000000])
-        .range([topSpaceText3, height])
+
     var rMargin = 130;
     svg.selectAll("nonRect")
         .data(d3.range(dataIs.length))
