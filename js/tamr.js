@@ -183,6 +183,8 @@ var key;
 var key = function(d) {
     return d.key;
 };
+var minRecords;
+var maxRecords;
 d3.csv("entity2.csv", function(error, data) {
     for (i = 0; i < data.length; i++) {
 
@@ -191,6 +193,8 @@ d3.csv("entity2.csv", function(error, data) {
 
         recordsAre.push(parseInt(data[i].Records));
         recordsAre.sort(d3.descending);
+minRecords = d3.min(recordsAre);
+maxRecords = d3.max(recordsAre);
 
 
         var uniScale = d3.scale.linear()
@@ -910,8 +914,12 @@ function sortSource() {
 }
 
 function sortNon() {
+    var hScale = d3.scale.linear()
+        .domain([0, dataIs.length])
+        .range([topSpaceText3 - 5, height])
+
     var rHScale = d3.scale.linear()
-        .domain([0, 2000000])
+        .domain([minRecords, maxRecords])
         .range([5, uniHeight])
 
     d3.selectAll(".nonRect")
@@ -923,6 +931,10 @@ function sortNon() {
                 return uniHeight;
             }
         })
+        .attr("y", function(d,i) {
+          console.log(dataIs[i].key)
+            return hScale(dataIs[i].key);
+        })
         // , .nonRect2, .nonRect3
     d3.selectAll(".nonRect2")
         .transition()
@@ -933,6 +945,9 @@ function sortNon() {
                 return uniHeight;
             }
         })
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })
     d3.selectAll(".nonRect3")
         .transition()
         .attr("height", function(d, i) {
@@ -942,16 +957,40 @@ function sortNon() {
                 return uniHeight;
             }
         })
+        .attr("y", function(d,i) {
+            return hScale(dataIs[i].key);
+        })
 }
 
 function unsortNon() {
-    d3.selectAll(".nonRect, .nonRect2, .nonRect3")
+    var hScale = d3.scale.linear()
+        .domain([0, dataIs.length])
+        .range([topSpaceText3 - 5, height])
+
+    d3.selectAll(".nonRect3")
         .transition()
+        .attr("y", function(d,i){
+          return hScale(i);
+        })
+    d3.selectAll(".nonRect2")
+        .transition()
+        .attr("y", function(d,i){
+          return hScale(i);
+        })
+
+    d3.selectAll(".nonRect3")
+        .transition()
+        .attr("y", function(d,i){
+          return hScale(i);
+        })
+
+    d3.selectAll(".nonRect3, .nonRect2, .nonRect")
+        .transition()
+        .delay(1000)
         .attr("height", function(d, i) {
             return uniHeight;
         })
-
-}
+  }
 
 function showDetails() {
     var on = 1;
@@ -1053,7 +1092,7 @@ function sortEntries() {
         .range([topSpaceRect, height])
 
     var rHScale = d3.scale.linear()
-        .domain([0, 500000])
+        .domain([minRecords, maxRecords])
         .range([5, uniHeight])
 
     d3.selectAll(".ID2")
